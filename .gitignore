@@ -1,0 +1,11 @@
+build*
+bin*
+qtc-gdbmacros*
+release*
+debug*
+Makefile*
+*.pro.user
+object_script.*.*
+*~
+qtcreator-build*
+CMakeLists.txt.user

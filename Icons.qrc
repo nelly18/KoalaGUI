@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/application-exit-2.png</file>
+        <file>res/application-exit-3.png</file>
+        <file>res/application-exit-4.png</file>
+        <file>res/document-save-5.png</file>
+        <file>res/draw-path.png</file>
+        <file>res/edit-clear-2.png</file>
+        <file>res/folder-new-7.png</file>
+        <file>res/qt-logo.png</file>
+        <file>res/Blue-Red_256x256.png</file>
+        <file>res/Black-White_256x256.png</file>
+        <file>res/white.PNG</file>
+        <file>res/koalaSkeleton.PNG</file>
+        <file>res/PID.png</file>
+    </qresource>
+</RCC>
