@@ -45,6 +45,13 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     Icons.qrc
 
+win: {
 INCLUDEPATH += C:/qwt-6.0.0/src
 LIBS    += C:/qwt-6.0.0/lib/libqwtd.a
 #LIBS    += -L C:/qwt-6.0.0/lib/ -lqwt
+}
+
+unix: {
+INCLUDEPATH += /usr/include/qwt6
+LIBS    += -lqwt6
+}
