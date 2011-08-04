@@ -1,7 +1,7 @@
 #include <iostream>
 #include "SerialGate.h"
 
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
 #include <Winspool.h>
 #endif //Q_WS_WIN32
 
@@ -9,7 +9,7 @@
 
 bool SerialGate::Open(int port, int baud)
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     wchar_t COM_string[20];
     swprintf(COM_string, TEXT("\\\\.\\COM%i"), port);
 
@@ -61,7 +61,7 @@ SerialGate::~SerialGate()
 
 void SerialGate::Close()
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if (this->state)
         CloseHandle(m_hFile);
     this -> state = false;
@@ -70,7 +70,7 @@ void SerialGate::Close()
 
 void SerialGate::Clean()
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if(!state)
         return;
 
@@ -81,7 +81,7 @@ void SerialGate::Clean()
 
 int SerialGate::Send(const char* buff, const int szBuff)
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if(!state)
         return 0;
 
@@ -97,7 +97,7 @@ int SerialGate::Send(const char* buff, const int szBuff)
 
 int SerialGate::Recv(char* buff, int numBytesToRead)
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if(!state)
         return 0;
 
@@ -112,7 +112,7 @@ int SerialGate::Recv(char* buff, int numBytesToRead)
 
 void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if(!state)
         return ;
 
@@ -141,7 +141,7 @@ void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
 
 bool SerialGate::GetLine(IN_LINES_NAME ln)
 {
-#if defined(Q_WS_WIN)
+#ifdef Q_WS_WIN
     if(!state)
         return 0;
 
