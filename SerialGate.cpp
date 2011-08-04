@@ -1,15 +1,15 @@
 #include <iostream>
 #include "SerialGate.h"
 
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
 #include <Winspool.h>
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 
 
 
 bool SerialGate::Open(int port, int baud)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     wchar_t COM_string[20];
     swprintf(COM_string, TEXT("\\\\.\\COM%i"), port);
 
@@ -45,7 +45,7 @@ bool SerialGate::Open(int port, int baud)
     SetCommState(m_hFile, &dcb);
 
     this->state = true;
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
     return true;
 }
 
@@ -61,27 +61,27 @@ SerialGate::~SerialGate()
 
 void SerialGate::Close()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if (this->state)
         CloseHandle(m_hFile);
     this -> state = false;
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 }
 
 void SerialGate::Clean()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if(!state)
         return;
 
     PurgeComm(m_hFile, PURGE_TXCLEAR|PURGE_RXCLEAR);
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 }
 
 
 int SerialGate::Send(const char* buff, const int szBuff)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if(!state)
         return 0;
 
@@ -90,14 +90,14 @@ int SerialGate::Send(const char* buff, const int szBuff)
     WriteFile(m_hFile, buff, szBuff, &lpdwBytesWrittens, NULL);
 
     return lpdwBytesWrittens;
-#else //Q_OS_WIN
+#else //Q_WS_WIN32
     return 0;
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 }
 
 int SerialGate::Recv(char* buff, int numBytesToRead)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if(!state)
         return 0;
 
@@ -105,14 +105,14 @@ int SerialGate::Recv(char* buff, int numBytesToRead)
     ReadFile(m_hFile, buff, numBytesToRead, &dwBytesRead, NULL);
 
     return dwBytesRead;
-#else //Q_OS_WIN
+#else //Q_WS_WIN32
     return 0;
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 }
 
 void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if(!state)
         return ;
 
@@ -136,12 +136,12 @@ void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
     }
 
     EscapeCommFunction(m_hFile, value);
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 }
 
 bool SerialGate::GetLine(IN_LINES_NAME ln)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
     if(!state)
         return 0;
 
@@ -168,7 +168,7 @@ bool SerialGate::GetLine(IN_LINES_NAME ln)
     {
         return true;
     }
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
     return false;
 }
 

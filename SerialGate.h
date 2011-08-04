@@ -1,9 +1,9 @@
 #ifndef SERIALGATE_H
 #define SERIALGATE_H
 
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WIN32
 #include <Windows.h>
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 
 #define MAX_WIN_PORT 255
 #include <QString>
@@ -38,9 +38,9 @@ public:
 		void Clean();
 
 private:
-#ifdef Q_OS_WIN
+#if defined(Q_WS_WIN)
 		HANDLE m_hFile;
-#endif //Q_OS_WIN
+#endif //Q_WS_WIN32
 
 };
 
