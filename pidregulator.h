@@ -20,18 +20,12 @@ class PIDRegulator : public QFrame
     QPushButton *butSetSpeed;
     QPushButton *butSetPos;
 
-    QSlider *leftMotorPWM;
-    QSlider *rightMotorPWM;
-
-    QPushButton *butSetPWM;
-
 public:
     PIDRegulator(QFrame *parent = 0);
 
 private slots:
     void setSpeed();
     void setPos();
-    void setPWM();
 };
 
 #endif // PIDREGULATOR_H

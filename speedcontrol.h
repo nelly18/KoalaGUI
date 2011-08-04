@@ -12,13 +12,19 @@ class SpeedControl : public QFrame
 
     QDial *leftMotor;
     QDial *rightMotor;
-    QPushButton *bSetSpeed;
+
     QPushButton *bSetTSpeed;
 
     QSlider *leftMaxSpeed;
     QSlider *leftAcc;
     QSlider *rightMaxSpeed;
     QSlider *rightAcc;
+
+    QSlider *leftMotorPWM;
+    QSlider *rightMotorPWM;
+
+    QPushButton *butSetPWM;
+
 public:
     SpeedControl(QWidget *parent = 0);
 protected:
@@ -28,8 +34,10 @@ private:
 signals:
 
 private slots:
-    void setSpeed();
+    void setSpeedLeft(int);
+    void setSpeedRight(int);
     void setTSpeed();
+    void setPWM();
 };
 
 #endif // SPEEDCONTROL_H

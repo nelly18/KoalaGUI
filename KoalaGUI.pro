@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     analoghistogram.cpp \
     speedcontrol.cpp \
     pidregulator.cpp \
-    inputsoutputstab.cpp
+    inputsoutputstab.cpp \
+    console.cpp \
+    batterycharge.cpp
 
 HEADERS  += mainwindow.h \
     SerialGate.h \
@@ -32,7 +34,9 @@ HEADERS  += mainwindow.h \
     analoghistogram.h \
     speedcontrol.h \
     pidregulator.h \
-    inputsoutputstab.h
+    inputsoutputstab.h \
+    console.h \
+    batterycharge.h
 
 FORMS    += mainwindow.ui \
     colorpalettedialog.ui \
@@ -41,5 +45,6 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     Icons.qrc
 
-INCLUDEPATH += /usr/include/qwt6
-LIBS    += -lqwt6
+INCLUDEPATH += C:/qwt-6.0.0/src
+LIBS    += C:/qwt-6.0.0/lib/libqwtd.a
+#LIBS    += -L C:/qwt-6.0.0/lib/ -lqwt

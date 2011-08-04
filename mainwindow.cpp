@@ -9,43 +9,40 @@
 #include <QColor>
 #include <QLayout>
 #include <QSpacerItem>
+#include <QFile>
+#include <QTextStream>
 
 SerialGate sg;
-
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);    
 
-    ui -> teConsole -> installEventFilter(this);
+    consoleTab = new Console(this);
+    connect(consoleTab, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
+    ui->tabWidget->addTab(consoleTab, "Console");
+
+    ui->tabWidget->addTab(new QTextEdit, "Script");
 
     consoleTimer = new QTimer(this);
     connect(consoleTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
 
-    //analogFrame = new AnalogGraph(this);
-
-    QString label("Sensors");
     sensorFrame = new ProximitySensorPainter;
-    ui->tabWidget->addTab(sensorFrame, label);
+    ui->tabWidget->addTab(sensorFrame, "Sensors");
 
-//    QHBoxLayout *analogLayout = new  QHBoxLayout();
-//    const int space = (windowwidth - numberOfAnalogChannels * histwidth)/2;
-//    analogLayout->addSpacerItem(new QSpacerItem(space - 30, 20, QSizePolicy::Fixed, QSizePolicy::Fixed));
-//    analogLayout->addWidget (analogFrame);
-//    analogLayout->addSpacerItem(new QSpacerItem(space + 30, 20, QSizePolicy::Fixed, QSizePolicy::Fixed));
-//    QWidget *analogTab = new QWidget();
-//    analogTab->setLayout(analogLayout);
-
-    label = "I/O signals";
     inOutTab = new InputsOutputsTab;
-    ui->tabWidget->addTab(inOutTab, label);
+    connect(ui->openButton, SIGNAL(clicked()), inOutTab, SLOT(openPortButtonClicked()));
+    ui->tabWidget->addTab(inOutTab, "I/O signals");
 
     speedControlTab = new SpeedControl(this);
     ui->tabWidget->addTab(speedControlTab, "Speed");
 
     PIDTab = new PIDRegulator;
     ui->tabWidget->addTab(PIDTab, "PID");
+
+    BatteryCharge *charge = new BatteryCharge;
+    ui->statusBar->addWidget(charge, 1);
 }
 
 MainWindow::~MainWindow()
@@ -63,16 +60,18 @@ void MainWindow::on_changeTab()
         case console:
             sensorFrame->drawSensorsTimer->stop();
             inOutTab->analogFrame->analogTimer->stop();
-            //analogFrame->analogTimer->stop();
+            inOutTab->manualTimer->stop();
             consoleTimer->start(timeoutconsole);
             break;
 
         case script:
+            sensorFrame->drawSensorsTimer->stop();
+            inOutTab->analogFrame->analogTimer->stop();
+            consoleTimer->stop();
             break;
 
         case proximityS:
             consoleTimer->stop();
-            //analogFrame->analogTimer->stop();
             inOutTab->analogFrame->analogTimer->stop();
             sensorFrame->drawSensorsTimer->start(timeoutdrawsens);
             break;
@@ -80,8 +79,18 @@ void MainWindow::on_changeTab()
         case analogS:
             sensorFrame->drawSensorsTimer->stop();
             consoleTimer->stop();
-            //analogFrame->analogTimer->start(timeoutanalog);
             inOutTab->analogFrame->analogTimer->start(timeoutanalog);
+            break;
+        case speed:
+            sensorFrame->drawSensorsTimer->stop();
+            inOutTab->analogFrame->analogTimer->stop();
+            consoleTimer->stop();
+            break;
+        case PID:
+            sensorFrame->drawSensorsTimer->stop();
+            inOutTab->analogFrame->analogTimer->stop();
+            consoleTimer->stop();
+            break;
     }
 
 }
@@ -89,21 +98,26 @@ void MainWindow::on_changeTab()
 void MainWindow::on_openButton_clicked()
 {
     int port = ui-> cbPort ->currentIndex() + 1;
-    ui -> teConsole -> setTextColor(QColor(0, 153, 0));
+
     QString message = "";
     if (sg.state)
     {
-        sensorFrame->drawSensorsTimer->stop();
-        consoleTimer->stop();
-        //analogFrame->analogTimer->stop();
-        inOutTab->analogFrame->analogTimer->stop();
+        sensorFrame -> drawSensorsTimer -> stop();
+        consoleTimer -> stop();
+        inOutTab -> analogFrame->analogTimer->stop();
 
         sg.Close();
 
         ui -> openButton -> setText("Open port");   
-        message = QString("Serial port COM%1 closed\n").arg(port);
-        ui -> teConsole -> insertPlainText(message);
+        message = QString("Serial port COM%1 closed").arg(port);
+        consoleTab->output(message);
+        consoleTab->isLocked = true;
 
+        for(int i = 0; i < numberOfProximitySensors; i++)
+        {
+            sensorFrame->sensors.at(i)->setColor(QColor(220, 220, 220));
+        }
+        sensorFrame->update();
         return;
     }
 
@@ -112,12 +126,13 @@ void MainWindow::on_openButton_clicked()
 
     if (sg.Open(port, speed))
     {
-        message = QString("Serial port COM%1 opened\n").arg(port);
+        message = QString("Serial port COM%1 opened").arg(port);
+        consoleTab->isLocked = false;
         ui -> openButton -> setText("Close port");
-        ui -> teConsole -> setFocus();
+
+        readPIDSettings();
 
         Tabs tab = (Tabs)ui->tabWidget->currentIndex();
-
         switch (tab)
         {
         case console:
@@ -129,7 +144,6 @@ void MainWindow::on_openButton_clicked()
             sensorFrame->drawSensorsTimer->start(timeoutdrawsens);
             break;
         case analogS:
-            //analogFrame->analogTimer->start(timeoutanalog);
             inOutTab->analogFrame->analogTimer->start(timeoutanalog);
             break;
         }
@@ -137,93 +151,28 @@ void MainWindow::on_openButton_clicked()
     }
     else
     {
-        ui -> teConsole -> setTextColor(QColor(200, 0, 0));
-        message = QString("Serial port COM%1 openning error\n").arg(port);
+        message = QString("Serial port COM%1 openning error").arg(port);
+        consoleTab->isLocked = true;
     }
-    ui -> teConsole -> insertPlainText(message);
-    ui -> teConsole -> setTextColor(Qt::black);
+
+    consoleTab->output(message);
+
 }
 
 void MainWindow::TimeOut(void)
 {
     QString buff = "";
 
-    int rcv = sg.Recv(buff);
-        if(rcv > 0)
-        {
-            ui -> teConsole -> setTextColor(QColor(255,0,255));
-            ui -> teConsole -> insertPlainText(buff);
-        }
-      ui -> teConsole -> setTextColor(Qt::black);
+    if(sg.Recv(buff, 256))
+        consoleTab->output(buff);
+
 }
-
-bool MainWindow::eventFilter(QObject *obj, QEvent *event)
-{
-
-    static QVector <QString> commands;
-    static int position = 0;
-    static bool keydown = false;
-    if ((obj == ui -> teConsole) && (event->type() == QEvent::KeyPress))
-    {
-        QKeyEvent *keyEvent = (QKeyEvent*)event;
-        if (keyEvent->key() == Qt::Key_Return)
-        {
-            int count = ui->teConsole->document()->blockCount();
-            QTextBlock tb = ui->teConsole->document() -> findBlockByNumber(count - 1);
-
-            QString qBuf = tb.text();
-
-            sg.Send(QString("%1\n").arg(qBuf));
-
-            if (commands.size())
-            {
-                if (qBuf != commands.first())
-                    commands.prepend(qBuf);
-            }
-            else
-                commands.prepend(qBuf);
-
-            position = 0;
-        }
-        else if ((keyEvent->key() == Qt::Key_Up) && (commands.size()))
-        {
-            QTextCursor cur(ui->teConsole->document());
-            cur.movePosition(QTextCursor::End);
-            cur.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-            cur.removeSelectedText();
-            ui -> teConsole -> setTextColor(Qt::black);
-
-            if (keydown)
-            {
-                position++;
-                keydown = false;
-            }
-            ui->teConsole->insertPlainText(commands[position]);
-            if (position < commands.size() - 1) position++;
-
-            return true;
-        }
-        else if ((keyEvent->key() == Qt::Key_Down) && (commands.size()))
-        {
-            QTextCursor cur(ui->teConsole->document());
-            cur.movePosition(QTextCursor::End);
-            cur.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-            cur.removeSelectedText();
-            ui -> teConsole -> setTextColor(Qt::black);
-
-            if (position > 0) position--;
-            ui->teConsole->insertPlainText(commands[position]);
-            keydown = true;
-
-            return true;
-        }
-    }
-     return false;
- }
 
 void MainWindow::on_actionClearConsole_triggered()
 {
-     ui->teConsole->clear();
+
+     consoleTab->clear();
+     consoleTab->insertPrompt(false);
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -243,4 +192,40 @@ void MainWindow::on_actionColor_palette_triggered()
 void MainWindow::on_actionTimeouts_triggered()
 {
 
+}
+void MainWindow::newCommand(QString command)
+{
+    sg.Send(QString("%1\n").arg(command));
+    consoleTab->insertPrompt();
+}
+
+void MainWindow::readPIDSettings()
+{
+    QFile file("PIDsettings.txt");
+    if (!file.open (QFile::ReadOnly))
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("File opening error");
+        msgBox.exec();
+        return;
+    }
+    QTextStream stream ( &file );
+    QString line, line2;
+    bool flag = true;
+    do
+    {
+         line = stream.readLine();
+         if (line.contains(":"))
+         {
+             line2 = line.section(":", 1);
+             if (flag)
+             {
+                 sg.Send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                 flag = false;
+             }
+             else
+                 sg.Send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+         }
+    } while (!line.isNull());
 }

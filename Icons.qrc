@@ -13,5 +13,6 @@
         <file>res/white.PNG</file>
         <file>res/koalaSkeleton.PNG</file>
         <file>res/PID.png</file>
+        <file>res/speed.PNG</file>
     </qresource>
 </RCC>

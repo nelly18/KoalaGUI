@@ -4,9 +4,9 @@
 //const int numberOfAnalogChannels = 2;
 const int numberOfProximitySensors = 16;
 const int sensorradius = 10;
-const int timeoutdrawsens = 200;
+const int timeoutdrawsens = 60;
 const int timeoutconsole = 200;
-const int timeoutanalog = 5000;
+const int timeoutanalog = 30;
 const double colorparam = 0.498046875;
 const double colorparam2 = 0.2490234375;
 const int windowwidth = 500;

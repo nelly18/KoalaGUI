@@ -11,6 +11,8 @@
 #include "speedcontrol.h"
 #include "pidregulator.h"
 #include "inputsoutputstab.h"
+#include "console.h"
+#include "batterycharge.h"
 
 class ProximitySensorPainter;
 namespace Ui {
@@ -29,23 +31,24 @@ public:
     ~MainWindow();
 
 protected:
+    Console *consoleTab;
     QTimer *consoleTimer;
     ProximitySensorPainter *sensorFrame;
-    //AnalogGraph *analogFrame;
     SpeedControl *speedControlTab;
     PIDRegulator *PIDTab;
     InputsOutputsTab *inOutTab;
 
-    bool eventFilter(QObject *obj, QEvent *event);
+   // bool eventFilter(QObject *obj, QEvent *event);
 
 private:
+    void readPIDSettings();
     Ui::MainWindow *ui;
     ColorPaletteDialog colorDialog;
 private slots:
     void on_openButton_clicked();
     void on_changeTab();
     void TimeOut(void);
-
+    void newCommand(QString);
     void on_actionClearConsole_triggered();
 
     void on_actionQuit_triggered();

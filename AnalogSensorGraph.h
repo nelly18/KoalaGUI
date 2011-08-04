@@ -22,11 +22,15 @@ class AnalogGraph: public QwtPlot
     int numberOfAnalogChannels;
 public:
     AnalogGraph(QWidget * = NULL);
+    ~AnalogGraph();
+
     QTimer *analogTimer;
     int getAnalogValues();
     void setAnalogChannels(int channel, int value);
-    void setnumberOfAnalogChannels(int);
-    ~AnalogGraph();
+
+    void setNumberOfAnalogChannels(int);
+    int getNumberOfAnalogChannels();
+
 private:
     void populate();
     QVector <double> analogChannels;

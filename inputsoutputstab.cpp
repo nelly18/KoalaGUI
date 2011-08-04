@@ -2,94 +2,146 @@
 #include <QLabel>
 #include <QLayout>
 #include <QGroupBox>
+#include <QMessageBox>
 
+#include "AnalogSensorGraph.h"
+
+extern SerialGate sg;
 
 InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QWidget(parent)
 {
     analogFrame = new AnalogGraph(this);
-    //analogFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+    manualTimer = new QTimer(this);
+    connect(manualTimer, SIGNAL(timeout()), this, SLOT(manualTimeOut()));
 
-    QLabel *lab_numAnInputs = new QLabel("Number of analog inputs", this);
-
-    sb_numAnalogInputs = new QSpinBox;
-    //sb_numAnalogInputs->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    connect(sb_numAnalogInputs, SIGNAL(valueChanged(int)), this, SLOT(changeNumberOfAnalogInputs(int)));
-
-    sb_numAnalogInputs->setMinimum(2);
-    sb_numAnalogInputs->setMaximum(numberOfDigitalInputs);
-
-    QGroupBox *group_digitalInputs = new QGroupBox("Digital inputs");
     QHBoxLayout *lay_digitalInputs = new QHBoxLayout;
     for (int i = 0; i < numberOfDigitalInputs; i++)
     {
-        Sensor *s = new Sensor(i, QPoint(i*20 + 10, 20), sensorradius, group_digitalInputs);
+        Sensor *s = new Sensor(i);
         digitalInputs << s;
         lay_digitalInputs->addWidget(digitalInputs.at(i));
+        if (i != numberOfDigitalInputs - 1)
+            lay_digitalInputs->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::Fixed, QSizePolicy::Fixed));
     }
-    //group_digitalInputs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+    QGroupBox *group_digitalInputs = new QGroupBox("Digital inputs");
     group_digitalInputs->setLayout(lay_digitalInputs);
 
-    for (int i = 0; i < numberOfDigitalOutputs; i++)
+    QGridLayout *grid_outputs = new QGridLayout;
+    QCheckBox *checkBox;
+    const QString name = "Set state of digital output %1";
+    for ( int i = 0 ; i < numberOfDigitalOutputs; ++i)
     {
-        cb_digitalOutput << new QComboBox;
-        cb_digitalOutput.at(i)->addItem("PWM");
-        cb_digitalOutput.at(i)->addItem("Digital");
-
-        chb_digitalOutput << new QCheckBox(QString("Digital output %1").arg(i + 1));
+        checkBox = new QCheckBox ( name.arg(i + 1 ));
+        checkBox->setEnabled(false);
+        connect( checkBox, SIGNAL (stateChanged( int )), this , SLOT (digitalOutputStateChanged( int )));
+        chb_digitalOutput.push_back (checkBox);
+        grid_outputs->addWidget(chb_digitalOutput.at(i), i, 0, Qt::AlignLeft);
     }
 
-    QGridLayout *grid_outputs = new QGridLayout;
-
-    for (int i = 0; i < numberOfDigitalOutputs; i++)
-        {
-            grid_outputs->addWidget(cb_digitalOutput.at(i), i, 0);
-            grid_outputs->addWidget(chb_digitalOutput.at(i), i, 1);
-        }
-
     QGroupBox *group_digitalOutputs = new QGroupBox("Digital outputs");
-    //group_digitalOutputs->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     group_digitalOutputs->setLayout(grid_outputs);
 
+    for (int i = 0; i < analogFrame->getNumberOfAnalogChannels(); i ++)
+    {
+        QLineEdit *le = new QLineEdit("100");
+        le_maxSpeed << le;
+        QLineEdit *le2 = new QLineEdit("0");
+        le_shift << le2;
+    }
+
+    QGridLayout *grid_manualControl = new QGridLayout;
+    grid_manualControl->addWidget(new QLabel("Number of analog input:"), 0, 0);
+    grid_manualControl->addWidget(new QLabel("Set maximum speed"), 1, 0);
+    grid_manualControl->addWidget(new QLabel("Set shift"), 2, 0);
+    QVector <QString> numbers;
+    numbers << QString("1st") << QString("2d") << QString("3d") << QString("4th") << QString("5th") << QString("6th");
+    for (int i = 0; i < analogFrame->getNumberOfAnalogChannels(); i ++)
+    {
+        grid_manualControl->addWidget(new QLabel(numbers.at(i)), 0, i + 1, Qt::AlignHCenter|Qt::AlignVCenter);
+        grid_manualControl->addWidget(le_maxSpeed.at(i), 1, i + 1, Qt::AlignVCenter);
+        grid_manualControl->addWidget(le_shift.at(i), 2, i + 1, Qt::AlignVCenter);
+    }
+
+    pb_start = new QPushButton("Start", this);
+    connect(pb_start, SIGNAL(clicked()), this, SLOT(startManualControl()));
+    pb_start->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    grid_manualControl->addWidget(pb_start, 3, 0, 1, analogFrame->getNumberOfAnalogChannels()+ 1, Qt::AlignHCenter|Qt::AlignBottom);
+
+    QGroupBox *group_manual = new QGroupBox("Manual control");
+    group_manual->setLayout(grid_manualControl);
+
+
     QGridLayout *grid = new QGridLayout(this);
-    //grid->setHorizontalSpacing(50);
-    grid->setColumnMinimumWidth(1, 125);
-    grid->addWidget(analogFrame, 0, 0, 2, 2);
-    grid->addWidget(lab_numAnInputs, 1, 0, Qt::AlignBottom);
-    grid->addWidget(sb_numAnalogInputs, 1, 1, Qt::AlignBottom);
-    grid->addWidget(group_digitalInputs, 0, 2);
-    grid->addWidget(group_digitalOutputs, 1, 2);
+    grid->addWidget(analogFrame, 0, 0, 3, 2);
+    grid->addWidget(group_digitalInputs, 2, 2);
+    grid->addWidget(group_digitalOutputs, 0, 2);
+    grid->addWidget(group_manual, 1, 2);
 
     setLayout(grid);
 }
 
-void InputsOutputsTab::changeNumberOfAnalogInputs(int i)
+void InputsOutputsTab::startManualControl()
 {
-    analogFrame->setnumberOfAnalogChannels(i);
-    analogFrame->replot();
+    if (!sg.state)
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("Open serial port first");
+        msgBox.exec();
+        return;
+    }
+
+    static bool manual = false;
+    if (manual)
+    {
+        manual = false;
+        pb_start->setText("Start");
+        manualTimer->stop();
+        sg.Send("D,0,0\n");
+    }
+    else
+    {
+        manual = true;
+        pb_start->setText("Stop");
+        sg.Send("D,0,0\n");
+        manualTimer->start(60);
+    }
 }
 
-//void InputsOutputsTab::paintEvent(QPaintEvent *)
-//{
-//    QPainter painter(this);
-//    painter.setRenderHint(QPainter::Antialiasing);
+void InputsOutputsTab::manualTimeOut()
+{
+    sg.Send(QString("I,1\n"));
+    QString buff = "";
+    const int numBytesToRead = 4;
+    sg.Recv(buff, numBytesToRead);
+    int speedLeft = le_shift.at(0)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * le_maxSpeed.at(0)->text().toInt();
 
-//    QPen pen(Qt::NoPen);
-//    painter.setPen(pen);
-//    QBrush brush(Qt::SolidPattern);
+    sg.Send(QString("I,0\n"));
+    buff = "";
+    sg.Recv(buff, numBytesToRead);
+    int speedRight = le_shift.at(1)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * le_maxSpeed.at(1)->text().toInt();
 
-//    int r;
-//    QPoint c;
-//    QColor col;
+    sg.Send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
+}
 
-//    for(int i = 0; i < numberOfDigitalInputs; i++)
-//    {
-//        c = digitalInputs.at(i)->getCenter();
-//        r = digitalInputs.at(i)->getRadii();
-//        col = digitalInputs.at(i)->getColor();
+void InputsOutputsTab::digitalOutputStateChanged(int state)
+{
+    QCheckBox *box = qobject_cast <QCheckBox*> (sender ());
+    int text = box->text().right(1).toInt() - 1;
 
-//        brush.setColor(col);
-//        painter.setBrush(brush);
-//        painter.drawEllipse(c, r, r);
-//    }
-//}
+    if (state)
+        sg.Send(QString("Q,%1,1\n").arg(text));
+     else
+        sg.Send(QString("Q,%1,0\n").arg(text));
+}
+
+void InputsOutputsTab::openPortButtonClicked()
+{
+    if (sg.state)
+        for (int i = 0; i < numberOfDigitalOutputs; i++ )
+            chb_digitalOutput.at(i)->setEnabled(true);
+    else
+        for (int i = 0; i < numberOfDigitalOutputs; i++ )
+            chb_digitalOutput.at(i)->setEnabled(false);
+}
