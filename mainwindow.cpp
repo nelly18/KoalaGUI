@@ -17,7 +17,7 @@ SerialGate sg;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
 
     consoleTab = new Console(this);
     connect(consoleTab, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
@@ -97,9 +97,9 @@ void MainWindow::on_changeTab()
 
 void MainWindow::on_openButton_clicked()
 {
-    int port = ui-> cbPort ->currentIndex() + 1;
+    const int port = ui-> cbPort ->currentIndex() + 1;
 
-    QString message = "";
+    QString message;
     if (sg.state)
     {
         sensorFrame -> drawSensorsTimer -> stop();
@@ -108,12 +108,12 @@ void MainWindow::on_openButton_clicked()
 
         sg.Close();
 
-        ui -> openButton -> setText("Open port");   
+        ui -> openButton -> setText("Open port");
         message = QString("Serial port COM%1 closed").arg(port);
         consoleTab->output(message);
         consoleTab->isLocked = true;
 
-        for(int i = 0; i < numberOfProximitySensors; i++)
+        for(int i = 0; i < numberOfProximitySensors; ++i)
         {
             sensorFrame->sensors.at(i)->setColor(QColor(220, 220, 220));
         }
@@ -121,8 +121,8 @@ void MainWindow::on_openButton_clicked()
         return;
     }
 
-    QString qsSpeed = ui -> cbSpeed -> currentText();
-    int speed = qsSpeed.section(":", 1).toInt();
+    const QString qsSpeed = ui -> cbSpeed -> currentText();
+    const int speed = qsSpeed.section(":", 1).toInt();
 
     if (sg.Open(port, speed))
     {
@@ -132,8 +132,7 @@ void MainWindow::on_openButton_clicked()
 
         readPIDSettings();
 
-        Tabs tab = (Tabs)ui->tabWidget->currentIndex();
-        switch (tab)
+        switch (ui->tabWidget->currentIndex())
         {
         case console:
             consoleTimer-> start(timeoutconsole);
@@ -161,7 +160,7 @@ void MainWindow::on_openButton_clicked()
 
 void MainWindow::TimeOut(void)
 {
-    QString buff = "";
+    QString buff;
 
     if(sg.Recv(buff, 256))
         consoleTab->output(buff);
@@ -204,10 +203,7 @@ void MainWindow::readPIDSettings()
     QFile file("PIDsettings.txt");
     if (!file.open (QFile::ReadOnly))
     {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("File opening error");
-        msgBox.exec();
+        QMessageBox::information (this, "", "File opening error");
         return;
     }
     QTextStream stream ( &file );
