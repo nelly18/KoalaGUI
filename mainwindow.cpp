@@ -28,10 +28,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     consoleTimer = new QTimer(this);
     connect(consoleTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
 
-    sensorFrame = new ProximitySensorPainter;
+    sensorFrame = new ProximitySensorPainter(this);
     ui->tabWidget->addTab(sensorFrame, "Sensors");
 
-    inOutTab = new InputsOutputsTab;
+    inOutTab = new InputsOutputsTab(this);
     connect(ui->openButton, SIGNAL(clicked()), inOutTab, SLOT(openPortButtonClicked()));
     ui->tabWidget->addTab(inOutTab, "I/O signals");
 
@@ -41,8 +41,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     PIDTab = new PIDRegulator;
     ui->tabWidget->addTab(PIDTab, "PID");
 
-    BatteryCharge *charge = new BatteryCharge;
-    ui->statusBar->addWidget(charge, 1);
+    statusBarWidget = new StatusBarWidget(this);
+    ui->statusBar->addWidget(statusBarWidget, 1);
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +105,7 @@ void MainWindow::on_openButton_clicked()
         sensorFrame -> drawSensorsTimer -> stop();
         consoleTimer -> stop();
         inOutTab -> analogFrame->analogTimer->stop();
+        statusBarWidget->charge->batteryChargeTimer->stop();
 
         sg.Close();
 
@@ -113,11 +114,8 @@ void MainWindow::on_openButton_clicked()
         consoleTab->output(message);
         consoleTab->isLocked = true;
 
-        for(int i = 0; i < numberOfProximitySensors; ++i)
-        {
-            sensorFrame->sensors.at(i)->setColor(QColor(220, 220, 220));
-        }
-        sensorFrame->update();
+        sensorFrame->resetSensorsColor();
+
         return;
     }
 
@@ -132,10 +130,12 @@ void MainWindow::on_openButton_clicked()
 
         readPIDSettings();
 
+        statusBarWidget->charge->batteryChargeTimer->start(3000);
+
         switch (ui->tabWidget->currentIndex())
         {
         case console:
-            consoleTimer-> start(timeoutconsole);
+            //consoleTimer-> start(timeoutconsole);
             break;
         case script:
             break;
@@ -203,7 +203,7 @@ void MainWindow::readPIDSettings()
     QFile file("PIDsettings.txt");
     if (!file.open (QFile::ReadOnly))
     {
-        QMessageBox::information (this, "", "File opening error");
+        QMessageBox::information (this, "", "PID settings file opening error");
         return;
     }
     QTextStream stream ( &file );

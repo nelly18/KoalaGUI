@@ -84,8 +84,8 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     rightMaxSpeed->setTickInterval(20);
     rightAcc->setTickInterval(20);
 
-//    QLabel *pic = new QLabel(this);
-//    pic->setPixmap(QPixmap(":/res/speed.PNG"));
+    //QLabel *pic = new QLabel(this);
+    //pic->setPixmap(QPixmap(":/res/speed.PNG"));
 
     QGridLayout *tSpeed = new QGridLayout();
     tSpeed->addWidget(new QLabel("Max speed left (-100 - 100)"), 0, 0);
@@ -101,7 +101,7 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     bSetTSpeed  = new QPushButton("Set speed");
     bSetTSpeed->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     connect(bSetTSpeed, SIGNAL(clicked()), this, SLOT(setTSpeed()));
-    tSpeed->addWidget(bSetTSpeed, 4, 0, 1, 2, Qt::AlignBottom|Qt::AlignHCenter);
+    tSpeed->addWidget(bSetTSpeed, 4, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *tSpeedBox = new QGroupBox("Trapezoidal speed shape");
     tSpeedBox->setLayout(tSpeed);
@@ -133,10 +133,10 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     gridPWM->addWidget(l_rightMotor, 1, 0);
     gridPWM->addWidget(leftMotorPWM, 0, 1);
     gridPWM->addWidget(rightMotorPWM, 1, 1);
-    gridPWM->addWidget(butSetPWM, 2, 0, 1, 2, Qt::AlignBottom|Qt::AlignHCenter);
+    gridPWM->addWidget(butSetPWM, 2, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupPWM = new QGroupBox("PWM configuration");
-    //groupPWM->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    //groupPWM->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
     groupPWM->setLayout(gridPWM);
 
     QGridLayout *layout = new QGridLayout;

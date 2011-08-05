@@ -1,6 +1,7 @@
 #include "AnalogSensorGraph.h"
-extern SerialGate sg;
 #include <QDebug>
+
+extern SerialGate sg;
 
 AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
 {

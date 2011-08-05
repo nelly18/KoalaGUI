@@ -22,7 +22,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
         digitalInputs << s;
         lay_digitalInputs->addWidget(digitalInputs.at(i));
         if (i != numberOfDigitalInputs - 1)
-            lay_digitalInputs->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::Fixed, QSizePolicy::Fixed));
+            lay_digitalInputs->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
     }
     QGroupBox *group_digitalInputs = new QGroupBox("Digital inputs");
     group_digitalInputs->setLayout(lay_digitalInputs);

@@ -12,7 +12,7 @@
 #include "pidregulator.h"
 #include "inputsoutputstab.h"
 #include "console.h"
-#include "batterycharge.h"
+#include "statusbarwidget.h"
 
 class ProximitySensorPainter;
 namespace Ui {
@@ -37,6 +37,7 @@ protected:
     SpeedControl *speedControlTab;
     PIDRegulator *PIDTab;
     InputsOutputsTab *inOutTab;
+    StatusBarWidget *statusBarWidget;
 
    // bool eventFilter(QObject *obj, QEvent *event);
 

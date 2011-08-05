@@ -40,8 +40,7 @@ protected:
 
 
 private Q_SLOTS:
-    //void showItem(QwtPlotItem *, bool on);
-    // void TimeOut(void);
+
 private slots:
     void analogTimeOut();
 

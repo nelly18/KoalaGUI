@@ -1,12 +1,11 @@
 #ifndef SERIALGATE_H
 #define SERIALGATE_H
-
+#include <QString>
 #ifdef Q_WS_WIN
 #include <qt_windows.h>
 #endif //Q_WS_WIN
 
 #define MAX_WIN_PORT 255
-#include <QString>
 #include "defines.h"
 
 struct Port

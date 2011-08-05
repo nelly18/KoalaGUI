@@ -36,10 +36,9 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
     gridSpeed->addWidget(speedProp, 0, 1);
     gridSpeed->addWidget(speedInt, 1, 1);
     gridSpeed->addWidget(speedDiff, 2, 1);
-    gridSpeed->addWidget(butSetSpeed, 3, 0, 1, 2, Qt::AlignBottom|Qt::AlignHCenter);
+    gridSpeed->addWidget(butSetSpeed, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupSpeed = new QGroupBox("PID speed controller configuration");
-    //groupSpeed->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     groupSpeed->setLayout(gridSpeed);
 
     QLabel *l_posProp = new QLabel("Proportional");
@@ -65,10 +64,9 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
     gridPos->addWidget(posProp, 0, 1);
     gridPos->addWidget(posInt, 1, 1);
     gridPos->addWidget(posDiff, 2, 1);
-    gridPos->addWidget(butSetPos, 3, 0, 1, 2, Qt::AlignBottom|Qt::AlignHCenter);
+    gridPos->addWidget(butSetPos, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupPos = new QGroupBox("Position PID controller configuration");
-    //groupPos->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     groupPos->setLayout(gridPos);
 
     QGridLayout *grid = new QGridLayout;

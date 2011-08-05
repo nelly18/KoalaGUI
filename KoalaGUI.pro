@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     pidregulator.cpp \
     inputsoutputstab.cpp \
     console.cpp \
-    batterycharge.cpp
+    batterycharge.cpp \
+    statusbarwidget.cpp
 
 HEADERS  += mainwindow.h \
     SerialGate.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     pidregulator.h \
     inputsoutputstab.h \
     console.h \
-    batterycharge.h
+    batterycharge.h \
+    statusbarwidget.h
 
 FORMS    += mainwindow.ui \
     colorpalettedialog.ui \

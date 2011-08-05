@@ -96,15 +96,15 @@ void ProximitySensorPainter::TimeOut()
 
     for(int i = 0; i < numberOfProximitySensors; i++)
     {
-        sensors[i]->evaluateColor(colorPalette);
+        sensors.at(i)->evaluateColor(colorPalette);
     }
     for (int i = 0, k = 0; i < 2; i++)
     {
         for (int j = 0; j < numberOfProximitySensors / 2; j++, k++)
         {
             QTableWidgetItem *item = table->item(j, i);
-            item->setText(QString("%1").arg(sensors[k]->getSensorValue()));
-            sensors[k]->update();
+            item->setText(QString("%1").arg(sensors.at(k)->getSensorValue()));
+            sensors.at(k)->update();
         }
     }
     //update();
@@ -113,4 +113,13 @@ void ProximitySensorPainter::TimeOut()
 void ProximitySensorPainter::setColorPalette(int palette)
 {
     colorPalette = palette;
+}
+
+void ProximitySensorPainter::resetSensorsColor()
+{
+    for(int i = 0; i < numberOfProximitySensors; ++i)
+    {
+        sensors.at(i)->setColor(QColor(220, 220, 220));
+    }
+    update();
 }

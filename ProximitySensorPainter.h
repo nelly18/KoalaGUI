@@ -22,7 +22,7 @@ public:
     QVector <Sensor *> sensors;
     QTimer *drawSensorsTimer;
     void setColorPalette(int palette);
-
+    void resetSensorsColor();
 private slots:
 
     void TimeOut(void);
