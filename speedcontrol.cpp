@@ -75,6 +75,11 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     leftMaxSpeed->setRange(-100, 100);
     rightMaxSpeed->setRange(-100, 100);
 
+    leftMaxSpeed->setValue(20);
+    rightMaxSpeed->setValue(20);
+    leftAcc->setValue(64);
+    rightAcc->setValue(64);
+
     leftMaxSpeed->setTickPosition(QSlider::TicksAbove);
     leftAcc->setTickPosition(QSlider::TicksAbove);
     rightMaxSpeed->setTickPosition(QSlider::TicksAbove);

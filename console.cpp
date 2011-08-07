@@ -14,6 +14,7 @@ QPlainTextEdit(parent)
 
     history = new QStringList;
     historyPos = 0;
+    isLocked = true;
 }
 
 void Console::keyPressEvent(QKeyEvent *event)

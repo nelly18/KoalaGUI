@@ -11,6 +11,7 @@
 #include <QSpacerItem>
 #include <QFile>
 #include <QTextStream>
+#include <QThread>
 
 SerialGate sg;
 
@@ -23,7 +24,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(consoleTab, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
     ui->tabWidget->addTab(consoleTab, "Console");
 
-    ui->tabWidget->addTab(new QTextEdit, "Script");
+    scriptTab = new ScriptTab;
+    ui->tabWidget->addTab(scriptTab, "Script");
+//    QThread scriptThread;
+//    scriptTab->moveToThread(&scriptThread);
+//    scriptThread.start();
 
     consoleTimer = new QTimer(this);
     connect(consoleTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
@@ -42,7 +47,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tabWidget->addTab(PIDTab, "PID");
 
     statusBarWidget = new StatusBarWidget(this);
-    ui->statusBar->addWidget(statusBarWidget, 1);
+    //ui->statusBar->addWidget(statusBarWidget, 1);
+    setStatusBar(statusBarWidget);
 }
 
 MainWindow::~MainWindow()

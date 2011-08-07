@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #define _CRT_NON_CONFORMING_SWPRINTFS
+
 #include <QMainWindow>
-#include "colorpalettedialog.h"
-#include "defines.h"
 #include <QFrame>
 #include <QWidget>
+
+#include "colorpalettedialog.h"
+#include "defines.h"
 #include "ProximitySensorPainter.h"
 #include "AnalogSensorGraph.h"
 #include "speedcontrol.h"
@@ -13,6 +15,7 @@
 #include "inputsoutputstab.h"
 #include "console.h"
 #include "statusbarwidget.h"
+#include "scripttab.h"
 
 class ProximitySensorPainter;
 namespace Ui {
@@ -38,7 +41,7 @@ protected:
     PIDRegulator *PIDTab;
     InputsOutputsTab *inOutTab;
     StatusBarWidget *statusBarWidget;
-
+    ScriptTab *scriptTab;
    // bool eventFilter(QObject *obj, QEvent *event);
 
 private:

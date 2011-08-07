@@ -1,4 +1,3 @@
-
 #include <QtGui>
 #include "ProximitySensorPainter.h"
 #include <QScrollArea>
@@ -8,6 +7,7 @@
 #include <QLayout>
 
 extern SerialGate sg;
+
 ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
 {
     drawSensorsTimer = new QTimer(this);

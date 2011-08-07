@@ -309,7 +309,6 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="actionQuit"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionClearConsole">
    <property name="checkable">
     <bool>true</bool>

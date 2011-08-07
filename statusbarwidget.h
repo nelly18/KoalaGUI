@@ -3,9 +3,10 @@
 
 #include <QFrame>
 #include <QLabel>
+#include <QStatusBar>
 #include "batterycharge.h"
 
-class StatusBarWidget : public QFrame
+class StatusBarWidget : public QStatusBar//QFrame
 {
     Q_OBJECT
 

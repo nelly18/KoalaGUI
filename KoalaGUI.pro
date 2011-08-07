@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     inputsoutputstab.cpp \
     console.cpp \
     batterycharge.cpp \
-    statusbarwidget.cpp
+    statusbarwidget.cpp \
+    script.cpp \
+    scripttab.cpp
 
 HEADERS  += mainwindow.h \
     SerialGate.h \
@@ -38,7 +40,9 @@ HEADERS  += mainwindow.h \
     inputsoutputstab.h \
     console.h \
     batterycharge.h \
-    statusbarwidget.h
+    statusbarwidget.h \
+    script.h \
+    scripttab.h
 
 FORMS    += mainwindow.ui \
     colorpalettedialog.ui \
@@ -57,3 +61,5 @@ unix: {
 INCLUDEPATH += /usr/include/qwt6
 LIBS    += -lqwt6
 }
+
+QT += script
