@@ -16,7 +16,7 @@ extern SerialGate sg;
 ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
 {
     drawSensorsTimer = new QTimer(this);
-    connect(drawSensorsTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
+    connect(drawSensorsTimer, SIGNAL(timeout()), this, SLOT(proximitySensorTimeOut()));
 
     QVector <QPoint> points;
     points << QPoint(117, 7) << QPoint(87, 10) << QPoint(56, 18) << QPoint(30, 37)<<
@@ -74,13 +74,13 @@ ProximitySensorPainter::~ProximitySensorPainter()
     //delete drawSensorsTimer;
 }
 
-int ProximitySensorPainter::getSensorsValues()
+int ProximitySensorPainter::loadSensorsValues()
 {
-    sg.Send("N\n");
+    sg.send("N\n");
 
     QString buff = "";
     const int numBytesToRead = 256;
-    sg.Recv(buff, numBytesToRead);
+    sg.recv(buff, numBytesToRead);
 
     int num; QString sNum;
     for(int i = 0; i < numberOfProximitySensors; i++)
@@ -93,11 +93,11 @@ int ProximitySensorPainter::getSensorsValues()
 return 1;
 }
 
-void ProximitySensorPainter::TimeOut()
+void ProximitySensorPainter::proximitySensorTimeOut()
 {
     if (!sg.state) return;
 
-    if (!getSensorsValues()) return;
+    if (!loadSensorsValues()) return;
 
     for(int i = 0; i < numberOfProximitySensors; i++)
     {
@@ -108,7 +108,7 @@ void ProximitySensorPainter::TimeOut()
         for (int j = 0; j < numberOfProximitySensors / 2; j++, k++)
         {
             QTableWidgetItem *item = table->item(j, i);
-            item->setText(QString("%1").arg(sensors.at(k)->getSensorValue()));
+            item->setText(QString("%1").arg(sensors.at(k)->sensorValue()));
             sensors.at(k)->update();
         }
     }

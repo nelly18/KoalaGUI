@@ -12,39 +12,34 @@
 #define MAX_WIN_PORT 255
 
 
-struct Port
-{
-        unsigned char Id;
-        bool Availbl;
+struct Port{
+   unsigned char Id;
+   bool Availbl;
 };
 
 
 class SerialGate
 {
 public:
-
-        enum IN_LINES_NAME {CTS, DSR, RING, RLSD};
-        enum OUT_LINES_NAME {DTR, RTS};
-
-        SerialGate();
-        ~SerialGate();
-
-        bool state;
-        bool Open(const int port, const int baud);
-        int Send(const char* buff, const int szBuff);
-        int Send(const QString &str);
-        int Recv(char* buff, int numBytesToRead);
-        int Recv(QString &str, int numBytesToRead);
-        void SetLine(OUT_LINES_NAME ln, bool state);
-        bool GetLine(IN_LINES_NAME ln);
-        void Close();
-        void Clean();
-
+    enum IN_LINES_NAME {CTS, DSR, RING, RLSD};
+    enum OUT_LINES_NAME {DTR, RTS};
+public:
+    SerialGate();
+    ~SerialGate();
+    bool state;
+    bool open(const int port, const int baud);
+    int send(const char* buff, const int szBuff);
+    int send(const QString &str);
+    int recv(char* buff, int numBytesToRead);
+    int recv(QString &str, int numBytesToRead);
+    void setLine(OUT_LINES_NAME ln, bool state);
+    bool line(IN_LINES_NAME ln);
+    void close();
+    void clean();
 private:
 #ifdef Q_WS_WIN
         HANDLE m_hFile;
 #endif //Q_WS_WIN
-
 };
 
 #endif // SERIALGATE_H

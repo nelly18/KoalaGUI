@@ -7,7 +7,7 @@
 #include "serialgate.h"
 
 
-bool SerialGate::Open(int port, int baud)
+bool SerialGate::open(int port, int baud)
 {
 #ifdef Q_WS_WIN
     wchar_t COM_string[20];
@@ -56,10 +56,10 @@ SerialGate::SerialGate()
 
 SerialGate::~SerialGate()
 {
-    this->Close();
+    this->close();
 }
 
-void SerialGate::Close()
+void SerialGate::close()
 {
 #ifdef Q_WS_WIN
     if (this->state)
@@ -68,7 +68,7 @@ void SerialGate::Close()
 #endif //Q_WS_WIN32
 }
 
-void SerialGate::Clean()
+void SerialGate::clean()
 {
 #ifdef Q_WS_WIN
     if(!state)
@@ -79,7 +79,7 @@ void SerialGate::Clean()
 }
 
 
-int SerialGate::Send(const char* buff, const int szBuff)
+int SerialGate::send(const char* buff, const int szBuff)
 {
 #ifdef Q_WS_WIN
     if(!state)
@@ -95,7 +95,7 @@ int SerialGate::Send(const char* buff, const int szBuff)
 #endif //Q_WS_WIN32
 }
 
-int SerialGate::Recv(char* buff, int numBytesToRead)
+int SerialGate::recv(char* buff, int numBytesToRead)
 {
 #ifdef Q_WS_WIN
     if(!state)
@@ -110,7 +110,7 @@ int SerialGate::Recv(char* buff, int numBytesToRead)
 #endif //Q_WS_WIN32
 }
 
-void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
+void SerialGate::setLine(OUT_LINES_NAME ln, bool state)
 {
 #ifdef Q_WS_WIN
     if(!state)
@@ -139,7 +139,7 @@ void SerialGate::SetLine(OUT_LINES_NAME ln, bool state)
 #endif //Q_WS_WIN32
 }
 
-bool SerialGate::GetLine(IN_LINES_NAME ln)
+bool SerialGate::line(IN_LINES_NAME ln)
 {
 #ifdef Q_WS_WIN
     if(!state)
@@ -172,10 +172,10 @@ bool SerialGate::GetLine(IN_LINES_NAME ln)
     return false;
 }
 
-int SerialGate::Recv(QString &str, int numBytesToRead)
+int SerialGate::recv(QString &str, int numBytesToRead)
 {
     char s[buffer_size];
-    int rcv = Recv(s, numBytesToRead);
+    int rcv = recv(s, numBytesToRead);
 
     if (rcv > 0){
         for (int i = 0; i < rcv; i++)
@@ -184,7 +184,7 @@ int SerialGate::Recv(QString &str, int numBytesToRead)
     return rcv;
 }
 
-int SerialGate::Send(const QString &str)
+int SerialGate::send(const QString &str)
 {
-    return Send(str.toAscii().data(), str.size ());
+    return send(str.toAscii().data(), str.size ());
 }

@@ -23,20 +23,20 @@ void Script::setSpeed(int leftMotor, int rightMotor)
     speedLeft = leftMotor;
     speedRight = rightMotor;
     minSpeed = qMin(leftMotor, rightMotor);
-    sg.Send(QString("D,%1,%2\n").arg(leftMotor).arg(rightMotor));
+    sg.send(QString("D,%1,%2\n").arg(leftMotor).arg(rightMotor));
     qDebug() << thread();
 }
 
 void Script::stop()
 {
-    sg.Send(QString("D,0,0\n"));
+    sg.send(QString("D,0,0\n"));
 }
 
 void Script::forward(int distance)
 {
     int speed = minSpeed * 3;
     int time = distance * 100 / speed;
-    sg.Send(QString("D,%1,%1\n").arg(minSpeed));
+    sg.send(QString("D,%1,%1\n").arg(minSpeed));
     scriptThread.wait(5000);
 
 }

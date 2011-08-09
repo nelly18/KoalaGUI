@@ -83,7 +83,7 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
 void PIDRegulator::setSpeed()
 {
     if (sg.state)
-        sg.Send(QString("A,%1,%2,%3\n").arg(speedProp->text()).arg(speedInt->text()).arg(speedDiff->text()));
+        sg.send(QString("A,%1,%2,%3\n").arg(speedProp->text()).arg(speedInt->text()).arg(speedDiff->text()));
     else
     {
         QMessageBox msgBox;
@@ -96,7 +96,7 @@ void PIDRegulator::setSpeed()
 void PIDRegulator::setPos()
 {
     if (sg.state)
-        sg.Send(QString("F,%1,%2,%3\n").arg(posProp->text()).arg(posInt->text()).arg(posDiff->text()));
+        sg.send(QString("F,%1,%2,%3\n").arg(posProp->text()).arg(posInt->text()).arg(posDiff->text()));
     else
     {
         QMessageBox msgBox;

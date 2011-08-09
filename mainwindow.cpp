@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    scriptThread.start();
 
     consoleTimer = new QTimer(this);
-    connect(consoleTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
+    connect(consoleTimer, SIGNAL(timeout()), this, SLOT(consoleTimeOut()));
 
     sensorFrame = new ProximitySensorPainter(this);
     ui->tabWidget->addTab(sensorFrame, "Sensors");
@@ -125,7 +125,7 @@ void MainWindow::on_openButton_clicked()
         inOutTab -> analogFrame->analogTimer->stop();
         statusBarWidget->charge->batteryChargeTimer->stop();
 
-        sg.Close();
+        sg.close();
 
         ui -> openButton -> setText("Open port");
         message = QString("Serial port COM%1 closed").arg(port);
@@ -140,7 +140,7 @@ void MainWindow::on_openButton_clicked()
     const QString qsSpeed = ui -> cbSpeed -> currentText();
     const int speed = qsSpeed.section(":", 1).toInt();
 
-    if (sg.Open(port, speed))
+    if (sg.open(port, speed))
     {
         message = QString("Serial port COM%1 opened").arg(port);
         consoleTab->isLocked = false;
@@ -176,11 +176,11 @@ void MainWindow::on_openButton_clicked()
 
 }
 
-void MainWindow::TimeOut(void)
+void MainWindow::consoleTimeOut(void)
 {
     QString buff;
 
-    if(sg.Recv(buff, 256))
+    if(sg.recv(buff, 256))
         consoleTab->output(buff);
 
 }
@@ -202,7 +202,7 @@ void MainWindow::on_actionColor_palette_triggered()
 {
     if (colorDialog.exec() == QDialog::Accepted)
     {
-        sensorFrame->setColorPalette(colorDialog.getPalette());
+        sensorFrame->setColorPalette(colorDialog.palette());
     }
 }
 
@@ -212,7 +212,7 @@ void MainWindow::on_actionTimeouts_triggered()
 }
 void MainWindow::newCommand(QString command)
 {
-    sg.Send(QString("%1\n").arg(command));
+    sg.send(QString("%1\n").arg(command));
     consoleTab->insertPrompt();
 }
 
@@ -235,11 +235,11 @@ void MainWindow::readPIDSettings()
              line2 = line.section(":", 1);
              if (flag)
              {
-                 sg.Send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                 sg.send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
                  flag = false;
              }
              else
-                 sg.Send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                 sg.send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
          }
     } while (!line.isNull());
 }

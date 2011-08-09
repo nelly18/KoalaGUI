@@ -21,10 +21,10 @@ BatteryCharge::BatteryCharge(QWidget *parent):QProgressBar(parent)
 }
 void BatteryCharge::batteryChargeTimerTimeOut()
 {
-    sg.Send(QString("S\n"));
+    sg.send(QString("S\n"));
     QString buff = "";
     const int numBytesToRead = 10;
-    sg.Recv(buff, numBytesToRead);
+    sg.recv(buff, numBytesToRead);
     int batteryLevel = buff.toInt();
 
     const double colorSection = 4.66666666666;

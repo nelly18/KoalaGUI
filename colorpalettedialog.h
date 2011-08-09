@@ -12,11 +12,10 @@ namespace Ui {
 class ColorPaletteDialog : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit ColorPaletteDialog(QWidget *parent = 0);
     ~ColorPaletteDialog();
-    int getPalette();
+    int palette();
 private:
     Ui::ColorPaletteDialog *ui;
 };

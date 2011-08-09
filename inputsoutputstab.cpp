@@ -50,7 +50,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QGroupBox *group_digitalOutputs = new QGroupBox("Digital outputs");
     group_digitalOutputs->setLayout(grid_outputs);
 
-    for (int i = 0; i < analogFrame->getNumberOfAnalogChannels(); i ++)
+    for (int i = 0; i < analogFrame->numberOfAnalogChannels(); i ++)
     {
         QLineEdit *le = new QLineEdit("100");
         le_maxSpeed << le;
@@ -64,7 +64,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     grid_manualControl->addWidget(new QLabel("Set shift"), 2, 0);
     QVector <QString> numbers;
     numbers << QString("1st") << QString("2d") << QString("3d") << QString("4th") << QString("5th") << QString("6th");
-    for (int i = 0; i < analogFrame->getNumberOfAnalogChannels(); i ++)
+    for (int i = 0; i < analogFrame->numberOfAnalogChannels(); i ++)
     {
         grid_manualControl->addWidget(new QLabel(numbers.at(i)), 0, i + 1, Qt::AlignHCenter|Qt::AlignVCenter);
         grid_manualControl->addWidget(le_maxSpeed.at(i), 1, i + 1, Qt::AlignVCenter);
@@ -74,7 +74,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     pb_start = new QPushButton("Start", this);
     connect(pb_start, SIGNAL(clicked()), this, SLOT(startManualControl()));
     pb_start->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    grid_manualControl->addWidget(pb_start, 3, 0, 1, analogFrame->getNumberOfAnalogChannels()+ 1, Qt::AlignHCenter|Qt::AlignBottom);
+    grid_manualControl->addWidget(pb_start, 3, 0, 1, analogFrame->numberOfAnalogChannels()+ 1, Qt::AlignHCenter|Qt::AlignBottom);
 
     QGroupBox *group_manual = new QGroupBox("Manual control");
     group_manual->setLayout(grid_manualControl);
@@ -106,31 +106,31 @@ void InputsOutputsTab::startManualControl()
         manual = false;
         pb_start->setText("Start");
         manualTimer->stop();
-        sg.Send("D,0,0\n");
+        sg.send("D,0,0\n");
     }
     else
     {
         manual = true;
         pb_start->setText("Stop");
-        sg.Send("D,0,0\n");
+        sg.send("D,0,0\n");
         manualTimer->start(60);
     }
 }
 
 void InputsOutputsTab::manualTimeOut()
 {
-    sg.Send(QString("I,1\n"));
+    sg.send(QString("I,1\n"));
     QString buff = "";
     const int numBytesToRead = 4;
-    sg.Recv(buff, numBytesToRead);
+    sg.recv(buff, numBytesToRead);
     int speedLeft = le_shift.at(0)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * le_maxSpeed.at(0)->text().toInt();
 
-    sg.Send(QString("I,0\n"));
+    sg.send(QString("I,0\n"));
     buff = "";
-    sg.Recv(buff, numBytesToRead);
+    sg.recv(buff, numBytesToRead);
     int speedRight = le_shift.at(1)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * le_maxSpeed.at(1)->text().toInt();
 
-    sg.Send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
+    sg.send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
 }
 
 void InputsOutputsTab::digitalOutputStateChanged(int state)
@@ -139,9 +139,9 @@ void InputsOutputsTab::digitalOutputStateChanged(int state)
     int text = box->text().right(1).toInt() - 1;
 
     if (state)
-        sg.Send(QString("Q,%1,1\n").arg(text));
+        sg.send(QString("Q,%1,1\n").arg(text));
      else
-        sg.Send(QString("Q,%1,0\n").arg(text));
+        sg.send(QString("Q,%1,0\n").arg(text));
 }
 
 void InputsOutputsTab::openPortButtonClicked()

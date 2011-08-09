@@ -10,7 +10,6 @@ class QLabel;
 class StatusBarWidget : public QWidget//QStatusBar//QFrame
 {
     Q_OBJECT
-
 public:
     explicit StatusBarWidget(QWidget *parent = 0);
     BatteryCharge *charge;
@@ -20,11 +19,6 @@ private:
     QLabel *consumption;
     QLabel *ambientTemp;
     QLabel *batteryTemp;
-
-signals:
-
-public slots:
-
 };
 
 #endif // STATUSBARWIDGET_H

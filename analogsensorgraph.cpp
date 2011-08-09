@@ -18,8 +18,8 @@ AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
     analogTimer = new QTimer(this);
     connect(analogTimer, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
 
-    numberOfAnalogChannels = 6;
-    analogChannels.resize(numberOfAnalogChannels);
+    numberOfAnalogChannels_ = 6;
+    analogChannels.resize(numberOfAnalogChannels_);
     analogChannels.fill(0);
 
     plotLayout()->setAlignCanvasToScales(true);
@@ -34,11 +34,11 @@ AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
     setAxisTitle(QwtPlot::yLeft, textLeft);
     setAxisTitle(QwtPlot::xBottom, textBottom);
 
-    setAxisScale(QwtPlot::xBottom, 0, numberOfAnalogChannels, 1);
+    setAxisScale(QwtPlot::xBottom, 0, numberOfAnalogChannels_, 1);
     setAxisScale(QwtPlot::yLeft, 0, 1024, 200);
 
     QList<double> ticks[QwtScaleDiv::NTickTypes];
-    for (int i = 0; i <= numberOfAnalogChannels; i++)
+    for (int i = 0; i <= numberOfAnalogChannels_; i++)
         ticks[QwtScaleDiv::MajorTick] << i;
 
     QwtScaleDiv scaleDiv(
@@ -67,7 +67,7 @@ void AnalogGraph::populate()
     grid->attach(this);
 
     analogHistogram = new Histogram("", QColor(80, 180, 220, 150));
-    analogHistogram->setValues(numberOfAnalogChannels, analogChannels);
+    analogHistogram->setValues(numberOfAnalogChannels_, analogChannels);
     analogHistogram->attach(this);
 
 
@@ -75,9 +75,9 @@ void AnalogGraph::populate()
 
 void AnalogGraph::analogTimeOut()
 {
-    if (getAnalogValues())
+    if (loadAnalogValues())
     {
-        analogHistogram->setValues(numberOfAnalogChannels, analogChannels);
+        analogHistogram->setValues(numberOfAnalogChannels_, analogChannels);
         replot();
     }
 }
@@ -87,16 +87,16 @@ void AnalogGraph::setAnalogChannels(int channel, int value)
     analogChannels[channel] = value;
 }
 
-int AnalogGraph::getAnalogValues()
+int AnalogGraph::loadAnalogValues()
 {
     QString buff = "";
     const int numBytesToRead = 256;
     double value = 0.0;
     int bytesReaded = 0;
-    for (int i = 0; i < numberOfAnalogChannels; i++)
+    for (int i = 0; i < numberOfAnalogChannels_; i++)
     {
-        sg.Send(QString("I,%1\n").arg(i));
-        bytesReaded = sg.Recv(buff, numBytesToRead);
+        sg.send(QString("I,%1\n").arg(i));
+        bytesReaded = sg.recv(buff, numBytesToRead);
         qDebug() << bytesReaded;
             value = buff.section(",", 1, 1).toDouble();
             qDebug() << value;
@@ -107,16 +107,12 @@ int AnalogGraph::getAnalogValues()
 return 1;
 }
 
-void AnalogGraph::setNumberOfAnalogChannels(int n)
-{
-    numberOfAnalogChannels = n;
-}
 AnalogGraph::~AnalogGraph()
 {
 
 }
 
-int AnalogGraph::getNumberOfAnalogChannels()
+int AnalogGraph::numberOfAnalogChannels()
 {
-    return numberOfAnalogChannels;
+    return numberOfAnalogChannels_;
 }

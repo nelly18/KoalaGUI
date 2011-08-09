@@ -8,31 +8,21 @@ class Histogram;
 class AnalogGraph: public QwtPlot
 {
     Q_OBJECT
-    int numberOfAnalogChannels;
 public:
     AnalogGraph(QWidget * = NULL);
     ~AnalogGraph();
-
     QTimer *analogTimer;
-    int getAnalogValues();
+    int loadAnalogValues();
     void setAnalogChannels(int channel, int value);
-
-    void setNumberOfAnalogChannels(int);
-    int getNumberOfAnalogChannels();
-
+    int numberOfAnalogChannels();
+public slots:
+    void analogTimeOut();
 private:
     void populate();
+private:
+    int numberOfAnalogChannels_;
     QVector <double> analogChannels;
     Histogram *analogHistogram;
-
-protected:
-
-
-private Q_SLOTS:
-
-private slots:
-    void analogTimeOut();
-
 };
 
 #endif //ANALOGSENSORGRAPH_H

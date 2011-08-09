@@ -10,14 +10,6 @@ class Script : public QObject
     Q_OBJECT
 public:
     explicit Script(QObject *parent = 0);
-private:
-    MyThread scriptThread;
-    int speedLeft;
-    int speedRight;
-    int minSpeed;
-
-signals:
-
 public slots:
     void setSpeed(int leftMotor, int rightMotor);
     void stop();
@@ -26,6 +18,11 @@ public slots:
     void turnLeft(int angle);
     void turnRight(int angle);
     void delay(int time);
+private:
+    MyThread scriptThread;
+    int speedLeft;
+    int speedRight;
+    int minSpeed;
 };
 
 #endif // SCRIPT_H

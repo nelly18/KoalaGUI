@@ -12,28 +12,28 @@ extern SerialGate sg;
 Sensor::Sensor(int sensor, QWidget *parent) : QWidget(parent)
 {
     sensorNumber = sensor;
-    color.setRgb(220, 220, 220);
-    sensorValue = 0;
+    color_.setRgb(220, 220, 220);
+    sensorValue_ = 0;
 }
 
 void Sensor::setSensorValue(const int val)
 {
-    sensorValue = val;
+    sensorValue_ = val;
 }
 
-int Sensor::getSensorValue()
+int Sensor::sensorValue()
 {
-    return sensorValue;
+    return sensorValue_;
 }
 
 void Sensor::setColor(QColor c)
 {
-    color = c;
+    color_ = c;
 }
 
-QColor Sensor::getColor()
+QColor Sensor::color()
 {
-    return color;
+    return color_;
 }
 
 void Sensor::evaluateColor(const int palette)
@@ -44,21 +44,21 @@ void Sensor::evaluateColor(const int palette)
     switch (pal)
     {
       case blueRed:
-        if (sensorValue < 512)
+        if (sensorValue_ < 512)
         {
-            iColor = sensorValue * colorparam;
-            color.setRgb(iColor, iColor, 255);
+            iColor = sensorValue_ * colorparam;
+            color_.setRgb(iColor, iColor, 255);
         }
         else
         {
-            iColor = abs(sensorValue * colorparam - 510);
-            color.setRgb(255, iColor, iColor);
+            iColor = abs(sensorValue_ * colorparam - 510);
+            color_.setRgb(255, iColor, iColor);
         }
         break;
 
       case blackWhite:
-        iColor = sensorValue * colorparam2;
-        color.setRgb(iColor, iColor, iColor);
+        iColor = sensorValue_ * colorparam2;
+        color_.setRgb(iColor, iColor, iColor);
         break;
     }
 }
@@ -72,7 +72,7 @@ void Sensor::paintEvent(QPaintEvent *)
     QBrush brush(Qt::SolidPattern);
     painter.setRenderHint(QPainter::Antialiasing);
 
-        brush.setColor(color);
+        brush.setColor(color_);
         painter.setBrush(brush);
         painter.drawEllipse(0, 0, width (), height ());
 }

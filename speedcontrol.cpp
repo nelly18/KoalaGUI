@@ -163,7 +163,7 @@ void SpeedControl::setSpeedLeft(int speed)
     int rightSpeed = rightMotor->value();
 
     if (sg.state)
-        sg.Send(QString("D,%1,%2\n").arg(speed).arg(rightSpeed));
+        sg.send(QString("D,%1,%2\n").arg(speed).arg(rightSpeed));
     else
     {
         QMessageBox msgBox;
@@ -178,7 +178,7 @@ void SpeedControl::setSpeedRight(int speed)
     int leftSpeed = leftMotor->value();
 
     if (sg.state)
-        sg.Send(QString("D,%1,%2\n").arg(leftSpeed).arg(speed));
+        sg.send(QString("D,%1,%2\n").arg(leftSpeed).arg(speed));
     else
     {
         QMessageBox msgBox;
@@ -196,7 +196,7 @@ void SpeedControl::setTSpeed()
     int rightAccValue = rightAcc->value();
 
     if (sg.state)
-        sg.Send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedValue).arg(leftAccValue).arg(rightMaxSpeedValue).arg(rightAccValue));
+        sg.send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedValue).arg(leftAccValue).arg(rightMaxSpeedValue).arg(rightAccValue));
     else
     {
         QMessageBox msgBox;
@@ -212,7 +212,7 @@ void SpeedControl::setPWM()
     int rightMotorPWMValue = rightMotorPWM->value();
 
     if (sg.state)
-        sg.Send(QString("P,%1,%2\n").arg(leftMotorPWMValue).arg(rightMotorPWMValue));
+        sg.send(QString("P,%1,%2\n").arg(leftMotorPWMValue).arg(rightMotorPWMValue));
     else
     {
         QMessageBox msgBox;

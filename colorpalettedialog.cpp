@@ -12,7 +12,7 @@ ColorPaletteDialog::~ColorPaletteDialog()
     delete ui;
 }
 
-int ColorPaletteDialog::getPalette()
+int ColorPaletteDialog::palette()
 {
     return (ui->black->isChecked());
 }

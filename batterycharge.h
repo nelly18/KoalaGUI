@@ -11,8 +11,6 @@ class BatteryCharge : public QProgressBar
 public:
     BatteryCharge(QWidget *parent = 0);
     QTimer *batteryChargeTimer;
-private:
-
 private slots:
     void batteryChargeTimerTimeOut();
 };
