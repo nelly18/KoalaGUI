@@ -14,15 +14,19 @@ class QTimer;
 class InputsOutputsTab : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit InputsOutputsTab(QWidget *parent = 0);
-    AnalogGraph *analogFrame;
-    QTimer *manualTimer;
+
 public slots:
     void manualTimeOut();
     void startManualControl();
     void digitalOutputStateChanged(int state);
     void openPortButtonClicked();
+
+public:
+    AnalogGraph *analogFrame;
+    QTimer *manualTimer;
 private:
     QSpinBox *sb_numAnalogInputs;
     QVector <Sensor *> digitalInputs;

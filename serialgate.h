@@ -23,6 +23,7 @@ class SerialGate
 public:
     enum IN_LINES_NAME {CTS, DSR, RING, RLSD};
     enum OUT_LINES_NAME {DTR, RTS};
+
 public:
     SerialGate();
     ~SerialGate();
@@ -36,6 +37,7 @@ public:
     bool line(IN_LINES_NAME ln);
     void close();
     void clean();
+
 private:
 #ifdef Q_WS_WIN
         HANDLE m_hFile;

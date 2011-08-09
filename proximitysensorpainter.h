@@ -13,18 +13,23 @@ class QTableWidget;
 class ProximitySensorPainter : public QLabel
 {
     Q_OBJECT
+
 public:
     ProximitySensorPainter(QWidget *parent = 0) ;
     ~ProximitySensorPainter();
-    QVector <Sensor *> sensors;
-    QTimer *drawSensorsTimer;
     void setColorPalette(int palette);
     void resetSensorsColor();
+
 private:
     int loadSensorsValues();
+
+public:
+    QVector <Sensor *> sensors;
+    QTimer *drawSensorsTimer;
 private:
     int colorPalette;
     QTableWidget *table;
+
 private slots:
     void proximitySensorTimeOut(void);
 };

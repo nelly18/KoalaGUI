@@ -9,8 +9,10 @@ class QPushButton;
 class PIDRegulator : public QFrame
 {
     Q_OBJECT
+
 public:
     PIDRegulator(QFrame *parent = 0);
+
 private:
     QLineEdit *speedProp;
     QLineEdit *speedInt;
@@ -20,6 +22,7 @@ private:
     QLineEdit *posDiff;
     QPushButton *butSetSpeed;
     QPushButton *butSetPos;
+
 private slots:
     void setSpeed();
     void setPos();

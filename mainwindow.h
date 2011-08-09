@@ -24,13 +24,17 @@ class ScriptTab;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
 public:
     enum Tabs {console, script, proximityS, analogS, speed, PID};
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 protected:
    // bool eventFilter(QObject *obj, QEvent *event);
+
 private:
     void readPIDSettings();
     Ui::MainWindow *ui;
@@ -43,6 +47,7 @@ private:
     InputsOutputsTab *inOutTab;
     StatusBarWidget *statusBarWidget;
     ScriptTab *scriptTab;
+
 private slots:
     void on_openButton_clicked();
     void on_changeTab();
