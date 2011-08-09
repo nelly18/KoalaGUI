@@ -1,8 +1,9 @@
 #include <QtGui/QMessageBox>
 #include <QtCore/QDebug>
 
-#include "script.h"
 #include "serialgate.h"
+
+#include "script.h"
 
 extern SerialGate sg;
 

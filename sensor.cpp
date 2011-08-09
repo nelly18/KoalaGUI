@@ -1,6 +1,10 @@
 #include <QtCore/QString>
 #include <QtCore/QDebug>
 
+#include <QtGui/QPainter>
+
+#include "serialgate.h"
+
 #include "sensor.h"
 
 extern SerialGate sg;

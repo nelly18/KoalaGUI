@@ -1,10 +1,18 @@
+#include <QtCore/QTimer>
+
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QMessageBox>
+#include <QtGui/QCheckBox>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+
+#include "analogsensorgraph.h"
+#include "sensor.h"
+#include "serialgate.h"
 
 #include "inputsoutputstab.h"
-#include "analogsensorgraph.h"
 
 extern SerialGate sg;
 

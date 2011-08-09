@@ -4,6 +4,10 @@
 #include <QtGui/QScrollArea>
 #include <QtGui/QFont>
 #include <QtGui/QLayout>
+#include <QtGui/QTableWidget>
+
+#include "sensor.h"
+#include "serialgate.h"
 
 #include "proximitysensorpainter.h"
 

@@ -1,13 +1,12 @@
 #ifndef SCRIPTTAB_H
 #define SCRIPTTAB_H
 
-#include <QtCore/QThread>
+#include <QtScript/QScriptEngine>
 
-#include <QtScript/QtScript>
+#include <QtGui/QWidget>
 
-#include <QtGui/QTextEdit>
-
-#include "script.h"
+class Script;
+class QTextEdit;
 
 class ScriptTab : public QWidget
 {

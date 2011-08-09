@@ -10,6 +10,18 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QThread>
 
+#include "proximitysensorpainter.h"
+#include "analogsensorgraph.h"
+#include "speedcontrol.h"
+#include "pidregulator.h"
+#include "inputsoutputstab.h"
+#include "console.h"
+#include "statusbarwidget.h"
+#include "scripttab.h"
+#include "sensor.h"
+#include "serialgate.h"
+#include "batterycharge.h"
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 

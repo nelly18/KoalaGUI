@@ -2,9 +2,10 @@
 #define SPEEDCONTROL_H
 
 #include <QtGui/QFrame>
-#include <QtGui/QDial>
-#include <QtGui/QPushButton>
-#include <QtGui/QSlider>
+
+class QDial;
+class QPushButton;
+class QSlider;
 
 class SpeedControl : public QFrame
 {

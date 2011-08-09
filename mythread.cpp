@@ -1,5 +1,5 @@
-#include "QtCore/QMutex"
-#include "QtCore/QWaitCondition"
+#include <QtCore/QMutex>
+#include <QtCore/QWaitCondition>
 
 #include "mythread.h"
 

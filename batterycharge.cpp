@@ -1,5 +1,8 @@
-#include "batterycharge.h"
+#include <QtCore/QTimer>
+
 #include "serialgate.h"
+
+#include "batterycharge.h"
 
 extern SerialGate sg;
 

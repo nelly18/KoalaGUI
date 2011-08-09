@@ -2,14 +2,14 @@
 #define INPUTSOUTPUTSTAB_H
 
 #include <QtGui/QWidget>
-#include <QtGui/QSpinBox>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
 
-#include "analogsensorgraph.h"
-#include "sensor.h"
+class QSpinBox;
+class Sensor;
+class QCheckBox;
+class QLineEdit;
+class QPushButton;
+class AnalogGraph;
+class QTimer;
 
 class InputsOutputsTab : public QWidget
 {

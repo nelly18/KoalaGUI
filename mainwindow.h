@@ -3,25 +3,23 @@
 #define _CRT_NON_CONFORMING_SWPRINTFS
 
 #include <QtGui/QMainWindow>
-#include <QtGui/QFrame>
-#include <QtGui/QWidget>
 
 #include "colorpalettedialog.h"
 #include "defines.h"
-#include "proximitysensorpainter.h"
-#include "analogsensorgraph.h"
-#include "speedcontrol.h"
-#include "pidregulator.h"
-#include "inputsoutputstab.h"
-#include "console.h"
-#include "statusbarwidget.h"
-#include "scripttab.h"
 
 class ProximitySensorPainter;
 namespace Ui {
     class MainWindow;
 }
 
+class Console;
+class QTimer;
+class ProximitySensorPainter;
+class SpeedControl;
+class PIDRegulator;
+class InputsOutputsTab;
+class StatusBarWidget;
+class ScriptTab;
 
 class MainWindow : public QMainWindow
 {

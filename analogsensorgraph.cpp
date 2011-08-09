@@ -1,4 +1,13 @@
 #include <QtCore/QDebug>
+#include <QtCore/QTimer>
+
+#include <QtGui/QPen>
+
+#include <qwt_scale_div.h>
+#include <qwt_plot_grid.h>
+
+#include "serialgate.h"
+#include "analoghistogram.h"
 
 #include "analogsensorgraph.h"
 

@@ -3,13 +3,12 @@
 
 #include <QtCore/QVector>
 
-#include <QtGui/QFrame>
 #include <QtGui/QLabel>
-#include <QtGui/QTableWidget>
 
-#include "sensor.h"
 #include "defines.h"
 
+class Sensor;
+class QTableWidget;
 
 class ProximitySensorPainter : public QLabel
 {

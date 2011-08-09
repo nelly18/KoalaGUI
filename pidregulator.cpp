@@ -2,8 +2,11 @@
 #include <QtGui/QLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QMessageBox>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
 
 #include "serialgate.h"
+
 #include "pidregulator.h"
 
 extern SerialGate sg;

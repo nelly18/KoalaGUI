@@ -6,9 +6,13 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QFont>
 #include <QtGui/QGroupBox>
+#include <QtGui/QDial>
+#include <QtGui/QPushButton>
+#include <QtGui/QSlider>
+
+#include "serialgate.h"
 
 #include "speedcontrol.h"
-#include "serialgate.h"
 
 extern SerialGate sg;
 

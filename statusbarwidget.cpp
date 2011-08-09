@@ -1,4 +1,8 @@
 #include <QtGui/QLayout>
+#include <QtGui/QStatusBar>
+#include <QtGui/QLabel>
+
+#include "batterycharge.h"
 
 #include "statusbarwidget.h"
 

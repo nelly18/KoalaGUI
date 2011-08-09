@@ -1,14 +1,10 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include <QtCore/QPoint>
-
+#include <QtGui/QWidget>
 #include <QtGui/QColor>
-#include <QtGui/QPainter>
-#include <QtGui/QFrame>
 
 #include "defines.h"
-#include "serialgate.h"
 
 class Sensor : public QWidget
 {

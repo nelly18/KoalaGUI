@@ -2,9 +2,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QLayout>
 #include <QtGui/QMessageBox>
+#include <QtGui/QTextEdit>
+
+#include "serialgate.h"
+#include "script.h"
 
 #include "scripttab.h"
-#include "serialgate.h"
 
 extern SerialGate sg;
 
