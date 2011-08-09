@@ -1,9 +1,10 @@
 #ifndef STATUSBARWIDGET_H
 #define STATUSBARWIDGET_H
 
-#include <QFrame>
-#include <QLabel>
-#include <QStatusBar>
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QStatusBar>
+
 #include "batterycharge.h"
 
 class StatusBarWidget : public QWidget//QStatusBar//QFrame

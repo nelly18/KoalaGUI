@@ -1,7 +1,9 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <QtGui>
+#include <QtCore/QString>
+
+#include <QtGui/QPlainTextEdit>
 
 class Console : public QPlainTextEdit
 {

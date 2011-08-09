@@ -1,6 +1,7 @@
+#include "QtCore/QMutex"
+#include "QtCore/QWaitCondition"
+
 #include "mythread.h"
-#include "QMutex"
-#include "QWaitCondition"
 
 MyThread::MyThread()
 {

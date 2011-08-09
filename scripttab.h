@@ -1,10 +1,11 @@
 #ifndef SCRIPTTAB_H
 #define SCRIPTTAB_H
 
-#include <QPlainTextEdit>
+#include <QtCore/QThread>
+
 #include <QtScript/QtScript>
-#include <QTextEdit>
-#include <QThread>
+
+#include <QtGui/QTextEdit>
 
 #include "script.h"
 

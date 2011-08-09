@@ -1,3 +1,10 @@
+#include <QtGui/QPalette>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QTextCharFormat>
+#include <QtGui/QTextBlock>
+#include <QtGui/QTextCursor>
+#include <QtGui/QScrollBar>
+
 #include "console.h"
 
 Console::Console(QWidget *parent) :

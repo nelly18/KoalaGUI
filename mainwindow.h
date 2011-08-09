@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 #define _CRT_NON_CONFORMING_SWPRINTFS
 
-#include <QMainWindow>
-#include <QFrame>
-#include <QWidget>
+#include <QtGui/QMainWindow>
+#include <QtGui/QFrame>
+#include <QtGui/QWidget>
 
 #include "colorpalettedialog.h"
 #include "defines.h"

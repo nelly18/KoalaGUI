@@ -1,17 +1,17 @@
+#include <QtGui/QMessageBox>
+#include <QtCore/QTimer>
+#include <QtCore/QDebug>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QTextBlock>
+#include <QtGui/QColor>
+#include <QtGui/QLayout>
+#include <QtGui/QSpacerItem>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QThread>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-#include <QMessageBox>
-#include <QTimer>
-#include <QDebug>
-#include <QKeyEvent>
-#include <QTextBlock>
-#include <QColor>
-#include <QLayout>
-#include <QSpacerItem>
-#include <QFile>
-#include <QTextStream>
-#include <QThread>
 
 SerialGate sg;
 

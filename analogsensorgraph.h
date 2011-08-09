@@ -1,20 +1,24 @@
 #ifndef ANALOGSENSORGRAPH_H
 #define ANALOGSENSORGRAPH_H
-#include <qwt_plot.h>
-#include <QTimer>
-#include "sensor.h"
-#include "defines.h"
+
+#include <QtCore/QTimer>
+#include <QtCore/QVector>
+
+#include <QtGui/QPen>
+
 #include <stdlib.h>
-#include <qpen.h>
+#include <qwt_plot.h>
 #include <qwt_plot_layout.h>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
 #include <qwt_plot_grid.h>
-#include "analoghistogram.h"
 #include <qwt_column_symbol.h>
 #include <qwt_series_data.h>
 #include <qwt_scale_div.h>
-#include <QVector>
+
+#include "analoghistogram.h"
+#include "sensor.h"
+#include "defines.h"
 
 class AnalogGraph: public QwtPlot
 {

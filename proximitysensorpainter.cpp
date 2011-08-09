@@ -1,10 +1,11 @@
-#include <QtGui>
+#include <QtCore/QTimer>
+#include <QtCore/QPoint>
+
+#include <QtGui/QScrollArea>
+#include <QtGui/QFont>
+#include <QtGui/QLayout>
+
 #include "proximitysensorpainter.h"
-#include <QScrollArea>
-#include <QTimer>
-#include <QPoint>
-#include <QFont>
-#include <QLayout>
 
 extern SerialGate sg;
 

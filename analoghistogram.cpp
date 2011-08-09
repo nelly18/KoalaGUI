@@ -1,5 +1,6 @@
+#include <QtGui/QPalette>
+
 #include "analoghistogram.h"
-#include <QPalette>
 
 Histogram::Histogram(const QString &title, const QColor &symbolColor):
     QwtPlotHistogram(title)

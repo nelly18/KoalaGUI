@@ -1,7 +1,9 @@
 #ifndef COLORPALETTEDIALOG_H
 #define COLORPALETTEDIALOG_H
+
+#include <QtGui/QDialog>
+
 #include "defines.h"
-#include <QDialog>
 
 namespace Ui {
     class ColorPaletteDialog;

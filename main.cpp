@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
+#include <QtGui/QPlastiqueStyle>
+
 #include "mainwindow.h"
-#include <QPlastiqueStyle>
 
 int main(int argc, char *argv[])
 {

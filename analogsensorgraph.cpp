@@ -1,5 +1,6 @@
+#include <QtCore/QDebug>
+
 #include "analogsensorgraph.h"
-#include <QDebug>
 
 extern SerialGate sg;
 

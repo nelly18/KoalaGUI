@@ -1,5 +1,6 @@
 #ifndef ANALOGHISTOGRAM_H
 #define ANALOGHISTOGRAM_H
+
 #include <qwt_plot_histogram.h>
 
 class Histogram: public QwtPlotHistogram

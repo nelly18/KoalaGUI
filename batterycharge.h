@@ -1,8 +1,9 @@
 #ifndef BATTERYCHARGE_H
 #define BATTERYCHARGE_H
 
-#include <QProgressBar>
-#include <QTimer>
+#include <QtCore/QTimer>
+
+#include <QtGui/QProgressBar>
 
 class BatteryCharge : public QProgressBar
 {

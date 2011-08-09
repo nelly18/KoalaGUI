@@ -1,13 +1,15 @@
 #ifndef INPUTSOUTPUTSTAB_H
 #define INPUTSOUTPUTSTAB_H
+
+#include <QtGui/QWidget>
+#include <QtGui/QSpinBox>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+
 #include "analogsensorgraph.h"
-#include <QWidget>
-#include <QSpinBox>
 #include "sensor.h"
-#include <QCheckBox>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QPushButton>
 
 class InputsOutputsTab : public QWidget
 {

@@ -1,11 +1,14 @@
 #ifndef PROXIMITYSENSORPAINTER_H
 #define PROXIMITYSENSORPAINTER_H
-#include <QFrame>
+
+#include <QtCore/QVector>
+
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QTableWidget>
+
 #include "sensor.h"
 #include "defines.h"
-#include <QLabel>
-#include <QVector>
-#include <QTableWidget>
 
 
 class ProximitySensorPainter : public QLabel

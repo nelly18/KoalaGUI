@@ -1,5 +1,6 @@
+#include <QtGui/QLayout>
+
 #include "statusbarwidget.h"
-#include <QLayout>
 
 StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
 {

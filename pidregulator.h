@@ -1,9 +1,10 @@
 #ifndef PIDREGULATOR_H
 #define PIDREGULATOR_H
-#include <QFrame>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QSlider>
+
+#include <QtGui/QFrame>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QSlider>
 
 class PIDRegulator : public QFrame
 {

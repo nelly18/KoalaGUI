@@ -1,8 +1,10 @@
+#include <QtCore/QString>
+#include <QtCore/QDebug>
+
 #include "sensor.h"
-#include <QString>
-#include <QStyle>
+
 extern SerialGate sg;
-#include <QDebug>
+
 Sensor::Sensor(int sensor, QWidget *parent) : QWidget(parent)
 {
     sensorNumber = sensor;

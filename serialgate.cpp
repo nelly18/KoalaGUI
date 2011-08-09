@@ -1,10 +1,10 @@
 #include <iostream>
-#include "serialgate.h"
 
 #ifdef Q_WS_WIN
 #include <Winspool.h>
 #endif //Q_WS_WIN32
 
+#include "serialgate.h"
 
 
 bool SerialGate::Open(int port, int baud)

@@ -1,8 +1,9 @@
+#include <QtGui/QComboBox>
+#include <QtGui/QPushButton>
+#include <QtGui/QLayout>
+#include <QtGui/QMessageBox>
+
 #include "scripttab.h"
-#include <QComboBox>
-#include <QPushButton>
-#include <QLayout>
-#include <QMessageBox>
 #include "serialgate.h"
 
 extern SerialGate sg;

@@ -1,9 +1,9 @@
-#include "inputsoutputstab.h"
-#include <QLabel>
-#include <QLayout>
-#include <QGroupBox>
-#include <QMessageBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QMessageBox>
 
+#include "inputsoutputstab.h"
 #include "analogsensorgraph.h"
 
 extern SerialGate sg;

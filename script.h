@@ -1,7 +1,8 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
-#include <QObject>
+#include <QtCore/QObject>
+
 #include "mythread.h"
 
 class Script : public QObject

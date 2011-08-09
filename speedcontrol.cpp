@@ -1,13 +1,14 @@
+#include <QtCore/QString>
+
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QMessageBox>
+#include <QtGui/QFont>
+#include <QtGui/QGroupBox>
+
 #include "speedcontrol.h"
-#include <QLayout>
-#include <QLabel>
-#include <QPushButton>
 #include "serialgate.h"
-#include <QString>
-#include <QMessageBox>
-#include <QFont>
-#include <QLine>
-#include <QGroupBox>
 
 extern SerialGate sg;
 

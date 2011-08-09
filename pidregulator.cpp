@@ -1,10 +1,10 @@
-#include "pidregulator.h"
-#include <QLabel>
-#include <QLayout>
-#include <QGroupBox>
-#include "serialgate.h"
-#include <QMessageBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QMessageBox>
 
+#include "serialgate.h"
+#include "pidregulator.h"
 
 extern SerialGate sg;
 
