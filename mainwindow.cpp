@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     statusBarWidget = new StatusBarWidget(this);
     //ui->statusBar->addWidget(statusBarWidget, 1);
-    setStatusBar(statusBarWidget);
+    setStatusBar(statusBarWidget->statusBar);
 }
 
 MainWindow::~MainWindow()

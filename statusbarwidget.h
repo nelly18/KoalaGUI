@@ -6,14 +6,14 @@
 #include <QStatusBar>
 #include "batterycharge.h"
 
-class StatusBarWidget : public QStatusBar//QFrame
+class StatusBarWidget : public QWidget//QStatusBar//QFrame
 {
     Q_OBJECT
 
 public:
     explicit StatusBarWidget(QWidget *parent = 0);
     BatteryCharge *charge;
-
+    QStatusBar *statusBar;
 private:
     QLabel *batteryVoltage;
     QLabel *consumption;

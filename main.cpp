@@ -19,7 +19,11 @@ int main(int argc, char *argv[])
                          "subcontrol-origin: margin;"
                          "subcontrol-position: top center;"
                          "padding: 0 3px;"
-                      "}");
+                      "}"
+                      "QMainWindow {background-color: #E0E0E0;}"
+                      "QTabWidget {background-color: #E0E0E0;}"
+                      "QMenuBar {background-color: #E0E0E0;}"
+                      );
 
     MainWindow w;
     w.resize(800, 600);

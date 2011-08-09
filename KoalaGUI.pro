@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     batterycharge.cpp \
     statusbarwidget.cpp \
     script.cpp \
-    scripttab.cpp
+    scripttab.cpp \
+    mythread.cpp
 
 HEADERS  += mainwindow.h \
     SerialGate.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     batterycharge.h \
     statusbarwidget.h \
     script.h \
-    scripttab.h
+    scripttab.h \
+    mythread.h
 
 FORMS    += mainwindow.ui \
     colorpalettedialog.ui \

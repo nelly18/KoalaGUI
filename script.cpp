@@ -35,7 +35,8 @@ void Script::forward(int distance)
     int speed = minSpeed * 3;
     int time = distance * 100 / speed;
     sg.Send(QString("D,%1,%1\n").arg(minSpeed));
-   // scriptThread. somehow sleep thread for "time"
+    scriptThread.wait(5000);
+
 }
 
 void Script::back(int distance)

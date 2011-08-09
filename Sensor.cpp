@@ -71,22 +71,8 @@ void Sensor::paintEvent(QPaintEvent *)
         painter.drawEllipse(0, 0, width (), height ());
 }
 
-//int Sensor::heightForWidth( int width ) const
-//{
-//    return width;
-//}
-
-//QSize Sensor::sizeHint() const
-//{
-//    return QSize( width(), heightForWidth(width()) );
-//}
-
-//void Sensor::resizeEvent ( QResizeEvent * event )
-//{
-//    updateGeometry();
-//    update();
-//}
-
-void Sensor::resizeEvent(QResizeEvent *event) {
-        setGeometry(x(), y(), qMin(width(), height()), qMin(width(), height()));
+void Sensor::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED (event);
+    setGeometry(x(), y(), qMin(width(), height()), qMin(width(), height()));
 }

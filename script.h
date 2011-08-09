@@ -2,7 +2,7 @@
 #define SCRIPT_H
 
 #include <QObject>
-#include <QThread>
+#include "MyThread.h"
 
 class Script : public QObject
 {
@@ -10,7 +10,7 @@ class Script : public QObject
 public:
     explicit Script(QObject *parent = 0);
 private:
-    QThread scriptThread;
+    MyThread scriptThread;
     int speedLeft;
     int speedRight;
     int minSpeed;

@@ -40,20 +40,47 @@ void BatteryCharge::batteryChargeTimerTimeOut()
             batteryColor = "stop: 0 #0f0, stop: 0.4999 #0e0, stop: 0.5 #0d0, stop: 1 #0e0";
         }
 
-    QString cssQProgressBar = QString("QProgressBar{");
-    cssQProgressBar += "border: 1px solid gray;";
-    cssQProgressBar += "padding: 1px;";
-    cssQProgressBar += "text-align: center;";
-    cssQProgressBar += "border-bottom-right-radius: 7px;";
-    cssQProgressBar += "border-top-right-radius: 7px;";
-    cssQProgressBar += "}";
-    cssQProgressBar += "QProgressBar::chunk {";
-    cssQProgressBar += "border-bottom-right-radius: 7px;";
-    cssQProgressBar += "border-top-right-radius: 7px;";
-    cssQProgressBar += QString("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, %1);").arg(batteryColor);
-    cssQProgressBar += "}";
+
+    QString cssQProgressBar = "QProgressBar{"
+               "border: 1px solid gray;"
+               "padding: 1px;"
+               "text-align: center;"
+               "border-bottom-right-radius: 7px;"
+               "border-top-right-radius: 7px;"
+               "}"
+               "QProgressBar::chunk {"
+               "border-bottom-right-radius: 7px;"
+               "border-top-right-radius: 7px;"
+               + QString("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, %1);").arg(batteryColor)
+               + "}";
 
     setStyleSheet(cssQProgressBar);
     int batteryValue = 100 * batteryLevel / 14;
     setValue(batteryValue);
 }
+
+//class MyClass {
+//MyClass (QStatusBar *statusBar = 0) : bar_ (statusBar) {
+//  if (bar_) {
+// prepareStatusBar ();
+//}
+//}
+
+
+//QStatusBar *statusBar () const {
+//  return bar_;
+//}
+//void setStatusBar (QStatusBar *statusBar) {
+//  bar_ = statusBar;
+//  prepareStatusBar ();
+//}
+
+//private:
+//  void prepareStatusBar () {
+//    SomeWidget *w;
+//    bar_->addWidget (w);
+//  }
+//private:
+//  QStatusBar *bar_;
+
+//}

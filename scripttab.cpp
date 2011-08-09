@@ -66,6 +66,7 @@ void ScriptTab::slotApplyCode(int n)
     switch (n) {
     case 0:
         strCode = "koala.setSpeed(10, 10);\n";
+        strCode += "koala.forward(100);\n";
         break;
 
 
