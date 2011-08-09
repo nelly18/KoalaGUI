@@ -1,5 +1,5 @@
 #include <QtGui>
-#include "ProximitySensorPainter.h"
+#include "proximitysensorpainter.h"
 #include <QScrollArea>
 #include <QTimer>
 #include <QPoint>
@@ -11,7 +11,7 @@ extern SerialGate sg;
 ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
 {
     drawSensorsTimer = new QTimer(this);
-    connect(drawSensorsTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));   
+    connect(drawSensorsTimer, SIGNAL(timeout()), this, SLOT(TimeOut()));
 
     QVector <QPoint> points;
     points << QPoint(117, 7) << QPoint(87, 10) << QPoint(56, 18) << QPoint(30, 37)<<

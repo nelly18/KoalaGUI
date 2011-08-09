@@ -2,7 +2,7 @@
 #define ANALOGSENSORGRAPH_H
 #include <qwt_plot.h>
 #include <QTimer>
-#include "Sensor.h"
+#include "sensor.h"
 #include "defines.h"
 #include <stdlib.h>
 #include <qpen.h>

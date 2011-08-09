@@ -2,7 +2,7 @@
 #define SCRIPT_H
 
 #include <QObject>
-#include "MyThread.h"
+#include "mythread.h"
 
 class Script : public QObject
 {

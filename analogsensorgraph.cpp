@@ -1,4 +1,4 @@
-#include "AnalogSensorGraph.h"
+#include "analogsensorgraph.h"
 #include <QDebug>
 
 extern SerialGate sg;

@@ -1,4 +1,4 @@
-#include <Sensor.h>
+#include "sensor.h"
 #include <QString>
 #include <QStyle>
 extern SerialGate sg;

@@ -2,7 +2,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QGroupBox>
-#include <SerialGate.h>
+#include "serialgate.h"
 #include <QMessageBox>
 
 

@@ -1,9 +1,9 @@
 #ifndef INPUTSOUTPUTSTAB_H
 #define INPUTSOUTPUTSTAB_H
-#include "AnalogSensorGraph.h"
+#include "analogsensorgraph.h"
 #include <QWidget>
 #include <QSpinBox>
-#include "Sensor.h"
+#include "sensor.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>

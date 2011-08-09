@@ -1,5 +1,5 @@
 #include "batterycharge.h"
-#include "SerialGate.h"
+#include "serialgate.h"
 
 extern SerialGate sg;
 

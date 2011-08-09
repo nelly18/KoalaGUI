@@ -3,7 +3,7 @@
 #include <QPushButton>
 #include <QLayout>
 #include <QMessageBox>
-#include <SerialGate.h>
+#include "serialgate.h"
 
 extern SerialGate sg;
 

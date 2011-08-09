@@ -12,10 +12,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    SerialGate.cpp \
-    ProximitySensorPainter.cpp \
-    Sensor.cpp \
-    AnalogSensorGraph.cpp \
+    serialgate.cpp \
+    proximitysensorpainter.cpp \
+    sensor.cpp \
+    analogsensorgraph.cpp \
     colorpalettedialog.cpp \
     analoghistogram.cpp \
     speedcontrol.cpp \
@@ -29,10 +29,10 @@ SOURCES += main.cpp\
     mythread.cpp
 
 HEADERS  += mainwindow.h \
-    SerialGate.h \
-    ProximitySensorPainter.h \
-    Sensor.h \
-    AnalogSensorGraph.h \
+    serialgate.h \
+    proximitysensorpainter.h \
+    sensor.h \
+    analogsensorgraph.h \
     colorpalettedialog.h \
     defines.h \
     analoghistogram.h \

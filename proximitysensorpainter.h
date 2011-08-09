@@ -1,7 +1,7 @@
 #ifndef PROXIMITYSENSORPAINTER_H
 #define PROXIMITYSENSORPAINTER_H
 #include <QFrame>
-#include "Sensor.h"
+#include "sensor.h"
 #include "defines.h"
 #include <QLabel>
 #include <QVector>

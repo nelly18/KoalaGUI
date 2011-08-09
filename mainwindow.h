@@ -8,8 +8,8 @@
 
 #include "colorpalettedialog.h"
 #include "defines.h"
-#include "ProximitySensorPainter.h"
-#include "AnalogSensorGraph.h"
+#include "proximitysensorpainter.h"
+#include "analogsensorgraph.h"
 #include "speedcontrol.h"
 #include "pidregulator.h"
 #include "inputsoutputstab.h"

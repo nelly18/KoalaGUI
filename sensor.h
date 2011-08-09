@@ -2,7 +2,7 @@
 #define SENSOR_H
 #include "defines.h"
 
-#include <SerialGate.h>
+#include <serialgate.h>
 #include <QColor>
 #include <QPoint>
 #include <QPainter>

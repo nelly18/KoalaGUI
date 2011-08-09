@@ -1,5 +1,5 @@
 #include "script.h"
-#include <SerialGate.h>
+#include "serialgate.h"
 #include <QMessageBox>
 #include <QDebug>
 

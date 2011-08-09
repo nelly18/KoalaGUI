@@ -4,7 +4,7 @@
 #include <QGroupBox>
 #include <QMessageBox>
 
-#include "AnalogSensorGraph.h"
+#include "analogsensorgraph.h"
 
 extern SerialGate sg;
 

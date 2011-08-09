@@ -2,7 +2,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QPushButton>
-#include <SerialGate.h>
+#include "serialgate.h"
 #include <QString>
 #include <QMessageBox>
 #include <QFont>

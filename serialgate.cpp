@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SerialGate.h"
+#include "serialgate.h"
 
 #ifdef Q_WS_WIN
 #include <Winspool.h>
