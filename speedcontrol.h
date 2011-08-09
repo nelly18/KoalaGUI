@@ -21,16 +21,16 @@ private slots:
     void setPWM();
 
 private:
-    QDial *leftMotor;
-    QDial *rightMotor;
-    QPushButton *bSetTSpeed;
-    QSlider *leftMaxSpeed;
-    QSlider *leftAcc;
-    QSlider *rightMaxSpeed;
-    QSlider *rightAcc;
-    QSlider *leftMotorPWM;
-    QSlider *rightMotorPWM;
-    QPushButton *butSetPWM;
+    QDial *leftMotorDial_;
+    QDial *rightMotorDial_;
+    QPushButton *setTrapSpeedButton_;
+    QSlider *leftMaxSpeedSlider_;
+    QSlider *leftAccSlider_;
+    QSlider *rightMaxSpeedSlider_;
+    QSlider *rightAccSlider_;
+    QSlider *leftMotorPwmSlider_;
+    QSlider *rightMotorPwmSlider_;
+    QPushButton *butSetPwmButton_;
 };
 
 #endif // SPEEDCONTROL_H

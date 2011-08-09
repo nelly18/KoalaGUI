@@ -24,29 +24,29 @@ const int diameter = 110;
 
 SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
 {
-    leftMotor = new QDial();
-    rightMotor = new QDial();
+    leftMotorDial_ = new QDial();
+    rightMotorDial_ = new QDial();
 
-    connect(leftMotor, SIGNAL(valueChanged(int)), this, SLOT(setSpeedLeft(int)));
-    connect(rightMotor, SIGNAL(valueChanged(int)), this, SLOT(setSpeedRight(int)));
+    connect(leftMotorDial_, SIGNAL(valueChanged(int)), this, SLOT(setSpeedLeft(int)));
+    connect(rightMotorDial_, SIGNAL(valueChanged(int)), this, SLOT(setSpeedRight(int)));
 
-    leftMotor->setGeometry(100, 100, diameter, diameter);
-    rightMotor->setGeometry(200, 100, diameter, diameter);
+    leftMotorDial_->setGeometry(100, 100, diameter, diameter);
+    rightMotorDial_->setGeometry(200, 100, diameter, diameter);
 
-    leftMotor->setNotchesVisible(true);
-    rightMotor->setNotchesVisible(true);
+    leftMotorDial_->setNotchesVisible(true);
+    rightMotorDial_->setNotchesVisible(true);
 
-    leftMotor->setRange(minrange, maxrange);
-    rightMotor->setRange(minrange, maxrange);
+    leftMotorDial_->setRange(minrange, maxrange);
+    rightMotorDial_->setRange(minrange, maxrange);
 
-    leftMotor->setPageStep(step);
-    rightMotor->setPageStep(step);
+    leftMotorDial_->setPageStep(step);
+    rightMotorDial_->setPageStep(step);
 
-    leftMotor->setSliderPosition(start);
-    rightMotor->setSliderPosition(start);
+    leftMotorDial_->setSliderPosition(start);
+    rightMotorDial_->setSliderPosition(start);
 
-    leftMotor->setTracking(true);
-    rightMotor->setTracking(true);
+    leftMotorDial_->setTracking(true);
+    rightMotorDial_->setTracking(true);
 
     QLabel *leftLabel = new QLabel("Set left motor speed (-100 - 100)");
     leftLabel->setAlignment(Qt::AlignCenter);
@@ -59,40 +59,40 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     QGridLayout *speed = new QGridLayout();
     speed->setRowMinimumHeight(0, 110);
     speed->setRowMinimumHeight(1, 110);
-    speed->addWidget(leftMotor, 0, 0, Qt::AlignCenter);
+    speed->addWidget(leftMotorDial_, 0, 0, Qt::AlignCenter);
     speed->addWidget(leftLabel, 0, 0, Qt::AlignBottom);
-    speed->addWidget(rightMotor, 1, 0, Qt::AlignCenter);
+    speed->addWidget(rightMotorDial_, 1, 0, Qt::AlignCenter);
     speed->addWidget(rightLabel, 1, 0, Qt::AlignBottom);
 
     QGroupBox *speedBox = new QGroupBox("Motors speed");
     speedBox->setLayout(speed);
 
-    leftMaxSpeed = new QSlider(Qt::Horizontal);
-    leftAcc = new QSlider(Qt::Horizontal);
-    rightMaxSpeed = new QSlider(Qt::Horizontal);
-    rightAcc = new QSlider(Qt::Horizontal);
+    leftMaxSpeedSlider_ = new QSlider(Qt::Horizontal);
+    leftAccSlider_ = new QSlider(Qt::Horizontal);
+    rightMaxSpeedSlider_ = new QSlider(Qt::Horizontal);
+    rightAccSlider_ = new QSlider(Qt::Horizontal);
 
-    leftMaxSpeed->setTracking(false);
-    leftAcc->setTracking(false);
-    rightMaxSpeed->setTracking(false);
-    rightAcc->setTracking(false);
+    leftMaxSpeedSlider_->setTracking(false);
+    leftAccSlider_->setTracking(false);
+    rightMaxSpeedSlider_->setTracking(false);
+    rightAccSlider_->setTracking(false);
 
-    leftMaxSpeed->setRange(-100, 100);
-    rightMaxSpeed->setRange(-100, 100);
+    leftMaxSpeedSlider_->setRange(-100, 100);
+    rightMaxSpeedSlider_->setRange(-100, 100);
 
-    leftMaxSpeed->setValue(20);
-    rightMaxSpeed->setValue(20);
-    leftAcc->setValue(64);
-    rightAcc->setValue(64);
+    leftMaxSpeedSlider_->setValue(20);
+    rightMaxSpeedSlider_->setValue(20);
+    leftAccSlider_->setValue(64);
+    rightAccSlider_->setValue(64);
 
-    leftMaxSpeed->setTickPosition(QSlider::TicksAbove);
-    leftAcc->setTickPosition(QSlider::TicksAbove);
-    rightMaxSpeed->setTickPosition(QSlider::TicksAbove);
-    rightAcc->setTickPosition(QSlider::TicksAbove);
-    leftMaxSpeed->setTickInterval(20);
-    leftAcc->setTickInterval(20);
-    rightMaxSpeed->setTickInterval(20);
-    rightAcc->setTickInterval(20);
+    leftMaxSpeedSlider_->setTickPosition(QSlider::TicksAbove);
+    leftAccSlider_->setTickPosition(QSlider::TicksAbove);
+    rightMaxSpeedSlider_->setTickPosition(QSlider::TicksAbove);
+    rightAccSlider_->setTickPosition(QSlider::TicksAbove);
+    leftMaxSpeedSlider_->setTickInterval(20);
+    leftAccSlider_->setTickInterval(20);
+    rightMaxSpeedSlider_->setTickInterval(20);
+    rightAccSlider_->setTickInterval(20);
 
     //QLabel *pic = new QLabel(this);
     //pic->setPixmap(QPixmap(":/res/speed.PNG"));
@@ -102,16 +102,16 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     tSpeed->addWidget(new QLabel("Acc left (0-100)"), 1, 0);
     tSpeed->addWidget(new QLabel("Max speed right(-100 - 100)"), 2, 0);
     tSpeed->addWidget(new QLabel("Acc right (0-100)"), 3, 0);
-    tSpeed->addWidget(leftMaxSpeed, 0, 1);
-    tSpeed->addWidget(leftAcc, 1, 1);
-    tSpeed->addWidget(rightMaxSpeed, 2, 1);
-    tSpeed->addWidget(rightAcc, 3, 1);
+    tSpeed->addWidget(leftMaxSpeedSlider_, 0, 1);
+    tSpeed->addWidget(leftAccSlider_, 1, 1);
+    tSpeed->addWidget(rightMaxSpeedSlider_, 2, 1);
+    tSpeed->addWidget(rightAccSlider_, 3, 1);
     //tSpeed->addWidget(pic, 4, 0, 1, 2, Qt::AlignCenter);
 
-    bSetTSpeed  = new QPushButton("Set speed");
-    bSetTSpeed->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    connect(bSetTSpeed, SIGNAL(clicked()), this, SLOT(setTSpeed()));
-    tSpeed->addWidget(bSetTSpeed, 4, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
+    setTrapSpeedButton_  = new QPushButton("Set speed");
+    setTrapSpeedButton_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    connect(setTrapSpeedButton_, SIGNAL(clicked()), this, SLOT(setTSpeed()));
+    tSpeed->addWidget(setTrapSpeedButton_, 4, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *tSpeedBox = new QGroupBox("Trapezoidal speed shape");
     tSpeedBox->setLayout(tSpeed);
@@ -119,31 +119,31 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
     QLabel *l_leftMotor = new QLabel("Left motor PWM (-255 - 255)");
     QLabel *l_rightMotor = new QLabel("Right motor PWM (-255 - 255)");
 
-    leftMotorPWM = new QSlider(Qt::Horizontal);
-    rightMotorPWM = new QSlider(Qt::Horizontal);
+    leftMotorPwmSlider_ = new QSlider(Qt::Horizontal);
+    rightMotorPwmSlider_ = new QSlider(Qt::Horizontal);
 
-    leftMotorPWM->setTracking(false);
-    rightMotorPWM->setTracking(false);
+    leftMotorPwmSlider_->setTracking(false);
+    rightMotorPwmSlider_->setTracking(false);
 
-    leftMotorPWM->setRange(-255, 255);
-    rightMotorPWM->setRange(-255, 255);
+    leftMotorPwmSlider_->setRange(-255, 255);
+    rightMotorPwmSlider_->setRange(-255, 255);
 
-    leftMotorPWM->setTickPosition(QSlider::TicksAbove);
-    rightMotorPWM->setTickPosition(QSlider::TicksAbove);
+    leftMotorPwmSlider_->setTickPosition(QSlider::TicksAbove);
+    rightMotorPwmSlider_->setTickPosition(QSlider::TicksAbove);
 
-    leftMotorPWM->setTickInterval(40);
-    rightMotorPWM->setTickInterval(40);
+    leftMotorPwmSlider_->setTickInterval(40);
+    rightMotorPwmSlider_->setTickInterval(40);
 
-    butSetPWM = new QPushButton("Set configuration");
-    butSetPWM->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    connect(butSetPWM, SIGNAL(clicked()), this, SLOT(setPWM()));
+    butSetPwmButton_ = new QPushButton("Set configuration");
+    butSetPwmButton_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    connect(butSetPwmButton_, SIGNAL(clicked()), this, SLOT(setPWM()));
 
     QGridLayout *gridPWM = new QGridLayout;
     gridPWM->addWidget(l_leftMotor, 0, 0);
     gridPWM->addWidget(l_rightMotor, 1, 0);
-    gridPWM->addWidget(leftMotorPWM, 0, 1);
-    gridPWM->addWidget(rightMotorPWM, 1, 1);
-    gridPWM->addWidget(butSetPWM, 2, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
+    gridPWM->addWidget(leftMotorPwmSlider_, 0, 1);
+    gridPWM->addWidget(rightMotorPwmSlider_, 1, 1);
+    gridPWM->addWidget(butSetPwmButton_, 2, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupPWM = new QGroupBox("PWM configuration");
     //groupPWM->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
@@ -160,7 +160,7 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
 
 void SpeedControl::setSpeedLeft(int speed)
 {
-    int rightSpeed = rightMotor->value();
+    int rightSpeed = rightMotorDial_->value();
 
     if (sg.state)
         sg.send(QString("D,%1,%2\n").arg(speed).arg(rightSpeed));
@@ -175,7 +175,7 @@ void SpeedControl::setSpeedLeft(int speed)
 
 void SpeedControl::setSpeedRight(int speed)
 {
-    int leftSpeed = leftMotor->value();
+    int leftSpeed = leftMotorDial_->value();
 
     if (sg.state)
         sg.send(QString("D,%1,%2\n").arg(leftSpeed).arg(speed));
@@ -190,10 +190,10 @@ void SpeedControl::setSpeedRight(int speed)
 
 void SpeedControl::setTSpeed()
 {
-    int leftMaxSpeedValue = leftMaxSpeed->value();
-    int leftAccValue = leftAcc->value();
-    int rightMaxSpeedValue = rightMaxSpeed->value();
-    int rightAccValue = rightAcc->value();
+    int leftMaxSpeedValue = leftMaxSpeedSlider_->value();
+    int leftAccValue = leftAccSlider_->value();
+    int rightMaxSpeedValue = rightMaxSpeedSlider_->value();
+    int rightAccValue = rightAccSlider_->value();
 
     if (sg.state)
         sg.send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedValue).arg(leftAccValue).arg(rightMaxSpeedValue).arg(rightAccValue));
@@ -208,8 +208,8 @@ void SpeedControl::setTSpeed()
 
 void SpeedControl::setPWM()
 {
-    int leftMotorPWMValue = leftMotorPWM->value();
-    int rightMotorPWMValue = rightMotorPWM->value();
+    int leftMotorPWMValue = leftMotorPwmSlider_->value();
+    int rightMotorPWMValue = rightMotorPwmSlider_->value();
 
     if (sg.state)
         sg.send(QString("P,%1,%2\n").arg(leftMotorPWMValue).arg(rightMotorPWMValue));

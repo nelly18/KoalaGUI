@@ -6,7 +6,7 @@
 Console::Console(QWidget *parent) :
 QPlainTextEdit(parent)
 {
-    prompt = "koala> ";
+    prompt_ = "koala> ";
 
     this->setFrameShape(QFrame::Panel);
 
@@ -15,8 +15,8 @@ QPlainTextEdit(parent)
     p.setColor(QPalette::Text, Qt::blue);
     setPalette(p);
 
-    history = new QStringList;
-    historyPos = 0;
+    history_ = new QStringList;
+    historyPos_ = 0;
     isLocked = true;
 }
 
@@ -33,7 +33,7 @@ void Console::keyPressEvent(QKeyEvent *event)
 
     if(event->key() == Qt::Key_Backspace
        && event->modifiers() == Qt::NoModifier
-       && textCursor().positionInBlock() > prompt.length())
+       && textCursor().positionInBlock() > prompt_.length())
             QPlainTextEdit::keyPressEvent(event);
 
     if(event->key() == Qt::Key_Return && event->modifiers() == Qt::NoModifier)
@@ -45,7 +45,7 @@ void Console::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Down && event->modifiers() == Qt::NoModifier)
         historyForward();
 
-    QString cmd = textCursor().block().text().mid(prompt.length());
+    QString cmd = textCursor().block().text().mid(prompt_.length());
     emit onChange(cmd);
 }
 
@@ -60,12 +60,12 @@ void Console::contextMenuEvent(QContextMenuEvent *){}
 
 void Console::onEnter()
 {
-    if(textCursor().positionInBlock() == prompt.length())
+    if(textCursor().positionInBlock() == prompt_.length())
     {
         insertPrompt(true);
         return;
     }
-    QString cmd = textCursor().block().text().mid(prompt.length());
+    QString cmd = textCursor().block().text().mid(prompt_.length());
     historyAdd(cmd);
     emit onCommand(cmd);
 }
@@ -87,7 +87,7 @@ void Console::insertPrompt(bool insertNewBlock)
     QTextCharFormat format;
     format.setForeground(Qt::blue);
     textCursor().setBlockCharFormat(format);
-    textCursor().insertText(prompt);
+    textCursor().insertText(prompt_);
     scrollDown();
     setFocus();
 }
@@ -100,35 +100,35 @@ void Console::scrollDown()
 
 void Console::historyAdd(QString cmd)
 {
-    history->append(cmd);
-    historyPos = history->length();
+    history_->append(cmd);
+    historyPos_ = history_->length();
 }
 
 void Console::historyBack()
 {
-    if(!historyPos)
+    if(!historyPos_)
 return;
     QTextCursor cursor = textCursor();
     cursor.movePosition(QTextCursor::StartOfBlock);
     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
     cursor.removeSelectedText();
-    cursor.insertText(prompt + history->at(historyPos-1));
+    cursor.insertText(prompt_ + history_->at(historyPos_-1));
     setTextCursor(cursor);
-    historyPos--;
+    historyPos_--;
 }
 
 void Console::historyForward()
 {
-    if(historyPos == history->length())
+    if(historyPos_ == history_->length())
 return;
     QTextCursor cursor = textCursor();
     cursor.movePosition(QTextCursor::StartOfBlock);
     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
     cursor.removeSelectedText();
-    if(historyPos == history->length() - 1)
-cursor.insertText(prompt);
+    if(historyPos_ == history_->length() - 1)
+cursor.insertText(prompt_);
     else
-cursor.insertText(prompt + history->at(historyPos + 1));
+cursor.insertText(prompt_ + history_->at(historyPos_ + 1));
     setTextCursor(cursor);
-    historyPos++;
+    historyPos_++;
 }

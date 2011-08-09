@@ -20,8 +20,8 @@ public slots:
     void slotEvaluate();
 
 private:
-    Script  *scriptKoala;
-    QTextEdit *te_script;
+    Script  *scriptKoala_;
+    QTextEdit *scriptEdit_;
     //QThread scriptThread;
     QScriptEngine scriptEngine;
 };

@@ -24,12 +24,12 @@ private:
     void populate();
 
 public:
-    QTimer *analogTimer;
+    QTimer *analogTimer_;
 
 private:
     int numberOfAnalogChannels_;
-    QVector <double> analogChannels;
-    Histogram *analogHistogram;
+    QVector <double> analogChannels_;
+    Histogram *analogHistogram_;
 };
 
 #endif //ANALOGSENSORGRAPH_H

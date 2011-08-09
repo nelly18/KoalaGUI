@@ -11,13 +11,6 @@
 
 #define MAX_WIN_PORT 255
 
-
-struct Port{
-   unsigned char Id;
-   bool Availbl;
-};
-
-
 class SerialGate
 {
 
@@ -42,7 +35,7 @@ public:
 
 private:
 #ifdef Q_WS_WIN
-        HANDLE m_hFile;
+        HANDLE hFile_;
 #endif //Q_WS_WIN
 };
 

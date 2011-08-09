@@ -13,18 +13,18 @@ bool SerialGate::open(int port, int baud)
     wchar_t COM_string[20];
     swprintf(COM_string, TEXT("\\\\.\\COM%i"), port);
 
-    m_hFile = CreateFile(COM_string, GENERIC_READ|GENERIC_WRITE, 0, NULL,
+    hFile_ = CreateFile(COM_string, GENERIC_READ|GENERIC_WRITE, 0, NULL,
                          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,NULL);
 
 
-    if(m_hFile == INVALID_HANDLE_VALUE)
+    if(hFile_ == INVALID_HANDLE_VALUE)
     {
         return false;
     }
 
 
     DCB dcb;
-    GetCommState(m_hFile, &dcb);
+    GetCommState(hFile_, &dcb);
 
     COMMTIMEOUTS CommTimeOuts;
     CommTimeOuts.ReadIntervalTimeout         = 30;
@@ -34,7 +34,7 @@ bool SerialGate::open(int port, int baud)
     CommTimeOuts.WriteTotalTimeoutConstant   = 0;
     CommTimeOuts.WriteTotalTimeoutMultiplier = 0;
 
-    SetCommTimeouts(m_hFile, &CommTimeOuts);
+    SetCommTimeouts(hFile_, &CommTimeOuts);
 
 
     dcb.ByteSize = 8;
@@ -42,7 +42,7 @@ bool SerialGate::open(int port, int baud)
     dcb.StopBits = TWOSTOPBITS;
     dcb.BaudRate = baud;
 
-    SetCommState(m_hFile, &dcb);
+    SetCommState(hFile_, &dcb);
 
     this->state = true;
 #endif //Q_WS_WIN32
@@ -63,7 +63,7 @@ void SerialGate::close()
 {
 #ifdef Q_WS_WIN
     if (this->state)
-        CloseHandle(m_hFile);
+        CloseHandle(hFile_);
     this -> state = false;
 #endif //Q_WS_WIN32
 }
@@ -74,7 +74,7 @@ void SerialGate::clean()
     if(!state)
         return;
 
-    PurgeComm(m_hFile, PURGE_TXCLEAR|PURGE_RXCLEAR);
+    PurgeComm(hFile_, PURGE_TXCLEAR|PURGE_RXCLEAR);
 #endif //Q_WS_WIN32
 }
 
@@ -87,7 +87,7 @@ int SerialGate::send(const char* buff, const int szBuff)
 
 
     DWORD lpdwBytesWrittens = 0;
-    WriteFile(m_hFile, buff, szBuff, &lpdwBytesWrittens, NULL);
+    WriteFile(hFile_, buff, szBuff, &lpdwBytesWrittens, NULL);
 
     return lpdwBytesWrittens;
 #else //Q_WS_WIN32
@@ -102,7 +102,7 @@ int SerialGate::recv(char* buff, int numBytesToRead)
         return 0;
 
     DWORD dwBytesRead = 0;
-    ReadFile(m_hFile, buff, numBytesToRead, &dwBytesRead, NULL);
+    ReadFile(hFile_, buff, numBytesToRead, &dwBytesRead, NULL);
 
     return dwBytesRead;
 #else //Q_WS_WIN32
@@ -135,7 +135,7 @@ void SerialGate::setLine(OUT_LINES_NAME ln, bool state)
             value = 3;
     }
 
-    EscapeCommFunction(m_hFile, value);
+    EscapeCommFunction(hFile_, value);
 #endif //Q_WS_WIN32
 }
 
@@ -147,7 +147,7 @@ bool SerialGate::line(IN_LINES_NAME ln)
 
     unsigned long ul = 0;
 
-    GetCommModemStatus(m_hFile, &ul);
+    GetCommModemStatus(hFile_, &ul);
 
     if(ul == 0x10 && ln == CTS)
     {
@@ -174,7 +174,7 @@ bool SerialGate::line(IN_LINES_NAME ln)
 
 int SerialGate::recv(QString &str, int numBytesToRead)
 {
-    char s[buffer_size];
+    char s[buffSize];
     int rcv = recv(s, numBytesToRead);
 
     if (rcv > 0){

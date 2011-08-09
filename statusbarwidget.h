@@ -15,14 +15,14 @@ public:
     explicit StatusBarWidget(QWidget *parent = 0);
 
 public:
-    BatteryCharge *charge;
+    BatteryCharge *chargeBattery_;
     QStatusBar *statusBar;
 
 private:
-    QLabel *batteryVoltage;
-    QLabel *consumption;
-    QLabel *ambientTemp;
-    QLabel *batteryTemp;
+    QLabel *batteryVoltageLabel_;
+    QLabel *consumptionLabel_;
+    QLabel *ambientTempLabel_;
+    QLabel *batteryTempLabel_;
 };
 
 #endif // STATUSBARWIDGET_H

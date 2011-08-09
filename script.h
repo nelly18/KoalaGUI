@@ -22,10 +22,10 @@ public slots:
     void delay(int time);
 
 private:
-    MyThread scriptThread;
-    int speedLeft;
-    int speedRight;
-    int minSpeed;
+    MyThread scriptThread_;
+    int speedLeft_;
+    int speedRight_;
+    int minSpeed_;
 };
 
 #endif // SCRIPT_H

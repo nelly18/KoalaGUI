@@ -28,12 +28,12 @@ private slots:
     void proximitySensorTimeOut(void);
 
 public:
-    QVector <Sensor *> sensors;
-    QTimer *drawSensorsTimer;
+    QVector <Sensor *> sensors_;
+    QTimer *drawSensorsTimer_;
 
 private:
-    int colorPalette;
-    QTableWidget *table;
+    int colorPalette_;
+    QTableWidget *table_;
 };
 #endif // PROXIMITYSENSORPAINTER_H
 

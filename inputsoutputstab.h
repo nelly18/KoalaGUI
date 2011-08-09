@@ -25,16 +25,16 @@ public slots:
     void openPortButtonClicked();
 
 public:
-    AnalogGraph *analogFrame;
-    QTimer *manualTimer;
+    AnalogGraph *analogFrame_;
+    QTimer *manualTimer_;
 
 private:
-    QSpinBox *sb_numAnalogInputs;
-    QVector <Sensor *> digitalInputs;
-    QVector <QCheckBox *> chb_digitalOutput;
-    QVector <QLineEdit*> le_maxSpeed;
-    QVector <QLineEdit*> le_shift;
-    QPushButton *pb_start;
+    QSpinBox *numAnalogInputsSpin_;
+    QVector <Sensor *> digitalInputs_;
+    QVector <QCheckBox *> digitalOutputCheck_;
+    QVector <QLineEdit*> maxSpeedEdit_;
+    QVector <QLineEdit*> shiftEdit_;
+    QPushButton *startButton_;
 };
 
 #endif // INPUTSOUTPUTSTAB_H

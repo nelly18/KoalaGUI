@@ -16,8 +16,8 @@ BatteryCharge::BatteryCharge(QWidget *parent):QProgressBar(parent)
                    "border-top-right-radius: 7px;"
                    "}"
                   );
-    batteryChargeTimer = new QTimer(this);
-    connect(batteryChargeTimer, SIGNAL(timeout()), this, SLOT(batteryChargeTimerTimeOut()));
+    batteryChargeTimer_ = new QTimer(this);
+    connect(batteryChargeTimer_, SIGNAL(timeout()), this, SLOT(batteryChargeTimerTimeOut()));
 }
 void BatteryCharge::batteryChargeTimerTimeOut()
 {

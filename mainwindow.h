@@ -16,7 +16,7 @@ class Console;
 class QTimer;
 class ProximitySensorPainter;
 class SpeedControl;
-class PIDRegulator;
+class PidRegulator;
 class InputsOutputsTab;
 class StatusBarWidget;
 class ScriptTab;
@@ -50,15 +50,15 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    ColorPaletteDialog colorDialog;
-    Console *consoleTab;
-    QTimer *consoleTimer;
-    ProximitySensorPainter *sensorFrame;
-    SpeedControl *speedControlTab;
-    PIDRegulator *PIDTab;
-    InputsOutputsTab *inOutTab;
-    StatusBarWidget *statusBarWidget;
-    ScriptTab *scriptTab;
+    ColorPaletteDialog colorDialog_;
+    Console *consoleTab_;
+    QTimer *consoleTimer_;
+    ProximitySensorPainter *sensorFrame_;
+    SpeedControl *speedControlTab_;
+    PidRegulator *pidTab_;
+    InputsOutputsTab *inOutTab_;
+    StatusBarWidget *statusBarWidget_;
+    ScriptTab *scriptTab_;
 };
 
 #endif // MAINWINDOW_H

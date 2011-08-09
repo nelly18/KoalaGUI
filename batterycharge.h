@@ -16,7 +16,7 @@ private slots:
     void batteryChargeTimerTimeOut();
 
 public:
-    QTimer *batteryChargeTimer;
+    QTimer *batteryChargeTimer_;
 };
 
 #endif // BATTERYCHARGE_H

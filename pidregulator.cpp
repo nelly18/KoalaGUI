@@ -11,7 +11,7 @@
 
 extern SerialGate sg;
 
-PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
+PidRegulator::PidRegulator(QFrame *parent) : QFrame(parent)
 {
     QLabel *pic = new QLabel;
     pic->setPixmap(QPixmap(":/res/PID.png"));
@@ -24,22 +24,22 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
     l_speedInt->setFrameShape(QFrame::NoFrame);
     l_speedDiff->setFrameShape(QFrame::NoFrame);
 
-    speedProp = new QLineEdit("100");
-    speedInt = new QLineEdit("800");
-    speedDiff = new QLineEdit("100");
+    speedPropEdit_ = new QLineEdit("100");
+    speedIntEdit_ = new QLineEdit("800");
+    speedDiffEdit_ = new QLineEdit("100");
 
-    butSetSpeed = new QPushButton("Set Configuration");
-    butSetSpeed->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    connect(butSetSpeed, SIGNAL(clicked()), this, SLOT(setSpeed()));
+    butSetSpeedButton_ = new QPushButton("Set Configuration");
+    butSetSpeedButton_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    connect(butSetSpeedButton_, SIGNAL(clicked()), this, SLOT(setSpeed()));
 
     QGridLayout *gridSpeed = new QGridLayout;
     gridSpeed->addWidget(l_speedProp, 0, 0);
     gridSpeed->addWidget(l_speedInt, 1, 0);
     gridSpeed->addWidget(l_speedDiff, 2, 0);
-    gridSpeed->addWidget(speedProp, 0, 1);
-    gridSpeed->addWidget(speedInt, 1, 1);
-    gridSpeed->addWidget(speedDiff, 2, 1);
-    gridSpeed->addWidget(butSetSpeed, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
+    gridSpeed->addWidget(speedPropEdit_, 0, 1);
+    gridSpeed->addWidget(speedIntEdit_, 1, 1);
+    gridSpeed->addWidget(speedDiffEdit_, 2, 1);
+    gridSpeed->addWidget(butSetSpeedButton_, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupSpeed = new QGroupBox("PID speed controller configuration");
     groupSpeed->setLayout(gridSpeed);
@@ -52,22 +52,22 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
     l_posInt->setFrameShape(QFrame::NoFrame);
     l_posDiff->setFrameShape(QFrame::NoFrame);
 
-    posProp = new QLineEdit("400");
-    posInt = new QLineEdit("4");
-    posDiff = new QLineEdit("400");
+    posPropEdit_ = new QLineEdit("400");
+    posIntEdit_ = new QLineEdit("4");
+    posDiffEdit_ = new QLineEdit("400");
 
-    butSetPos = new QPushButton("Set Configuration");
-    butSetPos->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    connect(butSetPos, SIGNAL(clicked()), this, SLOT(setPos()));
+    butSetPosButton_ = new QPushButton("Set Configuration");
+    butSetPosButton_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    connect(butSetPosButton_, SIGNAL(clicked()), this, SLOT(setPos()));
 
     QGridLayout *gridPos = new QGridLayout;
     gridPos->addWidget(l_posProp, 0, 0);
     gridPos->addWidget(l_posInt, 1, 0);
     gridPos->addWidget(l_posDiff, 2, 0);
-    gridPos->addWidget(posProp, 0, 1);
-    gridPos->addWidget(posInt, 1, 1);
-    gridPos->addWidget(posDiff, 2, 1);
-    gridPos->addWidget(butSetPos, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
+    gridPos->addWidget(posPropEdit_, 0, 1);
+    gridPos->addWidget(posIntEdit_, 1, 1);
+    gridPos->addWidget(posDiffEdit_, 2, 1);
+    gridPos->addWidget(butSetPosButton_, 3, 0, 1, 2, Qt::AlignTop|Qt::AlignHCenter);
 
     QGroupBox *groupPos = new QGroupBox("Position PID controller configuration");
     groupPos->setLayout(gridPos);
@@ -80,10 +80,10 @@ PIDRegulator::PIDRegulator(QFrame *parent) : QFrame(parent)
     setLayout(grid);
 }
 
-void PIDRegulator::setSpeed()
+void PidRegulator::setSpeed()
 {
     if (sg.state)
-        sg.send(QString("A,%1,%2,%3\n").arg(speedProp->text()).arg(speedInt->text()).arg(speedDiff->text()));
+        sg.send(QString("A,%1,%2,%3\n").arg(speedPropEdit_->text()).arg(speedIntEdit_->text()).arg(speedDiffEdit_->text()));
     else
     {
         QMessageBox msgBox;
@@ -93,10 +93,10 @@ void PIDRegulator::setSpeed()
     }
 }
 
-void PIDRegulator::setPos()
+void PidRegulator::setPos()
 {
     if (sg.state)
-        sg.send(QString("F,%1,%2,%3\n").arg(posProp->text()).arg(posInt->text()).arg(posDiff->text()));
+        sg.send(QString("F,%1,%2,%3\n").arg(posPropEdit_->text()).arg(posIntEdit_->text()).arg(posDiffEdit_->text()));
     else
     {
         QMessageBox msgBox;

@@ -34,9 +34,9 @@ public:
     bool isLocked;
 
 private:
-    QString prompt;
-    QStringList *history;
-    int historyPos;
+    QString prompt_;
+    QStringList *history_;
+    int historyPos_;
 };
 
 #endif // CONSOLE_H

@@ -15,12 +15,12 @@ extern SerialGate sg;
 
 AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
 {
-    analogTimer = new QTimer(this);
-    connect(analogTimer, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
+    analogTimer_ = new QTimer(this);
+    connect(analogTimer_, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
 
     numberOfAnalogChannels_ = 6;
-    analogChannels.resize(numberOfAnalogChannels_);
-    analogChannels.fill(0);
+    analogChannels_.resize(numberOfAnalogChannels_);
+    analogChannels_.fill(0);
 
     plotLayout()->setAlignCanvasToScales(true);
 
@@ -66,9 +66,9 @@ void AnalogGraph::populate()
 
     grid->attach(this);
 
-    analogHistogram = new Histogram("", QColor(80, 180, 220, 150));
-    analogHistogram->setValues(numberOfAnalogChannels_, analogChannels);
-    analogHistogram->attach(this);
+    analogHistogram_ = new Histogram("", QColor(80, 180, 220, 150));
+    analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
+    analogHistogram_->attach(this);
 
 
 }
@@ -77,14 +77,14 @@ void AnalogGraph::analogTimeOut()
 {
     if (loadAnalogValues())
     {
-        analogHistogram->setValues(numberOfAnalogChannels_, analogChannels);
+        analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
         replot();
     }
 }
 
 void AnalogGraph::setAnalogChannels(int channel, int value)
 {
-    analogChannels[channel] = value;
+    analogChannels_[channel] = value;
 }
 
 int AnalogGraph::loadAnalogValues()
@@ -100,7 +100,7 @@ int AnalogGraph::loadAnalogValues()
         qDebug() << bytesReaded;
             value = buff.section(",", 1, 1).toDouble();
             qDebug() << value;
-            analogChannels[i] = value;
+            analogChannels_[i] = value;
             buff = "";
     }
 

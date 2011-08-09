@@ -24,18 +24,18 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
                   "}");
 
 
-     charge = new BatteryCharge(this);
-     charge->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+     chargeBattery_ = new BatteryCharge(this);
+     chargeBattery_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-     batteryVoltage = new QLabel("0", this);
-     consumption = new QLabel("0", this);
-     ambientTemp = new QLabel("0", this);
-     batteryTemp = new QLabel("0", this);
+     batteryVoltageLabel_ = new QLabel("0", this);
+     consumptionLabel_ = new QLabel("0", this);
+     ambientTempLabel_ = new QLabel("0", this);
+     batteryTempLabel_ = new QLabel("0", this);
 
 
      QHBoxLayout *layout = new QHBoxLayout;
      layout->addWidget(new QLabel("Battery charge level:"));
-     layout->addWidget(charge);
+     layout->addWidget(chargeBattery_);
      layout->setMargin(1);
      layout->setSpacing(10);
      QFrame *fr_BatteryCharge = new QFrame(this);
@@ -43,7 +43,7 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
 
      QHBoxLayout *layout2 = new QHBoxLayout;
      layout2->addWidget(new QLabel("Battery voltage:", this));
-     layout2->addWidget(batteryVoltage);
+     layout2->addWidget(batteryVoltageLabel_);
      layout2->setMargin(0);
      layout2->setSpacing(10);
      QFrame *fr_batVolt = new QFrame(this);
@@ -51,7 +51,7 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
 
      QHBoxLayout *layout3 = new QHBoxLayout;
      layout3->addWidget(new QLabel("Consumption:", this));
-     layout3->addWidget(consumption);
+     layout3->addWidget(consumptionLabel_);
      layout3->setMargin(0);
      layout3->setSpacing(10);
      QFrame *fr_cons = new QFrame(this);
@@ -59,7 +59,7 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
 
      QHBoxLayout *layout4 = new QHBoxLayout;
      layout4->addWidget(new QLabel("Ambient temperature:", this));
-     layout4->addWidget(ambientTemp);
+     layout4->addWidget(ambientTempLabel_);
      layout4->setMargin(0);
      layout4->setSpacing(10);
      QFrame *fr_amb = new QFrame;
@@ -67,7 +67,7 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
 
      QHBoxLayout *layout5 = new QHBoxLayout;
      layout5->addWidget(new QLabel("Battery temperature:", this));
-     layout5->addWidget(batteryTemp);
+     layout5->addWidget(batteryTempLabel_);
      layout5->setMargin(0);
      layout5->setSpacing(10);
      QFrame *fr_bat = new QFrame;

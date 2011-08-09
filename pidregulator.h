@@ -6,26 +6,26 @@
 class QLineEdit;
 class QPushButton;
 
-class PIDRegulator : public QFrame
+class PidRegulator : public QFrame
 {
     Q_OBJECT
 
 public:
-    PIDRegulator(QFrame *parent = 0);
+    PidRegulator(QFrame *parent = 0);
 
 private slots:
     void setSpeed();
     void setPos();
 
 private:
-    QLineEdit *speedProp;
-    QLineEdit *speedInt;
-    QLineEdit *speedDiff;
-    QLineEdit *posProp;
-    QLineEdit *posInt;
-    QLineEdit *posDiff;
-    QPushButton *butSetSpeed;
-    QPushButton *butSetPos;
+    QLineEdit *speedPropEdit_;
+    QLineEdit *speedIntEdit_;
+    QLineEdit *speedDiffEdit_;
+    QLineEdit *posPropEdit_;
+    QLineEdit *posIntEdit_;
+    QLineEdit *posDiffEdit_;
+    QPushButton *butSetSpeedButton_;
+    QPushButton *butSetPosButton_;
 };
 
 #endif // PIDREGULATOR_H

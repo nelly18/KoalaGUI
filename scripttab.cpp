@@ -13,10 +13,10 @@ extern SerialGate sg;
 
 ScriptTab::ScriptTab(QWidget *parent) : QWidget(parent)
 {
-    te_script = new QTextEdit;
-    te_script->setFrameShape(QFrame::Panel);
+    scriptEdit_ = new QTextEdit;
+    scriptEdit_->setFrameShape(QFrame::Panel);
 
-    scriptKoala = new Script;
+    scriptKoala_ = new Script;
 //    scriptKoala->moveToThread(&scriptThread);
 //    scriptThread.start();
 
@@ -27,7 +27,7 @@ ScriptTab::ScriptTab(QWidget *parent) : QWidget(parent)
     connect(cb_readyScripts, SIGNAL(activated(int)), SLOT(slotApplyCode(int)));
     slotApplyCode(0);
 
-    QScriptValue scriptValueKoala = scriptEngine.newQObject(scriptKoala);
+    QScriptValue scriptValueKoala = scriptEngine.newQObject(scriptKoala_);
     scriptEngine.globalObject().setProperty("koala", scriptValueKoala);
 
     QPushButton* pb_eval = new QPushButton("&Evaluate");
@@ -35,7 +35,7 @@ ScriptTab::ScriptTab(QWidget *parent) : QWidget(parent)
 
     QGridLayout* grid = new QGridLayout;
     grid->addWidget(cb_readyScripts, 0, 1, 1, 1);
-    grid->addWidget(te_script, 1, 0, 1, 3);
+    grid->addWidget(scriptEdit_, 1, 0, 1, 3);
     grid->addWidget(pb_eval, 2, 1, 1, 1);
     setLayout(grid);
 }
@@ -52,7 +52,7 @@ void ScriptTab::slotEvaluate()
         return;
     }
 
-    QScriptValue result = scriptEngine.evaluate(te_script->toPlainText());
+    QScriptValue result = scriptEngine.evaluate(scriptEdit_->toPlainText());
     if (result.isError()) {
         QMessageBox::critical(0,
                               "Evaluating error",
@@ -61,7 +61,7 @@ void ScriptTab::slotEvaluate()
                              );
     }
     else
-        scriptKoala->stop();
+        scriptKoala_->stop();
 }
 
 void ScriptTab::slotApplyCode(int n)
@@ -75,5 +75,5 @@ void ScriptTab::slotApplyCode(int n)
 
 
     }
-    te_script->setPlainText(strCode);
+    scriptEdit_->setPlainText(strCode);
 }

@@ -27,7 +27,6 @@ protected:
     virtual void resizeEvent ( QResizeEvent * event );
 
 private:
-    int sensorNumber; //0-7 - left sensors; 8-15 - right sensors
     int sensorValue_;
     QColor color_;
 };

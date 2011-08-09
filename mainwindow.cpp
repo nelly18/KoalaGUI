@@ -32,35 +32,35 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
-    consoleTab = new Console(this);
-    connect(consoleTab, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
-    ui->tabWidget->addTab(consoleTab, "Console");
+    consoleTab_ = new Console(this);
+    connect(consoleTab_, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
+    ui->tabWidget->addTab(consoleTab_, "Console");
 
-    scriptTab = new ScriptTab;
-    ui->tabWidget->addTab(scriptTab, "Script");
+    scriptTab_ = new ScriptTab;
+    ui->tabWidget->addTab(scriptTab_, "Script");
 //    QThread scriptThread;
 //    scriptTab->moveToThread(&scriptThread);
 //    scriptThread.start();
 
-    consoleTimer = new QTimer(this);
-    connect(consoleTimer, SIGNAL(timeout()), this, SLOT(consoleTimeOut()));
+    consoleTimer_ = new QTimer(this);
+    connect(consoleTimer_, SIGNAL(timeout()), this, SLOT(consoleTimeOut()));
 
-    sensorFrame = new ProximitySensorPainter(this);
-    ui->tabWidget->addTab(sensorFrame, "Sensors");
+    sensorFrame_ = new ProximitySensorPainter(this);
+    ui->tabWidget->addTab(sensorFrame_, "Sensors");
 
-    inOutTab = new InputsOutputsTab(this);
-    connect(ui->openButton, SIGNAL(clicked()), inOutTab, SLOT(openPortButtonClicked()));
-    ui->tabWidget->addTab(inOutTab, "I/O signals");
+    inOutTab_ = new InputsOutputsTab(this);
+    connect(ui->openButton, SIGNAL(clicked()), inOutTab_, SLOT(openPortButtonClicked()));
+    ui->tabWidget->addTab(inOutTab_, "I/O signals");
 
-    speedControlTab = new SpeedControl(this);
-    ui->tabWidget->addTab(speedControlTab, "Speed");
+    speedControlTab_ = new SpeedControl(this);
+    ui->tabWidget->addTab(speedControlTab_, "Speed");
 
-    PIDTab = new PIDRegulator;
-    ui->tabWidget->addTab(PIDTab, "PID");
+    pidTab_ = new PidRegulator;
+    ui->tabWidget->addTab(pidTab_, "PID");
 
-    statusBarWidget = new StatusBarWidget(this);
+    statusBarWidget_ = new StatusBarWidget(this);
     //ui->statusBar->addWidget(statusBarWidget, 1);
-    setStatusBar(statusBarWidget->statusBar);
+    setStatusBar(statusBarWidget_->statusBar);
 }
 
 MainWindow::~MainWindow()
@@ -76,38 +76,38 @@ void MainWindow::on_changeTab()
     switch(tab)
     {
         case console:
-            sensorFrame->drawSensorsTimer->stop();
-            inOutTab->analogFrame->analogTimer->stop();
-            inOutTab->manualTimer->stop();
-            consoleTimer->start(timeoutconsole);
+            sensorFrame_->drawSensorsTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->stop();
+            inOutTab_->manualTimer_->stop();
+            consoleTimer_->start(timeOutConsole);
             break;
 
         case script:
-            sensorFrame->drawSensorsTimer->stop();
-            inOutTab->analogFrame->analogTimer->stop();
-            consoleTimer->stop();
+            sensorFrame_->drawSensorsTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->stop();
+            consoleTimer_->stop();
             break;
 
         case proximityS:
-            consoleTimer->stop();
-            inOutTab->analogFrame->analogTimer->stop();
-            sensorFrame->drawSensorsTimer->start(timeoutdrawsens);
+            consoleTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->stop();
+            sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
             break;
 
         case analogS:
-            sensorFrame->drawSensorsTimer->stop();
-            consoleTimer->stop();
-            inOutTab->analogFrame->analogTimer->start(timeoutanalog);
+            sensorFrame_->drawSensorsTimer_->stop();
+            consoleTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
             break;
         case speed:
-            sensorFrame->drawSensorsTimer->stop();
-            inOutTab->analogFrame->analogTimer->stop();
-            consoleTimer->stop();
+            sensorFrame_->drawSensorsTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->stop();
+            consoleTimer_->stop();
             break;
         case PID:
-            sensorFrame->drawSensorsTimer->stop();
-            inOutTab->analogFrame->analogTimer->stop();
-            consoleTimer->stop();
+            sensorFrame_->drawSensorsTimer_->stop();
+            inOutTab_->analogFrame_->analogTimer_->stop();
+            consoleTimer_->stop();
             break;
     }
 
@@ -120,19 +120,19 @@ void MainWindow::on_openButton_clicked()
     QString message;
     if (sg.state)
     {
-        sensorFrame -> drawSensorsTimer -> stop();
-        consoleTimer -> stop();
-        inOutTab -> analogFrame->analogTimer->stop();
-        statusBarWidget->charge->batteryChargeTimer->stop();
+        sensorFrame_ -> drawSensorsTimer_ -> stop();
+        consoleTimer_ -> stop();
+        inOutTab_ -> analogFrame_->analogTimer_->stop();
+        statusBarWidget_->chargeBattery_->batteryChargeTimer_->stop();
 
         sg.close();
 
         ui -> openButton -> setText("Open port");
         message = QString("Serial port COM%1 closed").arg(port);
-        consoleTab->output(message);
-        consoleTab->isLocked = true;
+        consoleTab_->output(message);
+        consoleTab_->isLocked = true;
 
-        sensorFrame->resetSensorsColor();
+        sensorFrame_->resetSensorsColor();
 
         return;
     }
@@ -143,12 +143,12 @@ void MainWindow::on_openButton_clicked()
     if (sg.open(port, speed))
     {
         message = QString("Serial port COM%1 opened").arg(port);
-        consoleTab->isLocked = false;
+        consoleTab_->isLocked = false;
         ui -> openButton -> setText("Close port");
 
         readPIDSettings();
 
-        statusBarWidget->charge->batteryChargeTimer->start(3000);
+        statusBarWidget_->chargeBattery_->batteryChargeTimer_->start(3000);
 
         switch (ui->tabWidget->currentIndex())
         {
@@ -158,10 +158,10 @@ void MainWindow::on_openButton_clicked()
         case script:
             break;
         case proximityS:
-            sensorFrame->drawSensorsTimer->start(timeoutdrawsens);
+            sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
             break;
         case analogS:
-            inOutTab->analogFrame->analogTimer->start(timeoutanalog);
+            inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
             break;
         }
 
@@ -169,10 +169,10 @@ void MainWindow::on_openButton_clicked()
     else
     {
         message = QString("Serial port COM%1 openning error").arg(port);
-        consoleTab->isLocked = true;
+        consoleTab_->isLocked = true;
     }
 
-    consoleTab->output(message);
+    consoleTab_->output(message);
 
 }
 
@@ -181,15 +181,15 @@ void MainWindow::consoleTimeOut(void)
     QString buff;
 
     if(sg.recv(buff, 256))
-        consoleTab->output(buff);
+        consoleTab_->output(buff);
 
 }
 
 void MainWindow::on_actionClearConsole_triggered()
 {
 
-     consoleTab->clear();
-     consoleTab->insertPrompt(false);
+     consoleTab_->clear();
+     consoleTab_->insertPrompt(false);
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -200,9 +200,9 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionColor_palette_triggered()
 {
-    if (colorDialog.exec() == QDialog::Accepted)
+    if (colorDialog_.exec() == QDialog::Accepted)
     {
-        sensorFrame->setColorPalette(colorDialog.palette());
+        sensorFrame_->setColorPalette(colorDialog_.palette());
     }
 }
 
@@ -213,7 +213,7 @@ void MainWindow::on_actionTimeouts_triggered()
 void MainWindow::newCommand(QString command)
 {
     sg.send(QString("%1\n").arg(command));
-    consoleTab->insertPrompt();
+    consoleTab_->insertPrompt();
 }
 
 void MainWindow::readPIDSettings()
