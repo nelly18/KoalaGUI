@@ -17,21 +17,23 @@ class ProximitySensorPainter : public QLabel
 public:
     ProximitySensorPainter(QWidget *parent = 0) ;
     ~ProximitySensorPainter();
+
     void setColorPalette(int palette);
     void resetSensorsColor();
 
 private:
     int loadSensorsValues();
 
+private slots:
+    void proximitySensorTimeOut(void);
+
 public:
     QVector <Sensor *> sensors;
     QTimer *drawSensorsTimer;
+
 private:
     int colorPalette;
     QTableWidget *table;
-
-private slots:
-    void proximitySensorTimeOut(void);
 };
 #endif // PROXIMITYSENSORPAINTER_H
 

@@ -20,6 +20,7 @@ struct Port{
 
 class SerialGate
 {
+
 public:
     enum IN_LINES_NAME {CTS, DSR, RING, RLSD};
     enum OUT_LINES_NAME {DTR, RTS};
@@ -27,6 +28,7 @@ public:
 public:
     SerialGate();
     ~SerialGate();
+
     bool state;
     bool open(const int port, const int baud);
     int send(const char* buff, const int szBuff);

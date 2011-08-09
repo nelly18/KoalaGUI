@@ -13,6 +13,8 @@ class StatusBarWidget : public QWidget
 
 public:
     explicit StatusBarWidget(QWidget *parent = 0);
+
+public:
     BatteryCharge *charge;
     QStatusBar *statusBar;
 

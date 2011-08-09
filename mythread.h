@@ -7,6 +7,7 @@ class MyThread : public QThread
 {
 public:
     MyThread();
+
     void myMsleep(unsigned long msecs);
 };
 

@@ -9,10 +9,10 @@ class Console : public QPlainTextEdit
 
 public:
     explicit Console(QWidget *parent = 0);
+
     void output(QString);
     void scrollDown();
     void insertPrompt(bool insertNewBlock = true);
-    bool isLocked;
 
 signals:
     void onCommand(QString);
@@ -25,15 +25,18 @@ protected:
     void contextMenuEvent(QContextMenuEvent *);
 
 private:
-    QString prompt;
-    QStringList *history;
-    int historyPos;
-
-private:
     void onEnter();
     void historyAdd(QString);
     void historyBack();
     void historyForward();
+
+public:
+    bool isLocked;
+
+private:
+    QString prompt;
+    QStringList *history;
+    int historyPos;
 };
 
 #endif // CONSOLE_H

@@ -13,6 +13,10 @@ class PIDRegulator : public QFrame
 public:
     PIDRegulator(QFrame *parent = 0);
 
+private slots:
+    void setSpeed();
+    void setPos();
+
 private:
     QLineEdit *speedProp;
     QLineEdit *speedInt;
@@ -22,10 +26,6 @@ private:
     QLineEdit *posDiff;
     QPushButton *butSetSpeed;
     QPushButton *butSetPos;
-
-private slots:
-    void setSpeed();
-    void setPos();
 };
 
 #endif // PIDREGULATOR_H

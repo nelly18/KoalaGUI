@@ -27,6 +27,7 @@ public slots:
 public:
     AnalogGraph *analogFrame;
     QTimer *manualTimer;
+
 private:
     QSpinBox *sb_numAnalogInputs;
     QVector <Sensor *> digitalInputs;

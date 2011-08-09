@@ -16,6 +16,7 @@ class ColorPaletteDialog : public QDialog
 public:
     explicit ColorPaletteDialog(QWidget *parent = 0);
     ~ColorPaletteDialog();
+
     int palette();
 
 private:

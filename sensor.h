@@ -15,17 +15,18 @@ public:
 
 public:
     explicit Sensor(int sensor, QWidget *parent = 0);
+
     void setSensorValue(const int val);
     int sensorValue();
     void setColor(QColor c);
     QColor color();
     void evaluateColor(const int palette);
-    void paintEvent(QPaintEvent *);
 
- protected:
+protected:
+    void paintEvent(QPaintEvent *);
     virtual void resizeEvent ( QResizeEvent * event );
 
- private:
+private:
     int sensorNumber; //0-7 - left sensors; 8-15 - right sensors
     int sensorValue_;
     QColor color_;

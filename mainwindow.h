@@ -37,16 +37,6 @@ protected:
 
 private:
     void readPIDSettings();
-    Ui::MainWindow *ui;
-    ColorPaletteDialog colorDialog;
-    Console *consoleTab;
-    QTimer *consoleTimer;
-    ProximitySensorPainter *sensorFrame;
-    SpeedControl *speedControlTab;
-    PIDRegulator *PIDTab;
-    InputsOutputsTab *inOutTab;
-    StatusBarWidget *statusBarWidget;
-    ScriptTab *scriptTab;
 
 private slots:
     void on_openButton_clicked();
@@ -57,6 +47,18 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionTimeouts_triggered();
     void on_actionColor_palette_triggered();
+
+private:
+    Ui::MainWindow *ui;
+    ColorPaletteDialog colorDialog;
+    Console *consoleTab;
+    QTimer *consoleTimer;
+    ProximitySensorPainter *sensorFrame;
+    SpeedControl *speedControlTab;
+    PIDRegulator *PIDTab;
+    InputsOutputsTab *inOutTab;
+    StatusBarWidget *statusBarWidget;
+    ScriptTab *scriptTab;
 };
 
 #endif // MAINWINDOW_H

@@ -10,8 +10,15 @@ class QSlider;
 class SpeedControl : public QFrame
 {
     Q_OBJECT
+
 public:
     SpeedControl(QWidget *parent = 0);
+
+private slots:
+    void setSpeedLeft(int);
+    void setSpeedRight(int);
+    void setTSpeed();
+    void setPWM();
 
 private:
     QDial *leftMotor;
@@ -24,12 +31,6 @@ private:
     QSlider *leftMotorPWM;
     QSlider *rightMotorPWM;
     QPushButton *butSetPWM;
-
-private slots:
-    void setSpeedLeft(int);
-    void setSpeedRight(int);
-    void setTSpeed();
-    void setPWM();
 };
 
 #endif // SPEEDCONTROL_H
