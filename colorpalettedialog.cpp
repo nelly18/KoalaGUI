@@ -14,5 +14,5 @@ ColorPaletteDialog::~ColorPaletteDialog()
 
 int ColorPaletteDialog::palette()
 {
-    return (ui->black->isChecked());
+    return ui->black->isChecked();
 }

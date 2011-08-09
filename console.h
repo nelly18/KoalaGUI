@@ -26,7 +26,7 @@ protected:
 
 private:
     void onEnter();
-    void historyAdd(QString);
+    void historyAdd(const QString &cmd);
     void historyBack();
     void historyForward();
 

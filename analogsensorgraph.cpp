@@ -13,24 +13,23 @@
 
 extern SerialGate sg;
 
-AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
+AnalogGraph::AnalogGraph(QWidget *parent)
+    : QwtPlot(parent), numberOfAnalogChannels_ (6)
 {
     analogTimer_ = new QTimer(this);
     connect(analogTimer_, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
 
-    numberOfAnalogChannels_ = 6;
-    analogChannels_.resize(numberOfAnalogChannels_);
-    analogChannels_.fill(0);
+    analogChannels_.fill(0, numberOfAnalogChannels_);
 
     plotLayout()->setAlignCanvasToScales(true);
 
     QwtText textLeft("Analog value");
     QwtText textBottom("Analog channel");
-    QFont *font = new QFont;
-    font->setPointSize(12);
-    font->setFamily("Arial");
-    textLeft.setFont(*font);
-    textBottom.setFont(*font);
+    QFont font;
+    font.setPointSize(12);
+    font.setFamily("Arial");
+    textLeft.setFont(font);
+    textBottom.setFont(font);
     setAxisTitle(QwtPlot::yLeft, textLeft);
     setAxisTitle(QwtPlot::xBottom, textBottom);
 
@@ -38,19 +37,24 @@ AnalogGraph::AnalogGraph(QWidget *parent):QwtPlot(parent)
     setAxisScale(QwtPlot::yLeft, 0, 1024, 200);
 
     QList<double> ticks[QwtScaleDiv::NTickTypes];
-    for (int i = 0; i <= numberOfAnalogChannels_; i++)
+    for (int i = 0; i <= numberOfAnalogChannels_; i++) {
         ticks[QwtScaleDiv::MajorTick] << i;
+    }
 
     QwtScaleDiv scaleDiv(
-    ticks[QwtScaleDiv::MajorTick].first(),
-    ticks[QwtScaleDiv::MajorTick].last(),
-    ticks );
+                ticks[QwtScaleDiv::MajorTick].first(),
+                ticks[QwtScaleDiv::MajorTick].last(),
+                ticks );
 
     setAxisScaleDiv(QwtPlot::xBottom, scaleDiv);
 
     populate();
     //resize(180, 200);
     replot(); // creating the legend items
+}
+
+AnalogGraph::~AnalogGraph()
+{
 
 }
 
@@ -69,14 +73,11 @@ void AnalogGraph::populate()
     analogHistogram_ = new Histogram("", QColor(80, 180, 220, 150));
     analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
     analogHistogram_->attach(this);
-
-
 }
 
 void AnalogGraph::analogTimeOut()
 {
-    if (loadAnalogValues())
-    {
+    if (loadAnalogValues()) {
         analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
         replot();
     }
@@ -89,30 +90,19 @@ void AnalogGraph::setAnalogChannels(int channel, int value)
 
 int AnalogGraph::loadAnalogValues()
 {
-    QString buff = "";
+    QString buff;
     const int numBytesToRead = 256;
     double value = 0.0;
     int bytesReaded = 0;
-    for (int i = 0; i < numberOfAnalogChannels_; i++)
-    {
+    for (int i = 0; i < numberOfAnalogChannels_; ++i) {
         sg.send(QString("I,%1\n").arg(i));
         bytesReaded = sg.recv(buff, numBytesToRead);
         qDebug() << bytesReaded;
-            value = buff.section(",", 1, 1).toDouble();
-            qDebug() << value;
-            analogChannels_[i] = value;
-            buff = "";
+        value = buff.section(",", 1, 1).toDouble();
+        qDebug() << value;
+        analogChannels_[i] = value;
+        buff.clear ();
     }
 
-return 1;
-}
-
-AnalogGraph::~AnalogGraph()
-{
-
-}
-
-int AnalogGraph::numberOfAnalogChannels()
-{
-    return numberOfAnalogChannels_;
+    return 1;
 }

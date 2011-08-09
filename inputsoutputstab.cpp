@@ -24,25 +24,25 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     connect(manualTimer_, SIGNAL(timeout()), this, SLOT(manualTimeOut()));
 
     QHBoxLayout *lay_digitalInputs = new QHBoxLayout;
-    for (int i = 0; i < numberOfDigitalInputs; i++)
-    {
+    for (int i = 0; i < numberOfDigitalInputs; ++i) {
         Sensor *s = new Sensor(i);
         digitalInputs_ << s;
-        lay_digitalInputs->addWidget(digitalInputs_.at(i));
-        if (i != numberOfDigitalInputs - 1)
+        lay_digitalInputs->addWidget(s);
+        if (i != numberOfDigitalInputs - 1) {
             lay_digitalInputs->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
+        }
     }
     QGroupBox *group_digitalInputs = new QGroupBox("Digital inputs");
     group_digitalInputs->setLayout(lay_digitalInputs);
 
     QGridLayout *grid_outputs = new QGridLayout;
-    QCheckBox *checkBox;
+    QCheckBox *checkBox = 0;
     const QString name = "Set state of digital output %1";
-    for ( int i = 0 ; i < numberOfDigitalOutputs; ++i)
-    {
+    for ( int i = 0 ; i < numberOfDigitalOutputs; ++i) {
         checkBox = new QCheckBox ( name.arg(i + 1 ));
         checkBox->setEnabled(false);
-        connect( checkBox, SIGNAL (stateChanged( int )), this , SLOT (digitalOutputStateChanged( int )));
+        connect( checkBox, SIGNAL (stateChanged( int )),
+                 this , SLOT (digitalOutputStateChanged( int )));
         digitalOutputCheck_.push_back (checkBox);
         grid_outputs->addWidget(digitalOutputCheck_.at(i), i, 0, Qt::AlignLeft);
     }
@@ -50,8 +50,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QGroupBox *group_digitalOutputs = new QGroupBox("Digital outputs");
     group_digitalOutputs->setLayout(grid_outputs);
 
-    for (int i = 0; i < analogFrame_->numberOfAnalogChannels(); i ++)
-    {
+    for (int i = 0; i < analogFrame_->numberOfAnalogChannels(); ++i) {
         QLineEdit *le = new QLineEdit("100");
         maxSpeedEdit_ << le;
         QLineEdit *le2 = new QLineEdit("0");
@@ -62,10 +61,16 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     grid_manualControl->addWidget(new QLabel("Number of analog input:"), 0, 0);
     grid_manualControl->addWidget(new QLabel("Set maximum speed"), 1, 0);
     grid_manualControl->addWidget(new QLabel("Set shift"), 2, 0);
+
     QVector <QString> numbers;
-    numbers << QString("1st") << QString("2d") << QString("3d") << QString("4th") << QString("5th") << QString("6th");
-    for (int i = 0; i < analogFrame_->numberOfAnalogChannels(); i ++)
-    {
+    numbers << QString("1st")
+            << QString("2d")
+            << QString("3d")
+            << QString("4th")
+            << QString("5th")
+            << QString("6th");
+
+    for (int i = 0; i < analogFrame_->numberOfAnalogChannels(); ++i) {
         grid_manualControl->addWidget(new QLabel(numbers.at(i)), 0, i + 1, Qt::AlignHCenter|Qt::AlignVCenter);
         grid_manualControl->addWidget(maxSpeedEdit_.at(i), 1, i + 1, Qt::AlignVCenter);
         grid_manualControl->addWidget(shiftEdit_.at(i), 2, i + 1, Qt::AlignVCenter);
@@ -79,7 +84,6 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QGroupBox *group_manual = new QGroupBox("Manual control");
     group_manual->setLayout(grid_manualControl);
 
-
     QGridLayout *grid = new QGridLayout(this);
     grid->addWidget(analogFrame_, 0, 0, 3, 2);
     grid->addWidget(group_digitalInputs, 2, 2);
@@ -91,44 +95,40 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
 
 void InputsOutputsTab::startManualControl()
 {
-    if (!sg.state)
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (!sg.state) {
+        QMessageBox::information (this, "", "Open serial port first");
         return;
     }
 
     static bool manual = false;
-    if (manual)
-    {
-        manual = false;
+
+    if (manual) {
         startButton_->setText("Start");
         manualTimer_->stop();
         sg.send("D,0,0\n");
-    }
-    else
-    {
-        manual = true;
+    } else {
         startButton_->setText("Stop");
         sg.send("D,0,0\n");
         manualTimer_->start(60);
     }
+
+    manual = !manual;
 }
 
 void InputsOutputsTab::manualTimeOut()
 {
     sg.send(QString("I,1\n"));
-    QString buff = "";
+    QString buff;
     const int numBytesToRead = 4;
     sg.recv(buff, numBytesToRead);
-    int speedLeft = shiftEdit_.at(0)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(0)->text().toInt();
+    const int speedLeft = shiftEdit_.at(0)->text().toInt()
+            + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(0)->text().toInt();
 
     sg.send(QString("I,0\n"));
-    buff = "";
+    buff.clear ();
     sg.recv(buff, numBytesToRead);
-    int speedRight = shiftEdit_.at(1)->text().toInt() + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(1)->text().toInt();
+    const int speedRight = shiftEdit_.at(1)->text().toInt()
+            + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(1)->text().toInt();
 
     sg.send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
 }
@@ -136,20 +136,16 @@ void InputsOutputsTab::manualTimeOut()
 void InputsOutputsTab::digitalOutputStateChanged(int state)
 {
     QCheckBox *box = qobject_cast <QCheckBox*> (sender ());
-    int text = box->text().right(1).toInt() - 1;
+    Q_CHECK_PTR (box);
 
-    if (state)
-        sg.send(QString("Q,%1,1\n").arg(text));
-     else
-        sg.send(QString("Q,%1,0\n").arg(text));
+    const int text = box->text().right(1).toInt() - 1;
+
+    sg.send(QString("Q,%1,%2\n").arg(text).arg (state ? 1 : 0));
 }
 
 void InputsOutputsTab::openPortButtonClicked()
 {
-    if (sg.state)
-        for (int i = 0; i < numberOfDigitalOutputs; i++ )
-            digitalOutputCheck_.at(i)->setEnabled(true);
-    else
-        for (int i = 0; i < numberOfDigitalOutputs; i++ )
-            digitalOutputCheck_.at(i)->setEnabled(false);
+    for (int i = 0; i < numberOfDigitalOutputs; ++i) {
+        digitalOutputCheck_.at(i)->setEnabled(sg.state);
+    }
 }

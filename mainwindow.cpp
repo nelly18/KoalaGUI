@@ -28,7 +28,8 @@
 SerialGate sg;
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -70,10 +71,11 @@ MainWindow::~MainWindow()
 }
 void MainWindow::on_changeTab()
 {
-    if (!sg.state) return;
-    Tabs tab = (Tabs)ui->tabWidget->currentIndex();
+    if (!sg.state) {
+        return;
+    }
 
-    switch(tab)
+    switch(ui->tabWidget->currentIndex())
     {
         case console:
             sensorFrame_->drawSensorsTimer_->stop();
@@ -118,8 +120,7 @@ void MainWindow::on_openButton_clicked()
     const int port = ui-> cbPort ->currentIndex() + 1;
 
     QString message;
-    if (sg.state)
-    {
+    if (sg.state) {
         sensorFrame_ -> drawSensorsTimer_ -> stop();
         consoleTimer_ -> stop();
         inOutTab_ -> analogFrame_->analogTimer_->stop();
@@ -137,11 +138,9 @@ void MainWindow::on_openButton_clicked()
         return;
     }
 
-    const QString qsSpeed = ui -> cbSpeed -> currentText();
-    const int speed = qsSpeed.section(":", 1).toInt();
+    const int speed = ui -> cbSpeed -> currentText().section(":", 1).toInt();
 
-    if (sg.open(port, speed))
-    {
+    if (sg.open(port, speed)) {
         message = QString("Serial port COM%1 opened").arg(port);
         consoleTab_->isLocked = false;
         ui -> openButton -> setText("Close port");
@@ -150,58 +149,52 @@ void MainWindow::on_openButton_clicked()
 
         statusBarWidget_->chargeBattery_->batteryChargeTimer_->start(3000);
 
-        switch (ui->tabWidget->currentIndex())
-        {
-        case console:
-            //consoleTimer-> start(timeoutconsole);
-            break;
-        case script:
-            break;
-        case proximityS:
-            sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
-            break;
-        case analogS:
-            inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
-            break;
+        switch (ui->tabWidget->currentIndex()) {
+            case console:
+                //consoleTimer-> start(timeoutconsole);
+                break;
+            case script:
+                break;
+            case proximityS:
+                sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
+                break;
+            case analogS:
+                inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
+                break;
         }
-
-    }
-    else
-    {
+    } else {
         message = QString("Serial port COM%1 openning error").arg(port);
         consoleTab_->isLocked = true;
     }
 
     consoleTab_->output(message);
-
 }
 
 void MainWindow::consoleTimeOut(void)
 {
     QString buff;
 
-    if(sg.recv(buff, 256))
+    if(sg.recv(buff, 256)) {
         consoleTab_->output(buff);
+    }
 
 }
 
 void MainWindow::on_actionClearConsole_triggered()
 {
-
      consoleTab_->clear();
      consoleTab_->insertPrompt(false);
 }
 
 void MainWindow::on_actionQuit_triggered()
 {
-     QApplication::quit();
+    QApplication::quit();
 }
 
 
 void MainWindow::on_actionColor_palette_triggered()
 {
-    if (colorDialog_.exec() == QDialog::Accepted)
-    {
+    if (colorDialog_.exec()) {
         sensorFrame_->setColorPalette(colorDialog_.palette());
     }
 }
@@ -210,6 +203,7 @@ void MainWindow::on_actionTimeouts_triggered()
 {
 
 }
+
 void MainWindow::newCommand(QString command)
 {
     sg.send(QString("%1\n").arg(command));
@@ -219,27 +213,25 @@ void MainWindow::newCommand(QString command)
 void MainWindow::readPIDSettings()
 {
     QFile file("PIDsettings.txt");
-    if (!file.open (QFile::ReadOnly))
-    {
+    if (!file.open (QFile::ReadOnly)) {
         QMessageBox::information (this, "", "PID settings file opening error");
         return;
     }
+
     QTextStream stream ( &file );
-    QString line, line2;
+    QString line;
+    QString line2;
     bool flag = true;
-    do
-    {
-         line = stream.readLine();
-         if (line.contains(":"))
-         {
-             line2 = line.section(":", 1);
-             if (flag)
-             {
-                 sg.send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
-                 flag = false;
-             }
-             else
-                 sg.send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
-         }
+    do {
+        line = stream.readLine();
+        if (line.contains(":")) {
+            line2 = line.section(":", 1);
+            if (flag) {
+                sg.send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                flag = false;
+             } else {
+                sg.send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+            }
+        }
     } while (!line.isNull());
 }

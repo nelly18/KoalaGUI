@@ -11,7 +11,8 @@
 
 extern SerialGate sg;
 
-PidRegulator::PidRegulator(QFrame *parent) : QFrame(parent)
+PidRegulator::PidRegulator(QFrame *parent)
+    : QFrame(parent)
 {
     QLabel *pic = new QLabel;
     pic->setPixmap(QPixmap(":/res/PID.png"));
@@ -82,27 +83,19 @@ PidRegulator::PidRegulator(QFrame *parent) : QFrame(parent)
 
 void PidRegulator::setSpeed()
 {
-    if (sg.state)
+    if (sg.state) {
         sg.send(QString("A,%1,%2,%3\n").arg(speedPropEdit_->text()).arg(speedIntEdit_->text()).arg(speedDiffEdit_->text()));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
 
 void PidRegulator::setPos()
 {
-    if (sg.state)
+    if (sg.state) {
         sg.send(QString("F,%1,%2,%3\n").arg(posPropEdit_->text()).arg(posIntEdit_->text()).arg(posDiffEdit_->text()));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
 

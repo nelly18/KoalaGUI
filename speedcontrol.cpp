@@ -160,64 +160,39 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
 
 void SpeedControl::setSpeedLeft(int speed)
 {
-    int rightSpeed = rightMotorDial_->value();
-
-    if (sg.state)
-        sg.send(QString("D,%1,%2\n").arg(speed).arg(rightSpeed));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (sg.state) {
+        sg.send(QString("D,%1,%2\n").arg(speed).arg(rightMotorDial_->value()));
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
 
 void SpeedControl::setSpeedRight(int speed)
 {
-    int leftSpeed = leftMotorDial_->value();
-
-    if (sg.state)
-        sg.send(QString("D,%1,%2\n").arg(leftSpeed).arg(speed));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (sg.state) {
+        sg.send(QString("D,%1,%2\n").arg(leftMotorDial_->value()).arg(speed));
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
 
 void SpeedControl::setTSpeed()
 {
-    int leftMaxSpeedValue = leftMaxSpeedSlider_->value();
-    int leftAccValue = leftAccSlider_->value();
-    int rightMaxSpeedValue = rightMaxSpeedSlider_->value();
-    int rightAccValue = rightAccSlider_->value();
-
-    if (sg.state)
-        sg.send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedValue).arg(leftAccValue).arg(rightMaxSpeedValue).arg(rightAccValue));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (sg.state) {
+        sg.send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedSlider_->value())
+                .arg(leftAccSlider_->value())
+                .arg(rightMaxSpeedSlider_->value())
+                .arg(rightAccSlider_->value()));
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
 
 void SpeedControl::setPWM()
 {
-    int leftMotorPWMValue = leftMotorPwmSlider_->value();
-    int rightMotorPWMValue = rightMotorPwmSlider_->value();
-
-    if (sg.state)
-        sg.send(QString("P,%1,%2\n").arg(leftMotorPWMValue).arg(rightMotorPWMValue));
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (sg.state) {
+        sg.send(QString("P,%1,%2\n").arg(leftMotorPwmSlider_->value()).arg(rightMotorPwmSlider_->value()));
+    } else {
+        QMessageBox::information (this, "", "Open serial port first");
     }
 }
