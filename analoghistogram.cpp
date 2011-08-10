@@ -2,8 +2,8 @@
 
 #include "analoghistogram.h"
 
-Histogram::Histogram(const QString &title, const QColor &symbolColor):
-    QwtPlotHistogram(title)
+Histogram::Histogram(const QString &title, const QColor &symbolColor)
+    : QwtPlotHistogram(title)
 {
     setStyle(QwtPlotHistogram::Columns);
     setColor(symbolColor);
@@ -11,16 +11,14 @@ Histogram::Histogram(const QString &title, const QColor &symbolColor):
 
 void Histogram::setColor(const QColor &symbolColor)
 {
-    QColor color = symbolColor;
     setPen(QPen(Qt::black));
-    setBrush(QBrush(color));
+    setBrush(symbolColor);
 
     QwtColumnSymbol *symbol = new QwtColumnSymbol(QwtColumnSymbol::Box);
     symbol->setFrameStyle(QwtColumnSymbol::Raised);
     symbol->setLineWidth(2);
-    symbol->setPalette(QPalette(color));
+    symbol->setPalette(symbolColor);
     setSymbol(symbol);
-
 }
 
 void Histogram::setValues(int numValues, const QVector<double> &values)

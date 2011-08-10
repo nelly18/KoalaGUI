@@ -11,7 +11,8 @@
 
 extern SerialGate sg;
 
-ScriptTab::ScriptTab(QWidget *parent) : QWidget(parent)
+ScriptTab::ScriptTab(QWidget *parent)
+    : QWidget(parent)
 {
     scriptEdit_ = new QTextEdit;
     scriptEdit_->setFrameShape(QFrame::Panel);
@@ -43,37 +44,31 @@ ScriptTab::ScriptTab(QWidget *parent) : QWidget(parent)
 
 void ScriptTab::slotEvaluate()
 {
-    if (!sg.state)
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Open serial port first");
-        msgBox.exec();
+    if (!sg.state) {
+        QMessageBox::information (this, "", "Open serial port first");
         return;
     }
 
-    QScriptValue result = scriptEngine.evaluate(scriptEdit_->toPlainText());
+    const QScriptValue result = scriptEngine.evaluate(scriptEdit_->toPlainText());
     if (result.isError()) {
         QMessageBox::critical(0,
                               "Evaluating error",
                               result.toString(),
-                              QMessageBox::Yes
-                             );
-    }
-    else
+                              QMessageBox::Yes);
+    } else {
         scriptKoala_->stop();
+    }
 }
 
 void ScriptTab::slotApplyCode(int n)
 {
     QString strCode;
+
     switch (n) {
-    case 0:
-        strCode = "koala.setSpeed(10, 10);\n";
-        strCode += "koala.forward(100);\n";
-        break;
-
-
+        case 0:
+            strCode = "koala.setSpeed(10, 10);\n"
+                    "koala.forward(100);\n";
+            break;
     }
     scriptEdit_->setPlainText(strCode);
 }

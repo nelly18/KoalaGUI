@@ -19,17 +19,18 @@ ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
     connect(drawSensorsTimer_, SIGNAL(timeout()), this, SLOT(proximitySensorTimeOut()));
 
     QVector <QPoint> points;
-    points << QPoint(117, 7) << QPoint(87, 10) << QPoint(56, 18) << QPoint(30, 37)<<
-              QPoint(20, 99) << QPoint(20, 178) << QPoint(32, 244) << QPoint(94, 248) <<
-              QPoint(147, 7) << QPoint(178, 10) << QPoint(206, 18) << QPoint(232, 37) <<
-              QPoint(242, 98) << QPoint(242, 176) << QPoint(232, 244) << QPoint(168, 248);
+    points << QPoint(117, 7) << QPoint(87, 10) << QPoint(56, 18)
+           << QPoint(30, 37) << QPoint(20, 99) << QPoint(20, 178)
+           << QPoint(32, 244) << QPoint(94, 248) << QPoint(147, 7)
+           << QPoint(178, 10) << QPoint(206, 18) << QPoint(232, 37)
+           << QPoint(242, 98) << QPoint(242, 176) << QPoint(232, 244)
+           << QPoint(168, 248);
 
     QLabel *l = new QLabel(this);
 
     l->setStyleSheet("background-image: url(:/res/koalaSkeleton.PNG);" "background-position: 0, 0;" "background-repeat: no-repeat;");
 
-    for(int i = 0; i < numberOfProximitySensors; i++)
-    {
+    for(int i = 0; i < numberOfProximitySensors; ++i) {
         Sensor *s = new Sensor(i, l);
         s->move (points.at(i));
         s->resize (20, 20);
@@ -43,16 +44,19 @@ ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
     table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table_->setAutoScroll(false);
     table_->setFrameShape(QFrame::NoFrame);
+
     QFont font;
     font.setPointSize(10);
     table_->setFont(font);
 
-    QStringList list = (QStringList()<< "Left side" << "Right side");
+    QStringList list;
+    list << "Left side" << "Right side";
     table_->setHorizontalHeaderLabels(list);
-    for (int i = 0; i < numberOfProximitySensors; i++)
-    {
-        for (int j = 0; j < 2; j++)
+
+    for (int i = 0; i < numberOfProximitySensors; ++i) {
+        for (int j = 0; j < 2; ++j) {
             table_->setItem(i, j, new QTableWidgetItem("0"));
+        }
     }
 
     //QGroupBox *group = new QGroupBox(this);
@@ -78,35 +82,33 @@ int ProximitySensorPainter::loadSensorsValues()
 {
     sg.send("N\n");
 
-    QString buff = "";
+    QString buff;
     const int numBytesToRead = 256;
     sg.recv(buff, numBytesToRead);
 
-    int num; QString sNum;
-    for(int i = 0; i < numberOfProximitySensors; i++)
-    {
+    int num = 0;
+    QString sNum;
+    for(int i = 0; i < numberOfProximitySensors; ++i) {
         sNum = buff.section(",", i + 1, i + 1);
         num = sNum.toInt();
         sensors_[i]->setSensorValue(num);
     }
 
-return 1;
+    return 1;
 }
 
 void ProximitySensorPainter::proximitySensorTimeOut()
 {
-    if (!sg.state) return;
+    if (!sg.state || !loadSensorsValues()) {
+        return;
+    }
 
-    if (!loadSensorsValues()) return;
-
-    for(int i = 0; i < numberOfProximitySensors; i++)
-    {
+    for(int i = 0; i < numberOfProximitySensors; ++i) {
         sensors_.at(i)->evaluateColor(colorPalette_);
     }
-    for (int i = 0, k = 0; i < 2; i++)
-    {
-        for (int j = 0; j < numberOfProximitySensors / 2; j++, k++)
-        {
+
+    for (int i = 0, k = 0; i < 2; ++i) {
+        for (int j = 0; j < numberOfProximitySensors / 2; ++j, ++k) {
             QTableWidgetItem *item = table_->item(j, i);
             item->setText(QString("%1").arg(sensors_.at(k)->sensorValue()));
             sensors_.at(k)->update();
@@ -122,9 +124,9 @@ void ProximitySensorPainter::setColorPalette(int palette)
 
 void ProximitySensorPainter::resetSensorsColor()
 {
-    for(int i = 0; i < numberOfProximitySensors; ++i)
-    {
+    for(int i = 0; i < numberOfProximitySensors; ++i) {
         sensors_.at(i)->setColor(QColor(220, 220, 220));
     }
+
     update();
 }

@@ -15,7 +15,9 @@ public:
 
     int loadAnalogValues();
     void setAnalogChannels(int channel, int value);
-    int numberOfAnalogChannels();
+    int numberOfAnalogChannels() {
+        return numberOfAnalogChannels_;
+    }
 
 public slots:
     void analogTimeOut();

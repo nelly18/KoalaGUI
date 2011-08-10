@@ -6,7 +6,8 @@
 
 #include "statusbarwidget.h"
 
-StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
+StatusBarWidget::StatusBarWidget(QWidget *parent)
+    : QWidget(parent)
 {
     statusBar = new QStatusBar(this);
     statusBar->setStyleSheet("QStatusBar {"
@@ -21,7 +22,6 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
                   "border-left: 1px ridge gray;"
                   "}");
 
-
      chargeBattery_ = new BatteryCharge(this);
      chargeBattery_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
@@ -29,7 +29,6 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
      consumptionLabel_ = new QLabel("0", this);
      ambientTempLabel_ = new QLabel("0", this);
      batteryTempLabel_ = new QLabel("0", this);
-
 
      QHBoxLayout *layout = new QHBoxLayout;
      layout->addWidget(new QLabel("Battery charge level:"));
