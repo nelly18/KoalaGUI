@@ -16,9 +16,10 @@ SerialGate* SerialGate::instance()
 
 SerialGate::~SerialGate()
 {
-    this->close();
-    if(instance_ == this)
-       instance_ = 0;
+    if(instance_ == this) {
+        close();
+        instance_ = 0;
+    }
 }
 
 bool SerialGate::open(int port, int baud)
