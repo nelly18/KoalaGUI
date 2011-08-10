@@ -14,7 +14,7 @@
 
 #include "inputsoutputstab.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QWidget(parent)
@@ -95,7 +95,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
 
 void InputsOutputsTab::startManualControl()
 {
-    if (!sg.state) {
+    if (!SerialGate::instance()->state) {
         QMessageBox::information (this, "", "Open serial port first");
         return;
     }
@@ -105,10 +105,10 @@ void InputsOutputsTab::startManualControl()
     if (manual) {
         startButton_->setText("Start");
         manualTimer_->stop();
-        sg.send("D,0,0\n");
+        SerialGate::instance()->send("D,0,0\n");
     } else {
         startButton_->setText("Stop");
-        sg.send("D,0,0\n");
+        SerialGate::instance()->send("D,0,0\n");
         manualTimer_->start(60);
     }
 
@@ -117,20 +117,20 @@ void InputsOutputsTab::startManualControl()
 
 void InputsOutputsTab::manualTimeOut()
 {
-    sg.send(QString("I,1\n"));
+    SerialGate::instance()->send(QString("I,1\n"));
     QString buff;
     const int numBytesToRead = 4;
-    sg.recv(buff, numBytesToRead);
+    SerialGate::instance()->recv(buff, numBytesToRead);
     const int speedLeft = shiftEdit_.at(0)->text().toInt()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(0)->text().toInt();
 
-    sg.send(QString("I,0\n"));
+    SerialGate::instance()->send(QString("I,0\n"));
     buff.clear ();
-    sg.recv(buff, numBytesToRead);
+    SerialGate::instance()->recv(buff, numBytesToRead);
     const int speedRight = shiftEdit_.at(1)->text().toInt()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(1)->text().toInt();
 
-    sg.send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
+    SerialGate::instance()->send(QString("D,%1,%2\n").arg(speedLeft).arg(speedRight));
 }
 
 void InputsOutputsTab::digitalOutputStateChanged(int state)
@@ -140,12 +140,12 @@ void InputsOutputsTab::digitalOutputStateChanged(int state)
 
     const int text = box->text().right(1).toInt() - 1;
 
-    sg.send(QString("Q,%1,%2\n").arg(text).arg (state ? 1 : 0));
+    SerialGate::instance()->send(QString("Q,%1,%2\n").arg(text).arg (state ? 1 : 0));
 }
 
 void InputsOutputsTab::openPortButtonClicked()
 {
     for (int i = 0; i < numberOfDigitalOutputs; ++i) {
-        digitalOutputCheck_.at(i)->setEnabled(sg.state);
+        digitalOutputCheck_.at(i)->setEnabled(SerialGate::instance()->state);
     }
 }

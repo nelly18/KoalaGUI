@@ -9,7 +9,7 @@
 
 #include "pidregulator.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 PidRegulator::PidRegulator(QFrame *parent)
     : QFrame(parent)
@@ -83,8 +83,8 @@ PidRegulator::PidRegulator(QFrame *parent)
 
 void PidRegulator::setSpeed()
 {
-    if (sg.state) {
-        sg.send(QString("A,%1,%2,%3\n").arg(speedPropEdit_->text()).arg(speedIntEdit_->text()).arg(speedDiffEdit_->text()));
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("A,%1,%2,%3\n").arg(speedPropEdit_->text()).arg(speedIntEdit_->text()).arg(speedDiffEdit_->text()));
     } else {
         QMessageBox::information (this, "", "Open serial port first");
     }
@@ -92,8 +92,8 @@ void PidRegulator::setSpeed()
 
 void PidRegulator::setPos()
 {
-    if (sg.state) {
-        sg.send(QString("F,%1,%2,%3\n").arg(posPropEdit_->text()).arg(posIntEdit_->text()).arg(posDiffEdit_->text()));
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("F,%1,%2,%3\n").arg(posPropEdit_->text()).arg(posIntEdit_->text()).arg(posDiffEdit_->text()));
     } else {
         QMessageBox::information (this, "", "Open serial port first");
     }

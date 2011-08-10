@@ -9,7 +9,7 @@
 
 #include "scripttab.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 ScriptTab::ScriptTab(QWidget *parent)
     : QWidget(parent)
@@ -44,7 +44,7 @@ ScriptTab::ScriptTab(QWidget *parent)
 
 void ScriptTab::slotEvaluate()
 {
-    if (!sg.state) {
+    if (!SerialGate::instance()->state) {
         QMessageBox::information (this, "", "Open serial port first");
         return;
     }

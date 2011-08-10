@@ -5,7 +5,7 @@
 
 #include "script.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 Script::Script(QObject *parent) :
     QObject(parent), speedLeft_ (0), speedRight_ (0), minSpeed_ (0)
@@ -19,13 +19,13 @@ void Script::setSpeed(int leftMotor, int rightMotor)
     speedLeft_ = leftMotor;
     speedRight_ = rightMotor;
     minSpeed_ = qMin(leftMotor, rightMotor);
-    sg.send(QString("D,%1,%2\n").arg(leftMotor).arg(rightMotor));
+    SerialGate::instance()->send(QString("D,%1,%2\n").arg(leftMotor).arg(rightMotor));
     qDebug() << thread();
 }
 
 void Script::stop()
 {
-    sg.send(QString("D,0,0\n"));
+    SerialGate::instance()->send(QString("D,0,0\n"));
 }
 
 void Script::forward(int distance)
@@ -33,7 +33,7 @@ void Script::forward(int distance)
     Q_UNUSED (distance);
     //int speed = minSpeed_ * 3;
     //int time = distance * 100 / speed;
-    sg.send(QString("D,%1,%1\n").arg(minSpeed_));
+    SerialGate::instance()->send(QString("D,%1,%1\n").arg(minSpeed_));
     scriptThread_.wait(5000);
 
 }

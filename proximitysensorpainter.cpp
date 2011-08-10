@@ -11,7 +11,7 @@
 
 #include "proximitysensorpainter.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
 {
@@ -80,11 +80,11 @@ ProximitySensorPainter::~ProximitySensorPainter()
 
 int ProximitySensorPainter::loadSensorsValues()
 {
-    sg.send("N\n");
+    SerialGate::instance()->send("N\n");
 
     QString buff;
     const int numBytesToRead = 256;
-    sg.recv(buff, numBytesToRead);
+    SerialGate::instance()->recv(buff, numBytesToRead);
 
     int num = 0;
     QString sNum;
@@ -99,7 +99,7 @@ int ProximitySensorPainter::loadSensorsValues()
 
 void ProximitySensorPainter::proximitySensorTimeOut()
 {
-    if (!sg.state || !loadSensorsValues()) {
+    if (!SerialGate::instance()->state || !loadSensorsValues()) {
         return;
     }
 

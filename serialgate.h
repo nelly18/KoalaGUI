@@ -19,9 +19,8 @@ public:
     enum OUT_LINES_NAME {DTR, RTS};
 
 public:
-    SerialGate();
+    static SerialGate* instance();
     ~SerialGate();
-
     bool state;
     bool open(const int port, const int baud);
     int send(const char* buff, const int szBuff);
@@ -33,10 +32,15 @@ public:
     void close();
     void clean();
 
+protected:
+    SerialGate();
+
 private:
+    static SerialGate* instance_;
 #ifdef Q_WS_WIN
         HANDLE hFile_;
 #endif //Q_WS_WIN
 };
 
 #endif // SERIALGATE_H
+

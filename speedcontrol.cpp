@@ -14,7 +14,7 @@
 
 #include "speedcontrol.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 const int minrange = -100;
 const int maxrange = 100;
@@ -160,8 +160,8 @@ SpeedControl::SpeedControl(QWidget *parent) : QFrame(parent)
 
 void SpeedControl::setSpeedLeft(int speed)
 {
-    if (sg.state) {
-        sg.send(QString("D,%1,%2\n").arg(speed).arg(rightMotorDial_->value()));
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("D,%1,%2\n").arg(speed).arg(rightMotorDial_->value()));
     } else {
         QMessageBox::information (this, "", "Open serial port first");
     }
@@ -169,8 +169,8 @@ void SpeedControl::setSpeedLeft(int speed)
 
 void SpeedControl::setSpeedRight(int speed)
 {
-    if (sg.state) {
-        sg.send(QString("D,%1,%2\n").arg(leftMotorDial_->value()).arg(speed));
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("D,%1,%2\n").arg(leftMotorDial_->value()).arg(speed));
     } else {
         QMessageBox::information (this, "", "Open serial port first");
     }
@@ -178,8 +178,8 @@ void SpeedControl::setSpeedRight(int speed)
 
 void SpeedControl::setTSpeed()
 {
-    if (sg.state) {
-        sg.send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedSlider_->value())
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("J,%1,%2,%3,%4\n").arg(leftMaxSpeedSlider_->value())
                 .arg(leftAccSlider_->value())
                 .arg(rightMaxSpeedSlider_->value())
                 .arg(rightAccSlider_->value()));
@@ -190,8 +190,8 @@ void SpeedControl::setTSpeed()
 
 void SpeedControl::setPWM()
 {
-    if (sg.state) {
-        sg.send(QString("P,%1,%2\n").arg(leftMotorPwmSlider_->value()).arg(rightMotorPwmSlider_->value()));
+    if (SerialGate::instance()->state) {
+        SerialGate::instance()->send(QString("P,%1,%2\n").arg(leftMotorPwmSlider_->value()).arg(rightMotorPwmSlider_->value()));
     } else {
         QMessageBox::information (this, "", "Open serial port first");
     }

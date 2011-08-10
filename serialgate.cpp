@@ -5,7 +5,21 @@
 #endif //Q_WS_WIN32
 
 #include "serialgate.h"
+SerialGate* SerialGate::instance_ = 0;
+SerialGate* SerialGate::instance()
+{
+    if (instance_ == 0) {
+        instance_ = new SerialGate;
+    }
+    return instance_;
+}
 
+SerialGate::~SerialGate()
+{
+    this->close();
+    if(instance_ == this)
+       instance_ = 0;
+}
 
 bool SerialGate::open(int port, int baud)
 {
@@ -52,11 +66,6 @@ bool SerialGate::open(int port, int baud)
 SerialGate::SerialGate()
 {
     this->state = false;
-}
-
-SerialGate::~SerialGate()
-{
-    this->close();
 }
 
 void SerialGate::close()
@@ -188,3 +197,6 @@ int SerialGate::send(const QString &str)
 {
     return send(str.toAscii().data(), str.size ());
 }
+
+
+

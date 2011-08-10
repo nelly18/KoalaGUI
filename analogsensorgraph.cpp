@@ -11,7 +11,7 @@
 
 #include "analogsensorgraph.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
@@ -95,8 +95,8 @@ int AnalogGraph::loadAnalogValues()
     double value = 0.0;
     int bytesReaded = 0;
     for (int i = 0; i < numberOfAnalogChannels_; ++i) {
-        sg.send(QString("I,%1\n").arg(i));
-        bytesReaded = sg.recv(buff, numBytesToRead);
+        SerialGate::instance()->send(QString("I,%1\n").arg(i));
+        bytesReaded = SerialGate::instance()->recv(buff, numBytesToRead);
         qDebug() << bytesReaded;
         value = buff.section(",", 1, 1).toDouble();
         qDebug() << value;

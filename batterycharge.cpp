@@ -4,7 +4,7 @@
 
 #include "batterycharge.h"
 
-extern SerialGate sg;
+//extern SerialGate serialGate;
 
 BatteryCharge::BatteryCharge(QWidget *parent)
     : QProgressBar(parent)
@@ -22,10 +22,10 @@ BatteryCharge::BatteryCharge(QWidget *parent)
 }
 void BatteryCharge::batteryChargeTimerTimeOut()
 {
-    sg.send(QString("S\n"));
+    SerialGate::instance()->send(QString("S\n"));
     QString buff;
     const int numBytesToRead = 10;
-    sg.recv(buff, numBytesToRead);
+    SerialGate::instance()->recv(buff, numBytesToRead);
     const int batteryLevel = buff.toInt();
 
     const double colorSection = 4.66666666666;

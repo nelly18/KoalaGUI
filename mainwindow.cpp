@@ -25,8 +25,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-SerialGate sg;
-
+//SerialGate *serialGate = SerialGate::Instance();
+//SerialGate SerialGate::instance();
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -71,7 +71,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::on_changeTab()
 {
-    if (!sg.state) {
+    if (!SerialGate::instance()->state) {
         return;
     }
 
@@ -120,13 +120,13 @@ void MainWindow::on_openButton_clicked()
     const int port = ui-> cbPort ->currentIndex() + 1;
 
     QString message;
-    if (sg.state) {
+    if (SerialGate::instance()->state) {
         sensorFrame_ -> drawSensorsTimer_ -> stop();
         consoleTimer_ -> stop();
         inOutTab_ -> analogFrame_->analogTimer_->stop();
         statusBarWidget_->chargeBattery_->batteryChargeTimer_->stop();
 
-        sg.close();
+        SerialGate::instance()->close();
 
         ui -> openButton -> setText("Open port");
         message = QString("Serial port COM%1 closed").arg(port);
@@ -140,7 +140,7 @@ void MainWindow::on_openButton_clicked()
 
     const int speed = ui -> cbSpeed -> currentText().section(":", 1).toInt();
 
-    if (sg.open(port, speed)) {
+    if (SerialGate::instance()->open(port, speed)) {
         message = QString("Serial port COM%1 opened").arg(port);
         consoleTab_->isLocked = false;
         ui -> openButton -> setText("Close port");
@@ -174,7 +174,7 @@ void MainWindow::consoleTimeOut(void)
 {
     QString buff;
 
-    if(sg.recv(buff, 256)) {
+    if(SerialGate::instance()->recv(buff, 256)) {
         consoleTab_->output(buff);
     }
 
@@ -206,7 +206,7 @@ void MainWindow::on_actionTimeouts_triggered()
 
 void MainWindow::newCommand(QString command)
 {
-    sg.send(QString("%1\n").arg(command));
+    SerialGate::instance()->send(QString("%1\n").arg(command));
     consoleTab_->insertPrompt();
 }
 
@@ -227,10 +227,10 @@ void MainWindow::readPIDSettings()
         if (line.contains(":")) {
             line2 = line.section(":", 1);
             if (flag) {
-                sg.send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                SerialGate::instance()->send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
                 flag = false;
              } else {
-                sg.send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                SerialGate::instance()->send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
             }
         }
     } while (!line.isNull());
