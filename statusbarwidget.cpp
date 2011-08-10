@@ -13,14 +13,12 @@ StatusBarWidget::StatusBarWidget(QWidget *parent) : QWidget(parent)
                   "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
                   "stop: 0 #eee, stop: 0.4999 #ddd, stop: 0.5 #ccc, stop: 1 #ddd);"
                   "border-top: 1px ridge gray;"
-                  "padding: 0px"
+                  "padding - left: 10px"
                   "}"
 
                   "QStatusBar::item {"
                   "border-width: 0px;"
                   "border-left: 1px ridge gray;"
-                  "margin: 0px;"
-                  "padding: 0px"
                   "}");
 
 
