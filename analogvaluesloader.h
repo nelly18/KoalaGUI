@@ -9,15 +9,26 @@ class AnalogValuesLoader : public QThread
     Q_OBJECT
 
 public:
-    AnalogValuesLoader();
+    explicit AnalogValuesLoader (int numberOfAnalogChannels, QObject *parent = 0);
+    virtual ~AnalogValuesLoader ()
+    {}
+
+    void stop () {
+        stoped_ = true;
+    }
+
+signals:
+    void valuesChanged(const QVector <double> &values);
+
 protected:
     void run();
-signals:
-    void valuesChanged(QVector <double> values);
+
+private:
+    void loadAnalogValues();
+
 private:
     bool stoped_;
     QVector <double> values_;
-    void loadAnalogValues();
 
 };
 

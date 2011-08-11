@@ -14,13 +14,12 @@ public:
     AnalogGraph(QWidget * = 0);
     ~AnalogGraph();
 
-    void loadAnalogValues();
-    int numberOfAnalogChannels() {
+    int numberOfAnalogChannels() const {
         return numberOfAnalogChannels_;
     }
 
 public slots:
-    void redrawAnalogGraph(QVector <double> values);
+    void redrawAnalogGraph(const QVector <double> &values);
 
 private:
     void populate();
@@ -28,7 +27,7 @@ private:
 private:
     int numberOfAnalogChannels_;
     Histogram *analogHistogram_;
-    AnalogValuesLoader *analogValuesLoader;
+    AnalogValuesLoader *analogValuesLoader_;
 };
 
 #endif //ANALOGSENSORGRAPH_H

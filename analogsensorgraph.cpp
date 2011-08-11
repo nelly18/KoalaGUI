@@ -16,10 +16,6 @@
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
 {
-    analogValuesLoader = new AnalogValuesLoader;
-    connect(analogValuesLoader, SIGNAL(valuesChanged(values)),this, SLOT(redrawAnalogGraph(values)));
-    analogValuesLoader->start();
-
     plotLayout()->setAlignCanvasToScales(true);
 
     QwtText textLeft("Analog value");
@@ -49,6 +45,11 @@ AnalogGraph::AnalogGraph(QWidget *parent)
 
     populate();
     replot(); // creating the legend items
+
+    analogValuesLoader_ = new AnalogValuesLoader (numberOfAnalogChannels_);
+    connect(analogValuesLoader_, SIGNAL(valuesChanged(values)),
+            SLOT(redrawAnalogGraph(values)));
+    analogValuesLoader_->start();
 }
 
 AnalogGraph::~AnalogGraph()
@@ -73,7 +74,7 @@ void AnalogGraph::populate()
     analogHistogram_->attach(this);
 }
 
-void AnalogGraph::redrawAnalogGraph(QVector <double> values)
+void AnalogGraph::redrawAnalogGraph(const QVector <double> &values)
 {
      analogHistogram_->setValues(values);
      replot();
