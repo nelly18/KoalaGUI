@@ -7,17 +7,17 @@ AnalogValuesLoader::AnalogValuesLoader()
 
 }
 
-AnalogValuesLoader::run()
+void AnalogValuesLoader::run()
 {
     stoped_ = false;
     while (!stoped_) {
-    loadAnalogValues(values_);
+    loadAnalogValues();
       emit valuesChanged (values_);
     sleep (timeOutAnalog);
     }
 }
 
-void AnalogValuesLoader::loadAnalogValues()
+void AnalogValuesLoader::loadAnalogValues( )
 {
     const int numBytesToRead = 256;
     double value = 0.0;

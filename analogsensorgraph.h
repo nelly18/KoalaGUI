@@ -4,6 +4,7 @@
 #include <qwt_plot_layout.h>
 
 class Histogram;
+class AnalogValuesLoader;
 
 class AnalogGraph: public QwtPlot
 {
@@ -27,7 +28,7 @@ private:
 private:
     int numberOfAnalogChannels_;
     Histogram *analogHistogram_;
-
+    AnalogValuesLoader *analogValuesLoader;
 };
 
 #endif //ANALOGSENSORGRAPH_H

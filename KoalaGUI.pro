@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     statusbarwidget.cpp \
     script.cpp \
     scripttab.cpp \
-    mythread.cpp \
     analogvaluesloader.cpp
 
 HEADERS  += mainwindow.h \
@@ -45,7 +44,6 @@ HEADERS  += mainwindow.h \
     statusbarwidget.h \
     script.h \
     scripttab.h \
-    mythread.h \
     analogvaluesloader.h
 
 FORMS    += mainwindow.ui \

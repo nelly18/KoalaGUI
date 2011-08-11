@@ -8,8 +8,7 @@
 Script::Script(QObject *parent) :
     QObject(parent), speedLeft_ (0), speedRight_ (0), minSpeed_ (0)
 {
-    moveToThread(&scriptThread_);
-    scriptThread_.start();
+
 }
 
 void Script::setSpeed(int leftMotor, int rightMotor)
@@ -32,8 +31,6 @@ void Script::forward(int distance)
     //int speed = minSpeed_ * 3;
     //int time = distance * 100 / speed;
     SerialGate::instance()->send(QString("D,%1,%1\n").arg(minSpeed_));
-    scriptThread_.wait(5000);
-
 }
 
 void Script::back(int distance)

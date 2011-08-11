@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-#include "mythread.h"
 
 class Script : public QObject
 {
@@ -22,7 +21,6 @@ public slots:
     void delay(int time);
 
 private:
-    MyThread scriptThread_;
     int speedLeft_;
     int speedRight_;
     int minSpeed_;

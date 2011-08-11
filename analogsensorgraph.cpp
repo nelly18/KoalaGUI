@@ -16,8 +16,9 @@
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
 {
-
-    //connect(analogTimer_, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
+    analogValuesLoader = new AnalogValuesLoader;
+    connect(analogValuesLoader, SIGNAL(valuesChanged(values)),this, SLOT(redrawAnalogGraph(values)));
+    analogValuesLoader->start();
 
     plotLayout()->setAlignCanvasToScales(true);
 
@@ -72,7 +73,7 @@ void AnalogGraph::populate()
     analogHistogram_->attach(this);
 }
 
-void AnalogGraph::redrawAnalogGraph(values)
+void AnalogGraph::redrawAnalogGraph(QVector <double> values)
 {
      analogHistogram_->setValues(values);
      replot();
