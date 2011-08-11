@@ -11,7 +11,6 @@
 
 #include "analogsensorgraph.h"
 
-//extern SerialGate serialGate;
 
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
@@ -71,38 +70,29 @@ void AnalogGraph::populate()
     grid->attach(this);
 
     analogHistogram_ = new Histogram("", QColor(80, 180, 220, 150));
-    analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
+    analogHistogram_->setValues(analogChannels_);
     analogHistogram_->attach(this);
 }
 
 void AnalogGraph::analogTimeOut()
 {
-    if (loadAnalogValues()) {
-        analogHistogram_->setValues(numberOfAnalogChannels_, analogChannels_);
-        replot();
-    }
+     loadAnalogValues();
+     analogHistogram_->setValues(analogChannels_);
+     replot();
 }
 
-void AnalogGraph::setAnalogChannels(int channel, int value)
+void AnalogGraph::loadAnalogValues()
 {
-    analogChannels_[channel] = value;
-}
-
-int AnalogGraph::loadAnalogValues()
-{
-    QString buff;
     const int numBytesToRead = 256;
     double value = 0.0;
-    int bytesReaded = 0;
-    for (int i = 0; i < numberOfAnalogChannels_; ++i) {
+    int i = 0;
+    for (QVector<double>::iterator it = analogChannels_.begin(),
+                            end = analogChannels_.end(); it != end; ++it) {
         SerialGate::instance()->send(QString("I,%1\n").arg(i));
-        bytesReaded = SerialGate::instance()->recv(buff, numBytesToRead);
-        qDebug() << bytesReaded;
+        QString buff = SerialGate::instance()->recv(numBytesToRead);
         value = buff.section(",", 1, 1).toDouble();
-        qDebug() << value;
-        analogChannels_[i] = value;
+        *it = value;
         buff.clear ();
+        ++i;
     }
-
-    return 1;
 }

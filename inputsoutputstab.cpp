@@ -14,8 +14,6 @@
 
 #include "inputsoutputstab.h"
 
-//extern SerialGate serialGate;
-
 InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QWidget(parent)
 {
@@ -26,7 +24,7 @@ InputsOutputsTab::InputsOutputsTab(QWidget *parent) :
     QHBoxLayout *lay_digitalInputs = new QHBoxLayout;
     for (int i = 0; i < numberOfDigitalInputs; ++i) {
         Sensor *s = new Sensor(i);
-        digitalInputs_ << s;
+        digitalInputs_.push_back(s);
         lay_digitalInputs->addWidget(s);
         if (i != numberOfDigitalInputs - 1) {
             lay_digitalInputs->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
@@ -118,15 +116,14 @@ void InputsOutputsTab::startManualControl()
 void InputsOutputsTab::manualTimeOut()
 {
     SerialGate::instance()->send(QString("I,1\n"));
-    QString buff;
     const int numBytesToRead = 4;
-    SerialGate::instance()->recv(buff, numBytesToRead);
+    QString buff = SerialGate::instance()->recv(numBytesToRead);
     const int speedLeft = shiftEdit_.at(0)->text().toInt()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(0)->text().toInt();
 
     SerialGate::instance()->send(QString("I,0\n"));
     buff.clear ();
-    SerialGate::instance()->recv(buff, numBytesToRead);
+    buff = SerialGate::instance()->recv(numBytesToRead);
     const int speedRight = shiftEdit_.at(1)->text().toInt()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(1)->text().toInt();
 
@@ -145,7 +142,8 @@ void InputsOutputsTab::digitalOutputStateChanged(int state)
 
 void InputsOutputsTab::openPortButtonClicked()
 {
-    for (int i = 0; i < numberOfDigitalOutputs; ++i) {
-        digitalOutputCheck_.at(i)->setEnabled(SerialGate::instance()->state);
+    for (QVector < QCheckBox *>:: iterator it = digitalOutputCheck_ .begin(),
+                            end = digitalOutputCheck_ .end(); it != end; ++it) {
+       (*it)->setEnabled(SerialGate::instance()->state);
     }
 }

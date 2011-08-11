@@ -34,7 +34,7 @@ ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
         Sensor *s = new Sensor(i, l);
         s->move (points.at(i));
         s->resize (20, 20);
-        sensors_ << s;
+        sensors_.push_back(s);
     }
 
     table_ = new QTableWidget(8, 2, this);
@@ -61,10 +61,8 @@ ProximitySensorPainter::ProximitySensorPainter(QWidget *parent):QLabel(parent)
 
     //QGroupBox *group = new QGroupBox(this);
 
-
     QGridLayout *layout = new QGridLayout;
-//    layout->setSpacing(0);
-//    layout->setColumnMinimumWidth(0, 281);
+
     layout->addWidget(l, 0, 0);
     //layout->addWidget(table, 0, 1);
 
@@ -80,20 +78,21 @@ ProximitySensorPainter::~ProximitySensorPainter()
 
 int ProximitySensorPainter::loadSensorsValues()
 {
+    //static const QRegExp re (n(,\\d*){16}\\n);
     SerialGate::instance()->send("N\n");
-
-    QString buff;
     const int numBytesToRead = 256;
-    SerialGate::instance()->recv(buff, numBytesToRead);
+    QString buff = SerialGate::instance()->recv(numBytesToRead);
 
     int num = 0;
     QString sNum;
-    for(int i = 0; i < numberOfProximitySensors; ++i) {
+    int i = 0;
+    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
+                                     end = sensors_.end(); it != end; ++it) {
         sNum = buff.section(",", i + 1, i + 1);
         num = sNum.toInt();
-        sensors_[i]->setSensorValue(num);
+        (*it)->setSensorValue(num);
+        ++i;
     }
-
     return 1;
 }
 
@@ -103,18 +102,19 @@ void ProximitySensorPainter::proximitySensorTimeOut()
         return;
     }
 
-    for(int i = 0; i < numberOfProximitySensors; ++i) {
-        sensors_.at(i)->evaluateColor(colorPalette_);
+    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
+                                     end = sensors_.end(); it != end; ++it) {
+        (*it)->evaluateColor(colorPalette_);
     }
 
-    for (int i = 0, k = 0; i < 2; ++i) {
-        for (int j = 0; j < numberOfProximitySensors / 2; ++j, ++k) {
+    QVector <Sensor *> :: iterator it = sensors_.begin();
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < numberOfProximitySensors / 2; ++j, ++it) {
             QTableWidgetItem *item = table_->item(j, i);
-            item->setText(QString("%1").arg(sensors_.at(k)->sensorValue()));
-            sensors_.at(k)->update();
+            item->setText(QString("%1").arg((*it)->sensorValue()));
+            (*it)->update();
         }
     }
-    //update();
 }
 
 void ProximitySensorPainter::setColorPalette(int palette)
@@ -124,9 +124,9 @@ void ProximitySensorPainter::setColorPalette(int palette)
 
 void ProximitySensorPainter::resetSensorsColor()
 {
-    for(int i = 0; i < numberOfProximitySensors; ++i) {
-        sensors_.at(i)->setColor(QColor(220, 220, 220));
+    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
+                                     end = sensors_.end(); it != end; ++it) {
+        (*it)->setColor(QColor(220, 220, 220));
     }
-
     update();
 }

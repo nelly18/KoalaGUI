@@ -9,8 +9,6 @@
 
 #include "scripttab.h"
 
-//extern SerialGate serialGate;
-
 ScriptTab::ScriptTab(QWidget *parent)
     : QWidget(parent)
 {

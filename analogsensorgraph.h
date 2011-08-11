@@ -13,8 +13,7 @@ public:
     AnalogGraph(QWidget * = 0);
     ~AnalogGraph();
 
-    int loadAnalogValues();
-    void setAnalogChannels(int channel, int value);
+    void loadAnalogValues();
     int numberOfAnalogChannels() {
         return numberOfAnalogChannels_;
     }

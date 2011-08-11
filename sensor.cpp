@@ -7,8 +7,6 @@
 
 #include "sensor.h"
 
-//extern SerialGate SerialGate;
-
 Sensor::Sensor(int sensor, QWidget *parent)
     : QWidget(parent)
 {

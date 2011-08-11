@@ -26,7 +26,7 @@ public:
     int send(const char* buff, const int szBuff);
     int send(const QString &str);
     int recv(char* buff, int numBytesToRead);
-    int recv(QString &str, int numBytesToRead);
+    QString recv(int numBytesToRead);
     void setLine(OUT_LINES_NAME ln, bool state);
     bool line(IN_LINES_NAME ln);
     void close();

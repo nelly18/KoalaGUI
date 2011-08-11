@@ -25,9 +25,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//SerialGate *serialGate = SerialGate::Instance();
-//SerialGate SerialGate::instance();
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -81,7 +78,7 @@ void MainWindow::on_changeTab()
             sensorFrame_->drawSensorsTimer_->stop();
             inOutTab_->analogFrame_->analogTimer_->stop();
             inOutTab_->manualTimer_->stop();
-            consoleTimer_->start(timeOutConsole);
+            //consoleTimer_->start(timeOutConsole);
             break;
 
         case script:
@@ -145,13 +142,13 @@ void MainWindow::on_openButton_clicked()
         consoleTab_->isLocked = false;
         ui -> openButton -> setText("Close port");
 
-        readPIDSettings();
+        readPidSettings();
 
-        statusBarWidget_->chargeBattery_->batteryChargeTimer_->start(3000);
+        statusBarWidget_->chargeBattery_->batteryChargeTimer_->start(timeOutBatteryCharge);
 
         switch (ui->tabWidget->currentIndex()) {
             case console:
-                //consoleTimer-> start(timeoutconsole);
+                //consoleTimer_-> start(timeOutConsole);
                 break;
             case script:
                 break;
@@ -172,12 +169,9 @@ void MainWindow::on_openButton_clicked()
 
 void MainWindow::consoleTimeOut(void)
 {
-    QString buff;
-
-    if(SerialGate::instance()->recv(buff, 256)) {
-        consoleTab_->output(buff);
-    }
-
+    QString buff = SerialGate::instance()->recv(256) ;
+    if (buff.size())
+         consoleTab_->output(buff);
 }
 
 void MainWindow::on_actionClearConsole_triggered()
@@ -207,10 +201,12 @@ void MainWindow::on_actionTimeouts_triggered()
 void MainWindow::newCommand(QString command)
 {
     SerialGate::instance()->send(QString("%1\n").arg(command));
-    consoleTab_->insertPrompt();
+    QString buff = SerialGate::instance()->recv(512) ;
+    if (buff.size() - 1)
+         consoleTab_->output(buff);
 }
 
-void MainWindow::readPIDSettings()
+void MainWindow::readPidSettings()
 {
     QFile file("PIDsettings.txt");
     if (!file.open (QFile::ReadOnly)) {

@@ -10,7 +10,7 @@ public:
     Histogram(const QString &, const QColor &);
 
     void setColor(const QColor &);
-    void setValues(int numValues, const QVector <double> &);
+    void setValues(const QVector <double> &);
 };
 
 

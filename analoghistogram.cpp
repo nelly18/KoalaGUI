@@ -21,15 +21,16 @@ void Histogram::setColor(const QColor &symbolColor)
     setSymbol(symbol);
 }
 
-void Histogram::setValues(int numValues, const QVector<double> &values)
+void Histogram::setValues(const QVector<double> &values)
 {
-    QVector<QwtIntervalSample> samples(numValues);
-    for ( int i = 0; i < numValues; i++ )
+    QVector<QwtIntervalSample> samples;
+    int i = 0;
+    for (QVector<double>::const_iterator it = values.constBegin(), end = values.constEnd(); it != end; ++it)
     {
         QwtInterval interval(double(i), i + 1.0);
         interval.setBorderFlags(QwtInterval::ExcludeMaximum);
-        samples[i] = QwtIntervalSample(values[i], interval);
+        samples.push_back (QwtIntervalSample(*it, interval));
+        ++i;
     }
-
     setData(new QwtIntervalSeriesData(samples));
 }

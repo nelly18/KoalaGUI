@@ -36,7 +36,7 @@ protected:
    // bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-    void readPIDSettings();
+    void readPidSettings();
 
 private slots:
     void on_openButton_clicked();

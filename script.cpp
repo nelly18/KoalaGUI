@@ -5,8 +5,6 @@
 
 #include "script.h"
 
-//extern SerialGate serialGate;
-
 Script::Script(QObject *parent) :
     QObject(parent), speedLeft_ (0), speedRight_ (0), minSpeed_ (0)
 {

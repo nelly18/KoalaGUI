@@ -1,4 +1,6 @@
 #include <QtCore/QTimer>
+#include <QtCore/QRegExp>
+#include <QtCore/QDebug>
 
 #include "serialgate.h"
 
@@ -22,11 +24,17 @@ BatteryCharge::BatteryCharge(QWidget *parent)
 }
 void BatteryCharge::batteryChargeTimerTimeOut()
 {
+    static const QRegExp re ("s,(\\d*)\\n");
     SerialGate::instance()->send(QString("S\n"));
-    QString buff;
     const int numBytesToRead = 10;
-    SerialGate::instance()->recv(buff, numBytesToRead);
-    const int batteryLevel = buff.toInt();
+    QString buff = SerialGate::instance()->recv(numBytesToRead);
+    int batteryLevel = 0;
+    if(re.exactMatch(buff)){
+        batteryLevel = re.cap(1).toInt();
+    }
+    else{
+        return;
+    }
 
     const double colorSection = 4.66666666666;
     QString batteryColor;

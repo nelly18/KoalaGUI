@@ -32,11 +32,9 @@ bool SerialGate::open(int port, int baud)
                          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,NULL);
 
 
-    if(hFile_ == INVALID_HANDLE_VALUE)
-    {
+    if(hFile_ == INVALID_HANDLE_VALUE) {
         return false;
     }
-
 
     DCB dcb;
     GetCommState(hFile_, &dcb);
@@ -83,7 +81,6 @@ void SerialGate::clean()
 #ifdef Q_WS_WIN
     if(!state)
         return;
-
     PurgeComm(hFile_, PURGE_TXCLEAR|PURGE_RXCLEAR);
 #endif //Q_WS_WIN32
 }
@@ -94,7 +91,6 @@ int SerialGate::send(const char* buff, const int szBuff)
 #ifdef Q_WS_WIN
     if(!state)
         return 0;
-
 
     DWORD lpdwBytesWrittens = 0;
     WriteFile(hFile_, buff, szBuff, &lpdwBytesWrittens, NULL);
@@ -182,16 +178,12 @@ bool SerialGate::line(IN_LINES_NAME ln)
     return false;
 }
 
-int SerialGate::recv(QString &str, int numBytesToRead)
+QString SerialGate::recv(int numBytesToRead)
 {
-    char s[buffSize];
+    char s[numBytesToRead + 1];
     int rcv = recv(s, numBytesToRead);
-
-    if (rcv > 0){
-        for (int i = 0; i < rcv; i++)
-            str += s[i];
-    }
-    return rcv;
+    s [rcv] = '\0';
+    return QString(s);
 }
 
 int SerialGate::send(const QString &str)
