@@ -109,7 +109,6 @@ void InputsOutputsTab::startManualControl()
         SerialGate::instance()->send("D,0,0\n");
         manualTimer_->start(60);
     }
-
     manual = !manual;
 }
 
@@ -122,7 +121,6 @@ void InputsOutputsTab::manualTimeOut()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(0)->text().toInt();
 
     SerialGate::instance()->send(QString("I,0\n"));
-    buff.clear ();
     buff = SerialGate::instance()->recv(numBytesToRead);
     const int speedRight = shiftEdit_.at(1)->text().toInt()
             + (buff.section(",", 1, 1).toInt()/1024) * maxSpeedEdit_.at(1)->text().toInt();
@@ -142,7 +140,7 @@ void InputsOutputsTab::digitalOutputStateChanged(int state)
 
 void InputsOutputsTab::openPortButtonClicked()
 {
-    for (QVector < QCheckBox *>:: iterator it = digitalOutputCheck_ .begin(),
+    for (QVector < QCheckBox *>:: const_iterator it = digitalOutputCheck_ .begin(),
                             end = digitalOutputCheck_ .end(); it != end; ++it) {
        (*it)->setEnabled(SerialGate::instance()->state);
     }

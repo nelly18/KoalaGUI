@@ -19,18 +19,15 @@ public:
     }
 
 public slots:
-    void analogTimeOut();
+    void redrawAnalogGraph(QVector <double> values);
 
 private:
     void populate();
 
-public:
-    QTimer *analogTimer_;
-
 private:
     int numberOfAnalogChannels_;
-    QVector <double> analogChannels_;
     Histogram *analogHistogram_;
+
 };
 
 #endif //ANALOGSENSORGRAPH_H

@@ -86,12 +86,11 @@ int ProximitySensorPainter::loadSensorsValues()
     int num = 0;
     QString sNum;
     int i = 0;
-    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
-                                     end = sensors_.end(); it != end; ++it) {
+    for(QVector <Sensor *> :: const_iterator it = sensors_.begin(),
+                                     end = sensors_.end(); it != end; ++it, ++i) {
         sNum = buff.section(",", i + 1, i + 1);
         num = sNum.toInt();
         (*it)->setSensorValue(num);
-        ++i;
     }
     return 1;
 }
@@ -102,12 +101,12 @@ void ProximitySensorPainter::proximitySensorTimeOut()
         return;
     }
 
-    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
+    for(QVector <Sensor *> :: const_iterator it = sensors_.begin(),
                                      end = sensors_.end(); it != end; ++it) {
         (*it)->evaluateColor(colorPalette_);
     }
 
-    QVector <Sensor *> :: iterator it = sensors_.begin();
+    QVector <Sensor *> :: const_iterator it = sensors_.begin();
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < numberOfProximitySensors / 2; ++j, ++it) {
             QTableWidgetItem *item = table_->item(j, i);
@@ -124,7 +123,7 @@ void ProximitySensorPainter::setColorPalette(int palette)
 
 void ProximitySensorPainter::resetSensorsColor()
 {
-    for(QVector <Sensor *> :: iterator it = sensors_.begin(),
+    for(QVector <Sensor *> :: const_iterator it = sensors_.begin(),
                                      end = sensors_.end(); it != end; ++it) {
         (*it)->setColor(QColor(220, 220, 220));
     }

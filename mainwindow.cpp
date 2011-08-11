@@ -76,36 +76,30 @@ void MainWindow::on_changeTab()
     {
         case console:
             sensorFrame_->drawSensorsTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->stop();
             inOutTab_->manualTimer_->stop();
             //consoleTimer_->start(timeOutConsole);
             break;
 
         case script:
             sensorFrame_->drawSensorsTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->stop();
             consoleTimer_->stop();
             break;
 
         case proximityS:
             consoleTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->stop();
             sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
             break;
 
         case analogS:
             sensorFrame_->drawSensorsTimer_->stop();
             consoleTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
             break;
         case speed:
             sensorFrame_->drawSensorsTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->stop();
             consoleTimer_->stop();
             break;
         case PID:
             sensorFrame_->drawSensorsTimer_->stop();
-            inOutTab_->analogFrame_->analogTimer_->stop();
             consoleTimer_->stop();
             break;
     }
@@ -120,7 +114,6 @@ void MainWindow::on_openButton_clicked()
     if (SerialGate::instance()->state) {
         sensorFrame_ -> drawSensorsTimer_ -> stop();
         consoleTimer_ -> stop();
-        inOutTab_ -> analogFrame_->analogTimer_->stop();
         statusBarWidget_->chargeBattery_->batteryChargeTimer_->stop();
 
         SerialGate::instance()->close();
@@ -156,7 +149,6 @@ void MainWindow::on_openButton_clicked()
                 sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
                 break;
             case analogS:
-                inOutTab_->analogFrame_->analogTimer_->start(timeOutAnalog);
                 break;
         }
     } else {
@@ -201,7 +193,7 @@ void MainWindow::on_actionTimeouts_triggered()
 void MainWindow::newCommand(QString command)
 {
     SerialGate::instance()->send(QString("%1\n").arg(command));
-    QString buff = SerialGate::instance()->recv(512) ;
+    const QString buff = SerialGate::instance()->recv(512) ;
     if (buff.size() - 1)
          consoleTab_->output(buff);
 }

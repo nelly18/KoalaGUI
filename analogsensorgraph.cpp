@@ -8,6 +8,7 @@
 
 #include "serialgate.h"
 #include "analoghistogram.h"
+#include "analogvaluesloader.h"
 
 #include "analogsensorgraph.h"
 
@@ -15,10 +16,8 @@
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
 {
-    analogTimer_ = new QTimer(this);
-    connect(analogTimer_, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
 
-    analogChannels_.fill(0, numberOfAnalogChannels_);
+    //connect(analogTimer_, SIGNAL(timeout()),this, SLOT(analogTimeOut()));
 
     plotLayout()->setAlignCanvasToScales(true);
 
@@ -48,7 +47,6 @@ AnalogGraph::AnalogGraph(QWidget *parent)
     setAxisScaleDiv(QwtPlot::xBottom, scaleDiv);
 
     populate();
-    //resize(180, 200);
     replot(); // creating the legend items
 }
 
@@ -70,29 +68,14 @@ void AnalogGraph::populate()
     grid->attach(this);
 
     analogHistogram_ = new Histogram("", QColor(80, 180, 220, 150));
-    analogHistogram_->setValues(analogChannels_);
+    //analogHistogram_->setValues(analogChannels_);
     analogHistogram_->attach(this);
 }
 
-void AnalogGraph::analogTimeOut()
+void AnalogGraph::redrawAnalogGraph(values)
 {
-     loadAnalogValues();
-     analogHistogram_->setValues(analogChannels_);
+     analogHistogram_->setValues(values);
      replot();
 }
 
-void AnalogGraph::loadAnalogValues()
-{
-    const int numBytesToRead = 256;
-    double value = 0.0;
-    int i = 0;
-    for (QVector<double>::iterator it = analogChannels_.begin(),
-                            end = analogChannels_.end(); it != end; ++it) {
-        SerialGate::instance()->send(QString("I,%1\n").arg(i));
-        QString buff = SerialGate::instance()->recv(numBytesToRead);
-        value = buff.section(",", 1, 1).toDouble();
-        *it = value;
-        buff.clear ();
-        ++i;
-    }
-}
+

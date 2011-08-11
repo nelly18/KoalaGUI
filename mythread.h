@@ -3,12 +3,12 @@
 
 #include <QtCore/QThread>
 
-class MyThread : public QThread
+class AnalogValuesLoader : public QThread
 {
-public:
-    MyThread();
 
-    void myMsleep(unsigned long msecs);
-};
+protected:
+  void run () {
 
+}
+}
 #endif // MYTHREAD_H

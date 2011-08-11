@@ -3,17 +3,11 @@
 
 #include "mythread.h"
 
-MyThread::MyThread()
+AnalogValuesLoader::AnalogValuesLoader()
 {
 }
 
-void MyThread::myMsleep(unsigned long msecs)
+void MyThread::run()
 {
-       QMutex mutex;
-       mutex.lock();
 
-       QWaitCondition waitCondition;
-       waitCondition.wait(&mutex, msecs);
-
-       mutex.unlock();
- }
+}

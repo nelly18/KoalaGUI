@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     statusbarwidget.cpp \
     script.cpp \
     scripttab.cpp \
-    mythread.cpp
+    mythread.cpp \
+    analogvaluesloader.cpp
 
 HEADERS  += mainwindow.h \
     serialgate.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     statusbarwidget.h \
     script.h \
     scripttab.h \
-    mythread.h
+    mythread.h \
+    analogvaluesloader.h
 
 FORMS    += mainwindow.ui \
     colorpalettedialog.ui \
