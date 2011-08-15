@@ -3,6 +3,8 @@
 
 #include <qwt_plot_layout.h>
 
+typedef QVector < double > MyVector;
+
 class Histogram;
 class AnalogValuesLoader;
 
@@ -19,7 +21,7 @@ public:
     }
 
 public slots:
-    void redrawAnalogGraph(const QVector <double> &values);
+    void redrawAnalogGraph(const MyVector &values);
 
 private:
     void populate();

@@ -15,7 +15,7 @@ void AnalogValuesLoader::run()
     while (!stoped_) {
         loadAnalogValues ();
         emit valuesChanged (values_);
-        sleep (timeOutAnalog);
+        msleep (timeOutAnalog);
     }
 }
 

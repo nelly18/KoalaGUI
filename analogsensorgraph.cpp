@@ -1,5 +1,6 @@
 #include <QtCore/QDebug>
 #include <QtCore/QTimer>
+#include <QtCore/QMetaType>
 
 #include <QtGui/QPen>
 
@@ -11,7 +12,6 @@
 #include "analogvaluesloader.h"
 
 #include "analogsensorgraph.h"
-
 
 AnalogGraph::AnalogGraph(QWidget *parent)
     : QwtPlot(parent), numberOfAnalogChannels_ (6)
@@ -47,14 +47,15 @@ AnalogGraph::AnalogGraph(QWidget *parent)
     replot(); // creating the legend items
 
     analogValuesLoader_ = new AnalogValuesLoader (numberOfAnalogChannels_);
-    connect(analogValuesLoader_, SIGNAL(valuesChanged(values)),
-            SLOT(redrawAnalogGraph(values)));
+    qRegisterMetaType < MyVector >("MyVector");
+    connect(analogValuesLoader_, SIGNAL(valuesChanged(const MyVector)),
+            SLOT(redrawAnalogGraph(const MyVector)));
     analogValuesLoader_->start();
 }
 
 AnalogGraph::~AnalogGraph()
 {
-
+    analogValuesLoader_->stop();
 }
 
 void AnalogGraph::populate()
@@ -74,7 +75,7 @@ void AnalogGraph::populate()
     analogHistogram_->attach(this);
 }
 
-void AnalogGraph::redrawAnalogGraph(const QVector <double> &values)
+void AnalogGraph::redrawAnalogGraph(const MyVector &values)
 {
      analogHistogram_->setValues(values);
      replot();

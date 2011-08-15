@@ -4,6 +4,8 @@
 #include <QtCore/QThread>
 #include <QtCore/QVector>
 
+typedef QVector < double > MyVector;
+
 class AnalogValuesLoader : public QThread
 {
     Q_OBJECT
@@ -18,7 +20,7 @@ public:
     }
 
 signals:
-    void valuesChanged(const QVector <double> &values);
+    void valuesChanged(const MyVector &values);
 
 protected:
     void run();
@@ -28,7 +30,7 @@ private:
 
 private:
     bool stoped_;
-    QVector <double> values_;
+    MyVector values_;
 
 };
 
