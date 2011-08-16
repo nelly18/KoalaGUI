@@ -8,8 +8,9 @@
 #include "defines.h"
 
 class ProximitySensorPainter;
-namespace Ui {
-    class MainWindow;
+namespace Ui
+{
+class MainWindow;
 }
 
 class Console;
@@ -29,11 +30,11 @@ public:
     enum Tabs {console, script, proximityS, analogS, speed, PID};
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow (QWidget *parent = 0);
     ~MainWindow();
 
 protected:
-   // bool eventFilter(QObject *obj, QEvent *event);
+    // bool eventFilter(QObject *obj, QEvent *event);
 
 private:
     void readPidSettings();
@@ -41,8 +42,8 @@ private:
 private slots:
     void on_openButton_clicked();
     void on_changeTab();
-    void consoleTimeOut(void);
-    void newCommand(QString);
+    void consoleTimeOut (void);
+    void newCommand (QString);
     void on_actionClearConsole_triggered();
     void on_actionQuit_triggered();
     void on_actionTimeouts_triggered();

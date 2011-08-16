@@ -25,40 +25,40 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow (QWidget *parent)
+    : QMainWindow (parent), ui (new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    ui->setupUi (this);
 
-    consoleTab_ = new Console(this);
-    connect(consoleTab_, SIGNAL(onCommand(QString)), this, SLOT(newCommand(QString)));
-    ui->tabWidget->addTab(consoleTab_, "Console");
+    consoleTab_ = new Console (this);
+    connect (consoleTab_, SIGNAL (onCommand (QString)), this, SLOT (newCommand (QString)));
+    ui->tabWidget->addTab (consoleTab_, "Console");
 
     scriptTab_ = new ScriptTab;
-    ui->tabWidget->addTab(scriptTab_, "Script");
+    ui->tabWidget->addTab (scriptTab_, "Script");
 //    QThread scriptThread;
 //    scriptTab->moveToThread(&scriptThread);
 //    scriptThread.start();
 
-    consoleTimer_ = new QTimer(this);
-    connect(consoleTimer_, SIGNAL(timeout()), this, SLOT(consoleTimeOut()));
+    consoleTimer_ = new QTimer (this);
+    connect (consoleTimer_, SIGNAL (timeout()), this, SLOT (consoleTimeOut()));
 
-    sensorFrame_ = new ProximitySensorPainter(this);
-    ui->tabWidget->addTab(sensorFrame_, "Sensors");
+    sensorFrame_ = new ProximitySensorPainter (this);
+    ui->tabWidget->addTab (sensorFrame_, "Sensors");
 
-    inOutTab_ = new InputsOutputsTab(this);
-    connect(ui->openButton, SIGNAL(clicked()), inOutTab_, SLOT(openPortButtonClicked()));
-    ui->tabWidget->addTab(inOutTab_, "I/O signals");
+    inOutTab_ = new InputsOutputsTab (this);
+    connect (ui->openButton, SIGNAL (clicked()), inOutTab_, SLOT (openPortButtonClicked()));
+    ui->tabWidget->addTab (inOutTab_, "I/O signals");
 
-    speedControlTab_ = new SpeedControl(this);
-    ui->tabWidget->addTab(speedControlTab_, "Speed");
+    speedControlTab_ = new SpeedControl (this);
+    ui->tabWidget->addTab (speedControlTab_, "Speed");
 
     pidTab_ = new PidRegulator;
-    ui->tabWidget->addTab(pidTab_, "PID");
+    ui->tabWidget->addTab (pidTab_, "PID");
 
-    statusBarWidget_ = new StatusBarWidget(this);
+    statusBarWidget_ = new StatusBarWidget (this);
     //ui->statusBar->addWidget(statusBarWidget, 1);
-    setStatusBar(statusBarWidget_->statusBar);
+    setStatusBar (statusBarWidget_->statusBar);
 }
 
 MainWindow::~MainWindow()
@@ -72,8 +72,7 @@ void MainWindow::on_changeTab()
         return;
     }
 
-    switch(ui->tabWidget->currentIndex())
-    {
+    switch (ui->tabWidget->currentIndex()) {
         case console:
             sensorFrame_->drawSensorsTimer_->stop();
             inOutTab_->manualTimer_->stop();
@@ -87,7 +86,7 @@ void MainWindow::on_changeTab()
 
         case proximityS:
             consoleTimer_->stop();
-            sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
+            sensorFrame_->drawSensorsTimer_->start (timeOutDrawSens);
             break;
 
         case analogS:
@@ -111,6 +110,7 @@ void MainWindow::on_openButton_clicked()
     const int port = ui-> cbPort ->currentIndex() + 1;
 
     QString message;
+
     if (SerialGate::instance()->state) {
         sensorFrame_ -> drawSensorsTimer_ -> stop();
         consoleTimer_ -> stop();
@@ -118,9 +118,9 @@ void MainWindow::on_openButton_clicked()
 
         SerialGate::instance()->close();
 
-        ui -> openButton -> setText("Open port");
-        message = QString("Serial port COM%1 closed").arg(port);
-        consoleTab_->output(message);
+        ui -> openButton -> setText ("Open port");
+        message = QString ("Serial port COM%1 closed").arg (port);
+        consoleTab_->output (message);
         consoleTab_->isLocked = true;
 
         sensorFrame_->resetSensorsColor();
@@ -128,16 +128,16 @@ void MainWindow::on_openButton_clicked()
         return;
     }
 
-    const int speed = ui -> cbSpeed -> currentText().section(":", 1).toInt();
+    const int speed = ui -> cbSpeed -> currentText().section (":", 1).toInt();
 
-    if (SerialGate::instance()->open(port, speed)) {
-        message = QString("Serial port COM%1 opened").arg(port);
+    if (SerialGate::instance()->open (port, speed)) {
+        message = QString ("Serial port COM%1 opened").arg (port);
         consoleTab_->isLocked = false;
-        ui -> openButton -> setText("Close port");
+        ui -> openButton -> setText ("Close port");
 
         readPidSettings();
 
-        statusBarWidget_->chargeBattery_->batteryChargeTimer_->start(timeOutBatteryCharge);
+        statusBarWidget_->chargeBattery_->batteryChargeTimer_->start (timeOutBatteryCharge);
 
         switch (ui->tabWidget->currentIndex()) {
             case console:
@@ -146,30 +146,31 @@ void MainWindow::on_openButton_clicked()
             case script:
                 break;
             case proximityS:
-                sensorFrame_->drawSensorsTimer_->start(timeOutDrawSens);
+                sensorFrame_->drawSensorsTimer_->start (timeOutDrawSens);
                 break;
             case analogS:
                 break;
         }
     } else {
-        message = QString("Serial port COM%1 openning error").arg(port);
+        message = QString ("Serial port COM%1 openning error").arg (port);
         consoleTab_->isLocked = true;
     }
 
-    consoleTab_->output(message);
+    consoleTab_->output (message);
 }
 
-void MainWindow::consoleTimeOut(void)
+void MainWindow::consoleTimeOut (void)
 {
-    QString buff = SerialGate::instance()->recv(256) ;
+    QString buff = SerialGate::instance()->recv (256) ;
+
     if (buff.size())
-         consoleTab_->output(buff);
+        consoleTab_->output (buff);
 }
 
 void MainWindow::on_actionClearConsole_triggered()
 {
-     consoleTab_->clear();
-     consoleTab_->insertPrompt(false);
+    consoleTab_->clear();
+    consoleTab_->insertPrompt (false);
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -181,7 +182,7 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionColor_palette_triggered()
 {
     if (colorDialog_.exec()) {
-        sensorFrame_->setColorPalette(colorDialog_.palette());
+        sensorFrame_->setColorPalette (colorDialog_.palette());
     }
 }
 
@@ -190,35 +191,40 @@ void MainWindow::on_actionTimeouts_triggered()
 
 }
 
-void MainWindow::newCommand(QString command)
+void MainWindow::newCommand (QString command)
 {
-    SerialGate::instance()->send(QString("%1\n").arg(command));
-    const QString buff = SerialGate::instance()->recv(512) ;
+    SerialGate::instance()->send (QString ("%1\n").arg (command));
+    const QString buff = SerialGate::instance()->recv (512) ;
+
     if (buff.size() - 1)
-         consoleTab_->output(buff);
+        consoleTab_->output (buff);
 }
 
 void MainWindow::readPidSettings()
 {
-    QFile file("PIDsettings.txt");
+    QFile file ("PIDsettings.txt");
+
     if (!file.open (QFile::ReadOnly)) {
         QMessageBox::information (this, "", "PID settings file opening error");
         return;
     }
 
-    QTextStream stream ( &file );
+    QTextStream stream (&file);
     QString line;
     QString line2;
     bool flag = true;
+
     do {
         line = stream.readLine();
-        if (line.contains(":")) {
-            line2 = line.section(":", 1);
+
+        if (line.contains (":")) {
+            line2 = line.section (":", 1);
+
             if (flag) {
-                SerialGate::instance()->send(QString("A,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+                SerialGate::instance()->send (QString ("A,%1,%2,%3\n").arg (line2.section ("-", 0, 0)).arg (line2.section ("-", 1, 1)).arg (line2.section ("-", 2, 2)));
                 flag = false;
-             } else {
-                SerialGate::instance()->send(QString("F,%1,%2,%3\n").arg(line2.section("-", 0, 0)).arg(line2.section("-", 1, 1)).arg(line2.section("-", 2, 2)));
+            } else {
+                SerialGate::instance()->send (QString ("F,%1,%2,%3\n").arg (line2.section ("-", 0, 0)).arg (line2.section ("-", 1, 1)).arg (line2.section ("-", 2, 2)));
             }
         }
     } while (!line.isNull());

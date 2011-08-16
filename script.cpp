@@ -5,50 +5,50 @@
 
 #include "script.h"
 
-Script::Script(QObject *parent) :
-    QObject(parent), speedLeft_ (0), speedRight_ (0), minSpeed_ (0)
+Script::Script (QObject *parent) :
+    QObject (parent), speedLeft_ (0), speedRight_ (0), minSpeed_ (0)
 {
 
 }
 
-void Script::setSpeed(int leftMotor, int rightMotor)
+void Script::setSpeed (int leftMotor, int rightMotor)
 {
     speedLeft_ = leftMotor;
     speedRight_ = rightMotor;
-    minSpeed_ = qMin(leftMotor, rightMotor);
-    SerialGate::instance()->send(QString("D,%1,%2\n").arg(leftMotor).arg(rightMotor));
+    minSpeed_ = qMin (leftMotor, rightMotor);
+    SerialGate::instance()->send (QString ("D,%1,%2\n").arg (leftMotor).arg (rightMotor));
     qDebug() << thread();
 }
 
 void Script::stop()
 {
-    SerialGate::instance()->send(QString("D,0,0\n"));
+    SerialGate::instance()->send (QString ("D,0,0\n"));
 }
 
-void Script::forward(int distance)
+void Script::forward (int distance)
 {
     Q_UNUSED (distance);
     //int speed = minSpeed_ * 3;
     //int time = distance * 100 / speed;
-    SerialGate::instance()->send(QString("D,%1,%1\n").arg(minSpeed_));
+    SerialGate::instance()->send (QString ("D,%1,%1\n").arg (minSpeed_));
 }
 
-void Script::back(int distance)
+void Script::back (int distance)
 {
     Q_UNUSED (distance);
 }
 
-void Script::turnLeft(int angle)
+void Script::turnLeft (int angle)
 {
     Q_UNUSED (angle);
 }
 
-void Script::turnRight(int angle)
+void Script::turnRight (int angle)
 {
     Q_UNUSED (angle);
 }
 
-void Script::delay(int time)
+void Script::delay (int time)
 {
     Q_UNUSED (time);
 }

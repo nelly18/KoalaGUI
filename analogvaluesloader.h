@@ -20,7 +20,7 @@ public:
     }
 
 signals:
-    void valuesChanged(const MyVector &values);
+    void valuesChanged (const MyVector &values);
 
 protected:
     void run();

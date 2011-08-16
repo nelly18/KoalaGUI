@@ -13,9 +13,9 @@ const int buffSize = 256;
 const int numberOfDigitalInputs = 5;
 const int numberOfDigitalOutputs = 5;
 
-template <class X> X abs(X x)
+template <class X> X abs (X x)
 {
-    return ((x < 0)? -(x) : x);
+    return ( (x < 0) ? - (x) : x);
 }
 
 

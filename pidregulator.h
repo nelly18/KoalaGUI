@@ -11,7 +11,7 @@ class PidRegulator : public QFrame
     Q_OBJECT
 
 public:
-    PidRegulator(QFrame *parent = 0);
+    PidRegulator (QFrame *parent = 0);
 
 private slots:
     void setSpeed();

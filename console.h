@@ -8,25 +8,25 @@ class Console : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    explicit Console(QWidget *parent = 0);
+    explicit Console (QWidget *parent = 0);
 
-    void output(QString);
+    void output (QString);
     void scrollDown();
-    void insertPrompt(bool insertNewBlock = true);
+    void insertPrompt (bool insertNewBlock = true);
 
 signals:
-    void onCommand(QString);
-    void onChange(QString);
+    void onCommand (QString);
+    void onChange (QString);
 
 protected:
-    void keyPressEvent(QKeyEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
-    void contextMenuEvent(QContextMenuEvent *);
+    void keyPressEvent (QKeyEvent *);
+    void mousePressEvent (QMouseEvent *);
+    void mouseDoubleClickEvent (QMouseEvent *);
+    void contextMenuEvent (QContextMenuEvent *);
 
 private:
     void onEnter();
-    void historyAdd(const QString &cmd);
+    void historyAdd (const QString &cmd);
     void historyBack();
     void historyForward();
 

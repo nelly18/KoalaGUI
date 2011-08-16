@@ -13,43 +13,44 @@
 
 #include "analogsensorgraph.h"
 
-AnalogGraph::AnalogGraph(QWidget *parent)
-    : QwtPlot(parent), numberOfAnalogChannels_ (6)
+AnalogGraph::AnalogGraph (QWidget *parent)
+    : QwtPlot (parent), numberOfAnalogChannels_ (6)
 {
-    plotLayout()->setAlignCanvasToScales(true);
+    plotLayout()->setAlignCanvasToScales (true);
 
-    QwtText textLeft("Analog value");
-    QwtText textBottom("Analog channel");
+    QwtText textLeft ("Analog value");
+    QwtText textBottom ("Analog channel");
     QFont font;
-    font.setPointSize(12);
-    font.setFamily("Arial");
-    textLeft.setFont(font);
-    textBottom.setFont(font);
-    setAxisTitle(QwtPlot::yLeft, textLeft);
-    setAxisTitle(QwtPlot::xBottom, textBottom);
+    font.setPointSize (12);
+    font.setFamily ("Arial");
+    textLeft.setFont (font);
+    textBottom.setFont (font);
+    setAxisTitle (QwtPlot::yLeft, textLeft);
+    setAxisTitle (QwtPlot::xBottom, textBottom);
 
-    setAxisScale(QwtPlot::xBottom, 0, numberOfAnalogChannels_, 1);
-    setAxisScale(QwtPlot::yLeft, 0, 1024, 200);
+    setAxisScale (QwtPlot::xBottom, 0, numberOfAnalogChannels_, 1);
+    setAxisScale (QwtPlot::yLeft, 0, 1024, 200);
 
     QList<double> ticks[QwtScaleDiv::NTickTypes];
+
     for (int i = 0; i <= numberOfAnalogChannels_; i++) {
         ticks[QwtScaleDiv::MajorTick] << i;
     }
 
-    QwtScaleDiv scaleDiv(
-                ticks[QwtScaleDiv::MajorTick].first(),
-                ticks[QwtScaleDiv::MajorTick].last(),
-                ticks );
+    QwtScaleDiv scaleDiv (
+        ticks[QwtScaleDiv::MajorTick].first(),
+        ticks[QwtScaleDiv::MajorTick].last(),
+        ticks);
 
-    setAxisScaleDiv(QwtPlot::xBottom, scaleDiv);
+    setAxisScaleDiv (QwtPlot::xBottom, scaleDiv);
 
     populate();
     replot(); // creating the legend items
 
     analogValuesLoader_ = new AnalogValuesLoader (numberOfAnalogChannels_);
-    qRegisterMetaType < MyVector >("MyVector");
-    connect(analogValuesLoader_, SIGNAL(valuesChanged(const MyVector)),
-            SLOT(redrawAnalogGraph(const MyVector)));
+    qRegisterMetaType < MyVector > ("MyVector");
+    connect (analogValuesLoader_, SIGNAL (valuesChanged (const MyVector)),
+             SLOT (redrawAnalogGraph (const MyVector)));
     analogValuesLoader_->start();
 }
 
@@ -62,23 +63,23 @@ void AnalogGraph::populate()
 {
     QwtPlotGrid *grid = new QwtPlotGrid;
 
-    grid->enableX(false);
-    grid->enableY(false);
-    grid->enableXMin(false);
-    grid->enableYMin(false);
-    grid->setMajPen(QPen(Qt::black, 0, Qt::DotLine));
+    grid->enableX (false);
+    grid->enableY (false);
+    grid->enableXMin (false);
+    grid->enableYMin (false);
+    grid->setMajPen (QPen (Qt::black, 0, Qt::DotLine));
 
-    grid->attach(this);
+    grid->attach (this);
 
-    analogHistogram_ = new Histogram("", QColor(80, 180, 220, 150));
+    analogHistogram_ = new Histogram ("", QColor (80, 180, 220, 150));
     //analogHistogram_->setValues(analogChannels_);
-    analogHistogram_->attach(this);
+    analogHistogram_->attach (this);
 }
 
-void AnalogGraph::redrawAnalogGraph(const MyVector &values)
+void AnalogGraph::redrawAnalogGraph (const MyVector &values)
 {
-     analogHistogram_->setValues(values);
-     replot();
+    analogHistogram_->setValues (values);
+    replot();
 }
 
 

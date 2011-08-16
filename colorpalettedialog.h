@@ -5,8 +5,9 @@
 
 #include "defines.h"
 
-namespace Ui {
-    class ColorPaletteDialog;
+namespace Ui
+{
+class ColorPaletteDialog;
 }
 
 class ColorPaletteDialog : public QDialog
@@ -14,7 +15,7 @@ class ColorPaletteDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ColorPaletteDialog(QWidget *parent = 0);
+    explicit ColorPaletteDialog (QWidget *parent = 0);
     ~ColorPaletteDialog();
 
     int palette();

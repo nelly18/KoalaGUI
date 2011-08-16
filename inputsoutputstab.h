@@ -16,12 +16,12 @@ class InputsOutputsTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit InputsOutputsTab(QWidget *parent = 0);
+    explicit InputsOutputsTab (QWidget *parent = 0);
 
 public slots:
     void manualTimeOut();
     void startManualControl();
-    void digitalOutputStateChanged(int state);
+    void digitalOutputStateChanged (int state);
     void openPortButtonClicked();
 
 public:
@@ -32,8 +32,8 @@ private:
     QSpinBox *numAnalogInputsSpin_;
     QVector <Sensor *> digitalInputs_;
     QVector <QCheckBox *> digitalOutputCheck_;
-    QVector <QLineEdit*> maxSpeedEdit_;
-    QVector <QLineEdit*> shiftEdit_;
+    QVector <QLineEdit *> maxSpeedEdit_;
+    QVector <QLineEdit *> shiftEdit_;
     QPushButton *startButton_;
 };
 

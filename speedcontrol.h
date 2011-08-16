@@ -12,11 +12,11 @@ class SpeedControl : public QFrame
     Q_OBJECT
 
 public:
-    SpeedControl(QWidget *parent = 0);
+    SpeedControl (QWidget *parent = 0);
 
 private slots:
-    void setSpeedLeft(int);
-    void setSpeedRight(int);
+    void setSpeedLeft (int);
+    void setSpeedRight (int);
     void setTSpeed();
     void setPWM();
 

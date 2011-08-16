@@ -12,7 +12,7 @@ class StatusBarWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit StatusBarWidget(QWidget *parent = 0);
+    explicit StatusBarWidget (QWidget *parent = 0);
 
 public:
     BatteryCharge *chargeBattery_;

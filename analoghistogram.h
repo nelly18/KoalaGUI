@@ -7,10 +7,10 @@ class Histogram: public QwtPlotHistogram
 {
 
 public:
-    Histogram(const QString &, const QColor &);
+    Histogram (const QString &, const QColor &);
 
-    void setColor(const QColor &);
-    void setValues(const QVector <double> &);
+    void setColor (const QColor &);
+    void setValues (const QVector <double> &);
 };
 
 

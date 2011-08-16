@@ -19,16 +19,16 @@ public:
     enum OUT_LINES_NAME {DTR, RTS};
 
 public:
-    static SerialGate* instance();
+    static SerialGate *instance();
     ~SerialGate();
     bool state;
-    bool open(const int port, const int baud);
-    int send(const char* buff, const int szBuff);
-    int send(const QString &str);
-    int recv(char* buff, int numBytesToRead);
-    QString recv(int numBytesToRead);
-    void setLine(OUT_LINES_NAME ln, bool state);
-    bool line(IN_LINES_NAME ln);
+    bool open (const int port, const int baud);
+    int send (const char *buff, const int szBuff);
+    int send (const QString &str);
+    int recv (char *buff, int numBytesToRead);
+    QString recv (int numBytesToRead);
+    void setLine (OUT_LINES_NAME ln, bool state);
+    bool line (IN_LINES_NAME ln);
     void close();
     void clean();
 
@@ -36,9 +36,9 @@ protected:
     SerialGate();
 
 private:
-    static SerialGate* instance_;
+    static SerialGate *instance_;
 #ifdef Q_WS_WIN
-        HANDLE hFile_;
+    HANDLE hFile_;
 #endif //Q_WS_WIN
 };
 

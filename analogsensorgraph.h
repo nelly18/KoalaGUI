@@ -13,7 +13,7 @@ class AnalogGraph: public QwtPlot
     Q_OBJECT
 
 public:
-    AnalogGraph(QWidget * = 0);
+    AnalogGraph (QWidget * = 0);
     ~AnalogGraph();
 
     int numberOfAnalogChannels() const {
@@ -21,7 +21,7 @@ public:
     }
 
 public slots:
-    void redrawAnalogGraph(const MyVector &values);
+    void redrawAnalogGraph (const MyVector &values);
 
 private:
     void populate();
