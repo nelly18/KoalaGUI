@@ -1,14 +1,15 @@
-#include <QtGui/QMessageBox>
 #include <QtCore/QTimer>
 #include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QThread>
+
+#include <QtGui/QMessageBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QTextBlock>
 #include <QtGui/QColor>
 #include <QtGui/QLayout>
 #include <QtGui/QSpacerItem>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QThread>
 
 #include "proximitysensorpainter.h"
 #include "analogsensorgraph.h"

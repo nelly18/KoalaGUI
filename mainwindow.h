@@ -7,7 +7,6 @@
 #include "colorpalettedialog.h"
 #include "defines.h"
 
-class ProximitySensorPainter;
 namespace Ui
 {
 class MainWindow;
@@ -21,6 +20,7 @@ class PidRegulator;
 class InputsOutputsTab;
 class StatusBarWidget;
 class ScriptTab;
+class ProximitySensorPainter;
 
 class MainWindow : public QMainWindow
 {
